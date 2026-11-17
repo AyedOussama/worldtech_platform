@@ -1,0 +1,62 @@
+<a class="skip-link" href="#contenu" (click)="skip($event, content)">Aller au contenu</a>
+<mat-sidenav-container class="shell-frame" [hasBackdrop]="mobile()">
+  <mat-sidenav id="navigation-espace" class="shell-sidebar" [mode]="mobile() ? 'over' : 'side'"
+    [opened]="!mobile() || navigationOpen()" [fixedInViewport]="true" [autoFocus]="mobile()"
+    (closedStart)="closeNavigation()" (closed)="restoreNavigationFocus()">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">
+        <a class="brand" [routerLink]="preview() ? '/dev' : '/connexion'">WorldTech</a>
+        @if (mobile()) {
+          <button matIconButton type="button" aria-label="Fermer la navigation" (click)="closeNavigation()">
+            <svg lucideX class="wt-icon" aria-hidden="true"></svg>
+          </button>
+        }
+      </div>
+      <div class="space-label">{{ spaceLabel() }}</div>
+      <nav [attr.aria-label]="spaceLabel()">
+        @for (item of items(); track item.label) {
+          @if (item.path) {
+            <a [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page"
+              class="nav-item" (click)="closeNavigation()">
+              <svg [lucideIcon]="item.icon" class="wt-icon" aria-hidden="true"></svg>
+              <span>{{ item.label }}</span>
+            </a>
+          } @else {
+            <span class="nav-item unavailable" aria-disabled="true">
+              <svg [lucideIcon]="item.icon" class="wt-icon" aria-hidden="true"></svg>
+              <span>{{ item.label }}</span><span class="upcoming">À venir</span>
+            </span>
+          }
+        }
+      </nav>
+      <div class="sidebar-foot">
+        @if (preview()) {
+          <a routerLink="/dev">Catalogue de développement</a>
+          <p>Aucun utilisateur connecté</p>
+        }
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content class="shell-body">
+    <header class="shell-topbar">
+      <div class="topbar-context">
+        @if (mobile()) {
+          <button #menuButton matIconButton type="button" aria-label="Ouvrir la navigation"
+            aria-controls="navigation-espace" [attr.aria-expanded]="navigationOpen()"
+            (click)="navigationOpen.set(true)">
+            <svg lucideMenu class="wt-icon" aria-hidden="true"></svg>
+          </button>
+        }
+        <span>{{ spaceLabel() }}</span>
+      </div>
+      <div class="shell-toolbar-controls"><ng-content select="[shell-actions]" /><wt-theme-picker /></div>
+    </header>
+    @if (preview()) {
+      <aside class="preview-notice" aria-label="Environnement de développement">
+        <span class="preview-label">Aperçu de développement</span>
+        <span>Données fictives · Aucun envoi au serveur</span>
+      </aside>
+    }
+    <main #content id="contenu" tabindex="-1" class="shell-content"><ng-content /></main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

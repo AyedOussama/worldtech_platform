@@ -1,0 +1,473 @@
+{
+  "engine": {
+    "name": "axe-core",
+    "version": "4.14.0"
+  },
+  "url": "http://localhost:4310/dev/client/incidents",
+  "timestamp": "2026-11-10T14:19:32.429Z",
+  "violations": [],
+  "incomplete": [
+    {
+      "id": "aria-hidden-focus",
+      "impact": "serious",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag412",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "RGAAv4",
+        "RGAA-10.8.1"
+      ],
+      "description": "Ensure aria-hidden elements are not focusable nor contain focusable elements",
+      "help": "ARIA hidden element must not be focusable or contain focusable elements",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-hidden-focus?application=playwright",
+      "nodes": [
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "focusable-modal-open",
+              "data": null,
+              "relatedNodes": [
+                {
+                  "html": "<a _ngcontent-ng-c623983580=\"\" href=\"#contenu\" class=\"skip-link\">Aller au contenu</a>",
+                  "target": [
+                    ".skip-link"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c62398...=\"\" maticonbutton=\"\" type=\"button\" aria-label=\"Ouvrir la navigation\" aria-controls=\"navigation-espace\" class=\"mdc-icon-button mat-...\" mat-ripple-loader-un...=\"\" mat-ripple-loader-cl...=\"mat-mdc-button-rippl...\" mat-ripple-loader-ce...=\"\" aria-expanded=\"false\">",
+                  "target": [
+                    "button[aria-label=\"Ouvrir la navigation\"]"
+                  ]
+                },
+                {
+                  "html": "<select><option value=\"light\">Clair</option><option value=\"dark\">Sombre</option><option value=\"system\">Système</option></select>",
+                  "target": [
+                    ".theme-picker > select"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c1536065351=\"\" matbutton=\"filled\" type=\"button\" class=\"mdc-button mat-mdc-button-base mdc-button--unelevated mat-mdc-unelevated-button mat-unthemed _mat-animation-noopable\" mat-ripple-loader-class-name=\"mat-mdc-button-ripple\">",
+                  "target": [
+                    ".page-actions > .mdc-button--unelevated.mat-mdc-unelevated-button[matbutton=\"filled\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c15360...=\"\" maticonbutton=\"\" type=\"button\" aria-label=\"Options de la liste\" class=\"mdc-icon-button mat-...\" mat-ripple-loader-un...=\"\" mat-ripple-loader-cl...=\"mat-mdc-button-rippl...\" mat-ripple-loader-ce...=\"\" aria-haspopup=\"menu\" aria-expanded=\"false\">",
+                  "target": [
+                    ".mat-mdc-menu-trigger"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c1536065351=\"\" type=\"button\" class=\"state-filter selected\" aria-pressed=\"true\"> Tous <span _ngcontent-ng-c1536065351=\"\" class=\"tabular\">7</span></button>",
+                  "target": [
+                    ".selected"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c1536065351=\"\" type=\"button\" class=\"state-filter\" aria-pressed=\"false\"> À qualifier <span _ngcontent-ng-c1536065351=\"\" class=\"tabular\">1</span></button>",
+                  "target": [
+                    ".state-filter[type=\"button\"]:nth-child(2)"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c1536065351=\"\" type=\"button\" class=\"state-filter\" aria-pressed=\"false\"> En cours <span _ngcontent-ng-c1536065351=\"\" class=\"tabular\">2</span></button>",
+                  "target": [
+                    ".state-filter[type=\"button\"]:nth-child(3)"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c1536065351=\"\" type=\"button\" class=\"state-filter\" aria-pressed=\"false\"> En attente client <span _ngcontent-ng-c1536065351=\"\" class=\"tabular\">1</span></button>",
+                  "target": [
+                    ".state-filter[type=\"button\"]:nth-child(4)"
+                  ]
+                },
+                {
+                  "html": "<input _ngcontent-ng-c1536065351=\"\" matinput=\"\" type=\"search\" maxlength=\"160\" autocomplete=\"off\" class=\"mat-mdc-input-element mat-mdc-form-field-input-control mdc-text-field__input cdk-text-field-autofill-monitored\" id=\"mat-input-0\" aria-invalid=\"false\" aria-required=\"false\" style=\"\">",
+                  "target": [
+                    "#mat-input-0"
+                  ]
+                },
+                {
+                  "html": "<mat-select _ngcontent-ng-c1536065351=\"\" role=\"combobox\" aria-haspopup=\"listbox\" class=\"mat-mdc-select\" aria-labelledby=\"mat-mdc-form-field-label-1\" id=\"mat-select-0\" tabindex=\"0\" aria-expanded=\"false\" aria-required=\"false\" aria-disabled=\"false\" aria-invalid=\"false\">",
+                  "target": [
+                    "#mat-select-0"
+                  ]
+                },
+                {
+                  "html": "<mat-select _ngcontent-ng-c1536065351=\"\" role=\"combobox\" aria-haspopup=\"listbox\" class=\"mat-mdc-select\" aria-labelledby=\"mat-mdc-form-field-label-2\" id=\"mat-select-1\" tabindex=\"0\" aria-expanded=\"false\" aria-required=\"false\" aria-disabled=\"false\" aria-invalid=\"false\">",
+                  "target": [
+                    "#mat-select-1"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c875785219=\"\" type=\"button\" aria-haspopup=\"dialog\" class=\"ticket-link\" aria-label=\"DEMO-2048 — Connexion réseau indisponible à l’accueil\">Connexion réseau indisponible à l’accueil</button>",
+                  "target": [
+                    "article:nth-child(1) > h2 > .ticket-link[aria-haspopup=\"dialog\"][type=\"button\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c875785219=\"\" type=\"button\" aria-haspopup=\"dialog\" class=\"ticket-link\" aria-label=\"DEMO-2047 — Imprimante du deuxième étage hors ligne\">Imprimante du deuxième étage hors ligne</button>",
+                  "target": [
+                    "article:nth-child(2) > h2 > .ticket-link[aria-haspopup=\"dialog\"][type=\"button\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c875785219=\"\" type=\"button\" aria-haspopup=\"dialog\" class=\"ticket-link\" aria-label=\"DEMO-2045 — Poste de travail lent au démarrage\">Poste de travail lent au démarrage</button>",
+                  "target": [
+                    "article:nth-child(3) > h2 > .ticket-link[aria-haspopup=\"dialog\"][type=\"button\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c875785219=\"\" type=\"button\" aria-haspopup=\"dialog\" class=\"ticket-link\" aria-label=\"DEMO-2044 — Accès au dossier partagé interrompu\">Accès au dossier partagé interrompu</button>",
+                  "target": [
+                    "article:nth-child(4) > h2 > .ticket-link[aria-haspopup=\"dialog\"][type=\"button\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c875785219=\"\" type=\"button\" aria-haspopup=\"dialog\" class=\"ticket-link\" aria-label=\"DEMO-2042 — Point d’accès Wi-Fi du premier étage instable\">Point d’accès Wi-Fi du premier étage instable</button>",
+                  "target": [
+                    "article:nth-child(5) > h2 > .ticket-link[aria-haspopup=\"dialog\"][type=\"button\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c875785219=\"\" type=\"button\" aria-haspopup=\"dialog\" class=\"ticket-link\" aria-label=\"DEMO-2041 — Mise à jour du poste de la comptabilité\">Mise à jour du poste de la comptabilité</button>",
+                  "target": [
+                    "article:nth-child(6) > h2 > .ticket-link[aria-haspopup=\"dialog\"][type=\"button\"]"
+                  ]
+                },
+                {
+                  "html": "<button _ngcontent-ng-c15360...=\"\" maticonbutton=\"\" type=\"button\" aria-label=\"Page suivante\" class=\"mdc-icon-button mat-...\" mat-ripple-loader-un...=\"\" mat-ripple-loader-cl...=\"mat-mdc-button-rippl...\" mat-ripple-loader-ce...=\"\">",
+                  "target": [
+                    "button[aria-label=\"Page suivante\"]"
+                  ]
+                },
+                {
+                  "html": "<summary _ngcontent-ng-c1536065351=\"\">Tester les états de l’interface</summary>",
+                  "target": [
+                    "summary"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Check that focusable elements are not tabbable in the current state"
+            }
+          ],
+          "none": [],
+          "impact": "serious",
+          "html": "<wt-root ng-version=\"22.2.5\" aria-hidden=\"true\">",
+          "target": [
+            "wt-root"
+          ],
+          "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "focusable-modal-open",
+              "data": null,
+              "relatedNodes": [
+                {
+                  "html": "<div tabindex=\"0\" class=\"cdk-visually-hidden cdk-focus-trap-anchor\" aria-hidden=\"true\"></div>",
+                  "target": [
+                    ".cdk-focus-trap-anchor.cdk-visually-hidden[aria-hidden=\"true\"]:nth-child(1)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Check that focusable elements are not tabbable in the current state"
+            }
+          ],
+          "none": [],
+          "impact": "serious",
+          "html": "<div tabindex=\"0\" class=\"cdk-visually-hidden cdk-focus-trap-anchor\" aria-hidden=\"true\"></div>",
+          "target": [
+            ".cdk-focus-trap-anchor.cdk-visually-hidden[aria-hidden=\"true\"]:nth-child(1)"
+          ],
+          "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "focusable-modal-open",
+              "data": null,
+              "relatedNodes": [
+                {
+                  "html": "<div tabindex=\"0\" class=\"cdk-visually-hidden cdk-focus-trap-anchor\" aria-hidden=\"true\"></div>",
+                  "target": [
+                    ".cdk-focus-trap-anchor.cdk-visually-hidden[aria-hidden=\"true\"]:nth-child(3)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Check that focusable elements are not tabbable in the current state"
+            }
+          ],
+          "none": [],
+          "impact": "serious",
+          "html": "<div tabindex=\"0\" class=\"cdk-visually-hidden cdk-focus-trap-anchor\" aria-hidden=\"true\"></div>",
+          "target": [
+            ".cdk-focus-trap-anchor.cdk-visually-hidden[aria-hidden=\"true\"]:nth-child(3)"
+          ],
+          "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "emptyValue",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has no value; test color contrast with a value entered"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<input _ngcontent-ng-c1536065351=\"\" matinput=\"\" type=\"search\" maxlength=\"160\" autocomplete=\"off\" class=\"mat-mdc-input-element mat-mdc-form-field-input-control mdc-text-field__input cdk-text-field-autofill-monitored\" id=\"mat-input-0\" aria-invalid=\"false\" aria-required=\"false\" style=\"\">",
+          "target": [
+            "#mat-input-0"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has no value; test color contrast with a value entered"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"mat-mdc-select-min-line\">Tous les sites</span>",
+          "target": [
+            "#mat-select-value-0 > .mat-mdc-select-value-text > .mat-mdc-select-min-line"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"mat-mdc-select-min-line\">Toutes les priorités</span>",
+          "target": [
+            "#mat-select-value-1 > .mat-mdc-select-value-text > .mat-mdc-select-min-line"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"mat-mdc-select-min-line\">Normale</span>",
+          "target": [
+            "#mat-select-value-3 > .mat-mdc-select-value-text > .mat-mdc-select-min-line"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "emptyValue",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has no value; test color contrast with a value entered"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<input _ngcontent-ng-c14565...=\"\" matinput=\"\" formcontrolname=\"title\" required=\"\" maxlength=\"160\" autocomplete=\"off\" class=\"mat-mdc-input-elemen...\" id=\"reference-incident-t...\" aria-required=\"true\">",
+          "target": [
+            "#reference-incident-title"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has no value; test color contrast with a value entered"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "emptyValue",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has no value; test color contrast with a value entered"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<textarea _ngcontent-ng-c14565...=\"\" matinput=\"\" formcontrolname=\"description\" required=\"\" maxlength=\"2000\" rows=\"4\" class=\"mat-mdc-input-elemen...\" id=\"reference-incident-d...\" aria-required=\"true\">",
+          "target": [
+            "#reference-incident-description"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has no value; test color contrast with a value entered"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "emptyValue",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has no value; test color contrast with a value entered"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<input _ngcontent-ng-c14565...=\"\" matinput=\"\" formcontrolname=\"remuneration\" inputmode=\"decimal\" maxlength=\"40\" autocomplete=\"off\" class=\"mat-mdc-input-elemen...\" aria-describedby=\"mat-mdc-hint-9\" id=\"reference-incident-r...\" aria-invalid=\"false\" aria-required=\"false\">",
+          "target": [
+            "#reference-incident-remuneration"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has no value; test color contrast with a value entered"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span _ngcontent-ng-c1456577165=\"\" mattextsuffix=\"\">EUR HT</span>",
+          "target": [
+            "span[mattextsuffix=\"\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        }
+      ]
+    }
+  ],
+  "passes": [
+    "aria-allowed-attr",
+    "aria-conditional-attr",
+    "aria-deprecated-role",
+    "aria-hidden-body",
+    "aria-hidden-focus",
+    "aria-input-field-name",
+    "aria-prohibited-attr",
+    "aria-required-attr",
+    "aria-roles",
+    "aria-valid-attr-value",
+    "aria-valid-attr",
+    "autocomplete-valid",
+    "avoid-inline-spacing",
+    "button-name",
+    "bypass",
+    "color-contrast",
+    "document-title",
+    "duplicate-id-aria",
+    "form-field-multiple-labels",
+    "html-has-lang",
+    "html-lang-valid",
+    "label",
+    "meta-viewport",
+    "nested-interactive",
+    "scrollable-region-focusable",
+    "select-name",
+    "target-size"
+  ]
+}

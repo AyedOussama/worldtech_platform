@@ -1,0 +1,39 @@
+/* Reference WorldTech v1. Map to the installed PrimeNG token API at FE02. */
+@layer worldtech.tokens {
+  :root {
+    --wt-background: #F8F9FB;
+    --wt-surface: #FFFFFF;
+    --wt-selected: #EDF1F7;
+    --wt-text: #171A20;
+    --wt-secondary: #505967;
+    --wt-muted: #636D7D;
+    --wt-divider: #E3E6EB;
+    --wt-control-border: #7C8799;
+    --wt-accent: #2457D6;
+    --wt-on-accent: #FFFFFF;
+    --wt-error: #B42318;
+    --wt-success: #146C43;
+    --wt-warning: #865500;
+    --wt-font-family: "IBM Plex Sans", system-ui, sans-serif;
+    --wt-radius-control: 8px;
+    --wt-radius-panel: 12px;
+    color-scheme: light;
+  }
+  :root.wt-dark {
+    --wt-background: #111317;
+    --wt-surface: #191C22;
+    --wt-selected: #262C36;
+    --wt-text: #F3F4F6;
+    --wt-secondary: #B4BBC6;
+    --wt-muted: #929BA9;
+    --wt-divider: #303641;
+    --wt-control-border: #738198;
+    --wt-accent: #8CADFF;
+    --wt-on-accent: #111317;
+    --wt-error: #FFB4AB;
+    --wt-success: #83DBAE;
+    --wt-warning: #F4CA76;
+    color-scheme: dark;
+  }
+}
+

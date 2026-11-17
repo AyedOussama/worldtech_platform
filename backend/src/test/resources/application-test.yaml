@@ -1,0 +1,14 @@
+# Credentials/URLs are supplied by the real Testcontainers fixture, never committed here.
+spring:
+  flyway:
+    enabled: true
+    default-schema: app
+    schemas: [app]
+    create-schemas: false
+    clean-disabled: true
+    validate-on-migrate: true
+app:
+  identity:
+    maintenance-enabled: false
+    cookie-name: MAINT_TEST_SESSION
+    secure-cookie: false

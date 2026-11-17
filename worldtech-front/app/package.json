@@ -1,0 +1,65 @@
+{
+  "name": "worldtech-web",
+  "version": "0.1.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --host localhost --port 4200 --proxy-config proxy.conf.json",
+    "build": "ng build --configuration production",
+    "postbuild": "node scripts/prepare-build.mjs",
+    "watch": "ng build --watch --configuration development",
+    "lint": "eslint src e2e playwright*.config.ts",
+    "typecheck": "ngc -p tsconfig.app.json --noEmit && tsc -p tsconfig.spec.json --noEmit && tsc -p tsconfig.tools.json --noEmit",
+    "test": "ng test --watch=false",
+    "test:e2e": "playwright test",
+    "test:e2e:production": "npm run build && npm run verify:production && playwright test --config playwright.production.config.ts",
+    "test:e2e:integration": "playwright test --config playwright.integration.config.ts",
+    "test:e2e:login": "playwright test --config playwright.login.config.ts",
+    "verify:production": "node scripts/verify-production.mjs",
+    "api:generate": "node scripts/generate-api.mjs",
+    "api:verify": "node scripts/generate-api.mjs --check",
+    "check:licenses": "node scripts/check-licenses.mjs",
+    "check": "npm run check:licenses && npm run api:verify && npm run lint && npm run typecheck && npm run test && npm run build && npm run verify:production"
+  },
+  "private": true,
+  "packageManager": "npm@11.20.0",
+  "engines": {
+    "node": "^26.13.0",
+    "npm": "^11.20.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "esbuild@0.28.2": true,
+    "lmdb@3.5.6": true,
+    "msgpackr-extract@3.0.7": true
+  },
+  "dependencies": {
+    "@angular/cdk": "22.2.6",
+    "@angular/common": "22.2.5",
+    "@angular/compiler": "22.2.5",
+    "@angular/core": "22.2.5",
+    "@angular/forms": "22.2.5",
+    "@angular/material": "22.2.6",
+    "@angular/platform-browser": "22.2.5",
+    "@angular/router": "22.2.5",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@lucide/angular": "1.71.0",
+    "rxjs": "7.8.2",
+    "tslib": "2.9.1"
+  },
+  "devDependencies": {
+    "@angular/build": "22.2.6",
+    "@angular/cli": "22.2.6",
+    "@angular/compiler-cli": "22.2.5",
+    "@axe-core/playwright": "4.14.0",
+    "@eslint/js": "10.0.1",
+    "@hey-api/openapi-ts": "0.97.0",
+    "@playwright/test": "1.65.0",
+    "@types/node": "26.6.6",
+    "angular-eslint": "22.6.0",
+    "eslint": "10.14.0",
+    "jsdom": "31.0.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
+  }
+}

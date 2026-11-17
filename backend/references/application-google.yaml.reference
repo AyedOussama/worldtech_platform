@@ -1,0 +1,22 @@
+# Profil google optionnel. Ne pas l'activer sans identifiants réels et callbacks validés.
+app:
+  auth:
+    google:
+      enabled: true
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${MAINT_GOOGLE_WEB_CLIENT_ID}
+            client-secret: ${google_client_secret}
+            authorization-grant-type: authorization_code
+            scope: [openid, profile, email]
+
+# Le provider google est fourni par Spring Security. Callback HTTPS du backend
+# enregistré exactement dans Google Cloud, sans joker. Les chemins précis sont
+# figés dans le lot 03 ; aucune URL de redirection arbitraire ne vient du frontend.
+# Le secret Google réel est fourni séparément, jamais généré comme faux identifiant
+# par init-dev.py. Ne pas embarquer ce secret dans Angular ou Flutter.
+# Voir AUTHENTIFICATION.md pour le retour mobile par code éphémère lié à PKCE.

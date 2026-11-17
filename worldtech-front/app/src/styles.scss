@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+@use './styles/tokens';
+@use './styles/foundation';
+@use './styles/identity';
+
+html {
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: (
+      plain-family: ('IBM Plex Sans', system-ui, sans-serif),
+      brand-family: ('IBM Plex Sans', system-ui, sans-serif),
+      bold-weight: 600,
+      medium-weight: 500,
+      regular-weight: 400,
+    ),
+    density: 0,
+  ));
+  @include mat.theme-overrides((
+    primary: var(--wt-accent),
+    on-primary: var(--wt-on-accent),
+    primary-container: var(--wt-info-surface),
+    on-primary-container: var(--wt-accent),
+    secondary: var(--wt-secondary),
+    on-secondary: var(--wt-surface),
+    secondary-container: var(--wt-selected),
+    on-secondary-container: var(--wt-text),
+    surface: var(--wt-surface),
+    surface-container: var(--wt-surface),
+    surface-container-lowest: var(--wt-surface),
+    surface-container-low: var(--wt-surface),
+    surface-container-high: var(--wt-selected),
+    surface-container-highest: var(--wt-selected),
+    surface-variant: var(--wt-selected),
+    surface-dim: var(--wt-background),
+    surface-bright: var(--wt-surface),
+    background: var(--wt-background),
+    on-background: var(--wt-text),
+    on-surface: var(--wt-text),
+    on-surface-variant: var(--wt-secondary),
+    outline: var(--wt-control-border),
+    outline-variant: var(--wt-border),
+    error: var(--wt-error),
+    error-container: var(--wt-error-surface),
+    on-error-container: var(--wt-error),
+    body-large-tracking: 0,
+    body-medium-tracking: 0,
+    label-large-tracking: 0,
+  ));
+  @include mat.button-overrides((
+    filled-container-shape: 8px,
+    outlined-container-shape: 8px,
+    text-container-shape: 8px,
+    filled-container-height: 44px,
+    outlined-container-height: 44px,
+    text-container-height: 44px,
+  ));
+  @include mat.form-field-overrides((
+    outlined-container-shape: 8px,
+    container-height: 48px,
+    container-vertical-padding: 12px,
+    subscript-text-size: .8125rem,
+  ));
+  @include mat.dialog-overrides((container-shape: 12px, subhead-size: 1.5rem, subhead-weight: 500));
+  @include mat.menu-overrides((container-shape: 8px));
+  @include mat.sidenav-overrides((container-shape: 0, container-background-color: var(--wt-surface), content-background-color: var(--wt-background)));
+}

@@ -1,0 +1,13 @@
+Vérifications de préparation — révision 1.1 — 27 octobre 2026
+
+Commande : python3 scripts/validate-pack.py
+Code de sortie : 0
+OK : Python/XML/YAML sans doublon/TOML/Bash ; 3 services/4 images ; 9 secrets stables, clé MFA 32 octets ; 15 prompts ; références actives et manifeste si présent.
+NON exécuté : Docker/SQL/Maven/Spring Boot, authentification locale/Google, tests métier et pentest.
+
+Environnement :
+Docker : absent
+Maven : absent
+openjdk version "17.0.20" 2026-07-21
+
+Les contrôles applicatifs restent non exécutés ; voir VALIDATION.md et SECURITE.md.

@@ -1,0 +1,343 @@
+{
+  "date": "2026-11-10",
+  "scope": "FE03 local identity; enabled Google not delivered or verified",
+  "unitTests": {
+    "passed": 77,
+    "source": "last executed npm run check (Angular/Vitest CLI)"
+  },
+  "browserReports": {
+    "development": {
+      "startTime": "2026-11-10T18:43:03.150Z",
+      "duration": 181871.907,
+      "expected": 57,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "production": {
+      "startTime": "2026-11-10T18:44:44.109Z",
+      "duration": 5703.285,
+      "expected": 9,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "spring": {
+      "startTime": "2026-11-10T18:43:03.109Z",
+      "duration": 76261.642,
+      "expected": 5,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "accessibility": {
+    "scans": 51,
+    "violations": 0,
+    "incompleteRuleOccurrences": 58,
+    "reports": [
+      {
+        "file": "verification/fe03/accessibility/admin-access-dark-1440.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/admin-access-dark-390.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/admin-access-light-1440.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/admin-access-light-390.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/enrollment-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/enrollment-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/enrollment-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/enrollment-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/login-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/login-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/login-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/login-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/mfa-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/mfa-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/mfa-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/mfa-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-codes-dark-1440.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-codes-dark-390.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-codes-light-1440.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-codes-light-390.json",
+        "incompleteRules": 0
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/recovery-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/reset-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/reset-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/reset-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/accessibility/reset-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/admin-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/admin-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/admin-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/admin-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/client-dark-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/client-dark-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/client-light-1440.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/client-light-390.json",
+        "incompleteRules": 1
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/detail-overlay-dark.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-admin-dark-1440.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-admin-dark-390.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-admin-light-1440.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-admin-light-390.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-client-dark-1440.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-client-dark-390.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-client-light-1440.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/form-client-light-390.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/invalid-form-dark.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/invalid-form-light.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/menu-dark.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/menu-light.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/select-dark.json",
+        "incompleteRules": 2
+      },
+      {
+        "file": "verification/fe03/regression-fe02/accessibility/select-light.json",
+        "incompleteRules": 2
+      }
+    ],
+    "notCertification": true
+  },
+  "screenshots": {
+    "identity": 28,
+    "regressions": 24,
+    "source": "synthetic HTTP doubles only; real fixture capture disabled"
+  },
+  "preservation": {
+    "baselineFiles": 243,
+    "modifiedBaselineFiles": [
+      "README.md",
+      "SUIVI_DES_LOTS.md",
+      "THIRD_PARTY_NOTICES.md",
+      "app/README.md",
+      "app/e2e/design-system.spec.ts",
+      "app/e2e/foundation.spec.ts",
+      "app/eslint.config.mjs",
+      "app/package-lock.json",
+      "app/package.json",
+      "app/playwright.config.ts",
+      "app/scripts/check-licenses.mjs",
+      "app/src/app/api/generated/README.md",
+      "app/src/app/app.config.ts",
+      "app/src/app/app.routes.ts",
+      "app/src/app/app.ts",
+      "app/src/app/core/auth/require-session.spec.ts",
+      "app/src/app/core/auth/require-session.ts",
+      "app/src/app/features/admin/admin-entry.ts",
+      "app/src/app/features/admin/admin.routes.ts",
+      "app/src/app/features/auth/session-unavailable.ts",
+      "app/src/app/features/client/client-entry.ts",
+      "app/src/app/features/client/client.routes.ts",
+      "app/src/app/layouts/application-shell.html",
+      "app/src/app/layouts/application-shell.scss",
+      "app/src/main.ts",
+      "app/src/styles.scss",
+      "docs/API_CONTRATS.md",
+      "docs/AUTHENTIFICATION.md",
+      "docs/DEPENDANCES.md",
+      "docs/DESIGN_SYSTEM.md",
+      "docs/DEVELOPPEMENT.md",
+      "docs/SECURITE.md",
+      "docs/TESTS_RECETTE.md"
+    ],
+    "intentionallyReplacedScaffolds": [
+      "app/src/app/features/auth/connection-unavailable.ts",
+      "app/src/app/core/auth/session-boundary.ts"
+    ],
+    "protectedFilesCompared": 114,
+    "protectedDifferences": 0,
+    "vendorFilesComparedToHistoricalManifest": 24,
+    "vendorDifferences": 0,
+    "logoSha256": "de105b1e958c572f2151bb11d3ad73e9a9501f49e38ae46468778c8a4ecf6a4c"
+  },
+  "backend": {
+    "patchesApplied": 0,
+    "sourceFilesCheckedChronologically": 268,
+    "sourceScope": "all backend files except target/.git/docs and *.log",
+    "modifiedAfterFrontendBaseline": [],
+    "historicalAggregateCryptographicallyReconfirmed": false,
+    "openapiSha256": "b5f122cc7ac464b544b1ee0f98b4e8ae379bf6521af2156e8b0ab6f73db1f1c5"
+  },
+  "lockSha256": "a4e959eb9c4f9882d852c2e35df23d6602155c28ea0ddfb9d47d30d8a457d5c4",
+  "audits": {
+    "retainedTooling": {
+      "info": 0,
+      "low": 0,
+      "moderate": 11,
+      "high": 0,
+      "critical": 0,
+      "total": 11
+    },
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "rejectedGenerator0973": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 1,
+      "critical": 0,
+      "total": 4
+    }
+  },
+  "notExecuted": [
+    "enabled Google/OIDC",
+    "SMTP delivery",
+    "production HTTPS/Secure cookie/CSP",
+    "30-minute timed idle expiry",
+    "real in-use account suspension",
+    "screen reader certification",
+    "physical phones and other browser engines",
+    "remote CI/deployment"
+  ]
+}

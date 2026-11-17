@@ -1,0 +1,62 @@
+[
+  {
+    "selector": ".state-filter.selected",
+    "property": "color",
+    "foreground": "rgb(23, 26, 32)",
+    "background": "rgb(255, 255, 255)",
+    "ratio": 17.42671530492982,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".ticket-link",
+    "property": "color",
+    "foreground": "rgb(23, 26, 32)",
+    "background": "rgb(255, 255, 255)",
+    "ratio": 17.42671530492982,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".status-label[data-tone=\"warning\"]",
+    "property": "color",
+    "foreground": "rgb(134, 85, 0)",
+    "background": "rgb(255, 245, 223)",
+    "ratio": 5.849114949775768,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".status-label[data-tone=\"info\"]",
+    "property": "color",
+    "foreground": "rgb(36, 87, 214)",
+    "background": "rgb(237, 242, 255)",
+    "ratio": 5.49841901351515,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".theme-picker select",
+    "property": "borderColor",
+    "foreground": "rgb(124, 135, 153)",
+    "background": "rgb(255, 255, 255)",
+    "ratio": 3.631591998344682,
+    "min": 3,
+    "outlineStyle": "solid",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".theme-picker select",
+    "property": "outlineColor",
+    "foreground": "rgb(36, 87, 214)",
+    "background": "rgb(255, 255, 255)",
+    "ratio": 6.159623091836944,
+    "min": 3,
+    "outlineStyle": "solid",
+    "outlineWidth": "3px"
+  }
+]

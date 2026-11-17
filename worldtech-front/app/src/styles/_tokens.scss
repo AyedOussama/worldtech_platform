@@ -1,0 +1,43 @@
+// WorldTech reference palette; brand assets still await owner validation.
+// Review principles: unslop by Damir Sokolovsky (@heydamir), CC BY 4.0.
+@each $weight in (400, 500, 600) {
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: $weight;
+    font-display: swap;
+    src: url('@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-#{$weight}-normal.woff2') format('woff2');
+    // Fontsource's Latin subset includes accents, Œ/œ, French spaces and euro.
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+      U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+      U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+}
+
+html {
+  color-scheme: light;
+  --wt-font: 'IBM Plex Sans', system-ui, sans-serif;
+  --wt-background: light-dark(#f8f9fb, #111317);
+  --wt-surface: light-dark(#fff, #191c22);
+  --wt-selected: light-dark(#edf1f7, #262c36);
+  --wt-text: light-dark(#171a20, #f3f4f6);
+  --wt-secondary: light-dark(#505967, #b4bbc6);
+  --wt-muted: light-dark(#636d7d, #929ba9);
+  --wt-border: light-dark(#e3e6eb, #303641);
+  --wt-control-border: light-dark(#7c8799, #738198);
+  --wt-accent: light-dark(#2457d6, #8cadff);
+  --wt-on-accent: light-dark(#fff, #111317);
+  --wt-error: light-dark(#b42318, #ffb4ab);
+  --wt-error-surface: light-dark(#fff1ef, #382220);
+  --wt-success: light-dark(#146c43, #83dbae);
+  --wt-success-surface: light-dark(#edf7f1, #1b3027);
+  --wt-warning: light-dark(#865500, #f4ca76);
+  --wt-warning-surface: light-dark(#fff5df, #342b1c);
+  --wt-info-surface: light-dark(#edf2ff, #202c45);
+  --wt-radius-control: 8px;
+  --wt-radius-panel: 12px;
+  --wt-feedback: 140ms;
+  --wt-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+html.wt-dark { color-scheme: dark; }

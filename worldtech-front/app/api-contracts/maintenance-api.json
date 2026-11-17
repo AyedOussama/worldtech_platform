@@ -1,0 +1,636 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Maintenance API — identité, parc, contrats et tickets",
+    "version": "0.6.0",
+    "description": "Lots 03–06 backend. Sessions WEB/CSRF, mobile opaque séparé ; ADMIN actif/vérifié, preuves primaire/MFA <5 min. Comptes/parc ADMIN, contrats immuables et tickets par site autorisé, SQL avant pagination/total. CLIENT déclare même hors contrat, proposition forfaitaire HT EUR facultative, null distinct de zéro. Aucun prix publié, TVA, paiement ou facture déduit. Calendriers/SLA explicites sans objectif/jour férié/pause implicite. Résolution ADMIN puis confirmation CLIENT, échanges publics séparés des notes internes. Corps identité 4 KiB, onboarding/admin/tickets CLIENT 16 KiB. Aucun frontend, mission ou upload livré ; Google désactivé, approbation technicien toujours bloquée sans pièces contrôlées."
+  },
+  "paths": {
+    "/api/web/v1/admin/client-accounts/{accountId}/contracts": {
+      "get":{"summary":"Lister les contrats du compte pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/ContractPage"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Créer un contrat et sa première révision immuable","description":"ADMIN récent/MFA ; couverture dans le même compte, sites/équipements actifs. Pas de renouvellement automatique. Les révisions peuvent se chevaucher : aucune sélection automatique n'est effectuée. Une création ordinaire sans Idempotency-Key n'est pas rejouée automatiquement.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"requestBody":{"$ref":"#/components/requestBodies/ContractDefinition"},"responses":{"201":{"$ref":"#/components/responses/ContractRevision"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/contracts/{contractId}": {
+      "get":{"summary":"Lire la révision courante ADMIN et son ETag","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/ContractId"}],"responses":{"200":{"$ref":"#/components/responses/ContractRevision"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/contracts/{contractId}/revisions": {
+      "get":{"summary":"Historique des révisions immuables, curseur par version","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/ContractId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/ContractHistory"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Ajouter une révision sans réécrire les tickets qualifiés","description":"If-Match porte la version du contrat courant. L'ancienne révision, sa couverture, son calendrier et ses règles restent immuables. Le motif est interne, non copié dans la projection CLIENT.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/ContractId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"$ref":"#/components/requestBodies/ContractDefinition"},"responses":{"201":{"$ref":"#/components/responses/ContractRevision"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/contracts/{contractId}/revisions/{revisionId}": {
+      "get":{"summary":"Lire une révision historique ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/ContractId"},{"$ref":"#/components/parameters/ContractRevisionId"}],"responses":{"200":{"$ref":"#/components/responses/ContractRevision"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/contract-revisions": {
+      "get":{"summary":"Lister les révisions couvrant son site à un instant donné","description":"Toutes les révisions dont l'intervalle contient at (heure serveur par défaut), pas seulement la dernière. Filtre de site avant total/pagination ; ni nombre ni UUID des autres sites. Aucune révision n'est automatiquement choisie pour un ticket.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/CoverageAt"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/SiteContractPage"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/contract-revisions/{revisionId}": {
+      "get":{"summary":"Couverture publique d'une révision pour son site seulement","description":"Référence historique consultable même hors période, si le site reste actif et autorisé. Notes/motifs internes et autres sites/équipements exclus par la projection SQL.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/ContractRevisionId"}],"responses":{"200":{"$ref":"#/components/responses/SiteContractRevision"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets": {
+      "get":{"summary":"Lister les tickets de son site autorisé","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketStateFilter"},{"$ref":"#/components/parameters/RequestedPriorityFilter"},{"$ref":"#/components/parameters/TicketEquipmentFilter"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketPage"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Déclarer un incident même sans équipement, montant ou contrat","description":"CLIENT actif/vérifié et site accordé. Proposition HT/EUR non contractuelle, montants en chaînes. Idempotency-Key obligatoire, même acteur/opération/clé/contenu canonique = même reçu minimal 24 h ; autre contenu ou clé expirée : 409. Accès et équipement revalidés avant rejeu. Reçu potentiellement historique : relire le détail pour l'état courant. Aucun champ rôle, site/compte parent, prix publié, état ou affectation accepté.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketCreateBody"}}}},"responses":{"201":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets": {
+      "get":{"summary":"Lister les tickets du site pour ADMIN récent/MFA","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketStateFilter"},{"$ref":"#/components/parameters/RequestedPriorityFilter"},{"$ref":"#/components/parameters/TicketEquipmentFilter"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketPage"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets/{ticketId}": {
+      "get":{"summary":"Lire son ticket et son ETag courant","description":"Compte/site/rôle/statut revalidés. 404 pour mauvais compte/site, site archivé ou droit retiré. Pas de note interne dans cette représentation.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"}],"responses":{"200":{"$ref":"#/components/responses/Ticket"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}": {
+      "get":{"summary":"Lire le ticket pour ADMIN ; notes par route distincte","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"}],"responses":{"200":{"$ref":"#/components/responses/Ticket"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/proposals": {
+      "get":{"summary":"Historique immuable de ses propositions CLIENT","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/ProposalHistory"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Remplacer la proposition par une nouvelle version en OPEN","description":"CLIENT habilité au site, pas seulement auteur initial. Instant/auteur serveur ; null/absent signifie non renseigné dans cette nouvelle proposition complète. Jamais de prix ADMIN modifié. If-Match porte la version du ticket. Rejeu autorisé avant précondition, reçu minimal inchangé, relire le ticket ensuite.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientProposalBody"}}}},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/proposals": {
+      "get":{"summary":"Consulter sans modifier la proposition CLIENT","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/ProposalHistory"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/history": {
+      "get":{"summary":"Chronologie publique du ticket, sans notes internes","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketHistory"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/history": {
+      "get":{"summary":"Événements versionnés du cycle ticket et propositions","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketHistory"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/messages": {
+      "get":{"summary":"Échanges publics uniquement, curseur indépendant des notes","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketMessages"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Ajouter un échange public sans modifier le cycle du ticket","description":"Pas en CLOSED/CANCELLED. If-Match vérifie l'état courant ; l'ajout append-only ne change pas la version du ticket. Reçu version = numéro de message, resourceId = messageId. Aucun HTML exécuté ou URL téléchargée.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketMessage"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/messages": {
+      "get":{"summary":"Lire les échanges publics ADMIN/CLIENT","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketMessages"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Répondre publiquement au client","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketMessage"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/internal-notes": {
+      "get":{"summary":"Notes internes réservées à ADMIN récent/MFA","description":"Table, requête et curseur distincts ; aucune apparition dans le détail, version ou chronologie CLIENT.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/RevisionAfter"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/TicketMessages"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Ajouter une note strictement interne, jamais un message CLIENT","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketMessage"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/qualify": {
+      "post":{"summary":"Qualifier OPEN : priorité retenue et couverture explicites","description":"contractRevisionId null/absent = hors contrat. Sinon révision du même compte couvrant site/équipement à la date de déclaration, dans [validFrom,validUntil). Aucun contrat choisi implicitement. Priorité demandée et proposition CLIENT conservées. Une seule qualification, pas de correction rétroactive silencieuse.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketQualifyBody"}}}},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/start": {
+      "post":{"summary":"Démarrer le traitement : QUALIFIED vers IN_PROGRESS","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/wait-client": {
+      "post":{"summary":"Mettre QUALIFIED/IN_PROGRESS en WAITING_CLIENT avec motif public","description":"Conserve l'événement ; ne déclare pas tous les SLA suspendus. Seules les règles de la révision applicable peuvent autoriser une pause par compteur.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/resume": {
+      "post":{"summary":"Reprendre WAITING_CLIENT vers IN_PROGRESS","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/resolve": {
+      "post":{"summary":"Résoudre un ticket qualifié avec compte rendu public, même sans mission","description":"QUALIFIED/IN_PROGRESS/WAITING_CLIENT vers RESOLVED, jamais clôture automatique. Aucun état d'une visite n'est modifié ou déduit.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/cancel": {
+      "post":{"summary":"Annuler avec motif public sans effacer les historiques","description":"Refusé si CLOSED/CANCELLED. Aucun traitement financier, paiement ou pénalité n'est déclenché.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/confirm-resolution": {
+      "post":{"summary":"Confirmer le rétablissement : RESOLVED vers CLOSED","description":"CLIENT actuellement habilité au site, pas nécessairement l'auteur initial. Aucune clôture par ADMIN ou job dans ce lot.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}/tickets/{ticketId}/report-persistence": {
+      "post":{"summary":"Signaler la persistance : RESOLVED vers IN_PROGRESS","description":"Historique conservé ; interdit pour CLOSED/CANCELLED. Pas de délai de clôture ou de réouverture inventé.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/TicketId"},{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}],"requestBody":{"$ref":"#/components/requestBodies/TicketReason"},"responses":{"200":{"$ref":"#/components/responses/TicketCommand"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/members/{memberId}": {
+      "get":{"summary":"Consulter une adhésion active ou retirée pour ADMIN","description":"Ressource Location de la création ; l'adhésion retirée reste conservée. Ne confère aucun droit site.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/MemberId"}],"responses":{"200":{"$ref":"#/components/responses/Member"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts": {
+      "get":{"summary":"Lister les comptes pour ADMIN récent/MFA","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/AccountPage"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Créer explicitement un compte depuis un dossier approuvé","description":"ADMIN actif, email vérifié, preuves primaire/MFA <5 min. Type et titulaire issus du dossier APPROVED, identité CLIENT active vérifiée exclusive. Aucun droit site par défaut. Répéter la même source renvoie le compte existant sans créer un deuxième membre ni rétablir un droit retiré.","security":[{"SessionCookie":[],"Csrf":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccountCreateBody"}}}},"responses":{"201":{"$ref":"#/components/responses/Account"},"200":{"$ref":"#/components/responses/Account"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts": {
+      "get":{"summary":"Lister uniquement ses comptes actuels","description":"CLIENT actif vérifié sans autre rôle. Filtre des adhésions actives appliqué avant pagination et total. Ne révèle aucun autre compte.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/AccountPage"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}": {
+      "get":{"summary":"Consulter un compte pour ADMIN récent/MFA","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"responses":{"200":{"$ref":"#/components/responses/Account"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "patch":{"summary":"Corriger le libellé du compte sans changer son type ni titulaire","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccountNameBody"}}}},"responses":{"200":{"$ref":"#/components/responses/Account"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}": {
+      "get":{"summary":"Lire son compte autorisé","description":"404 identique à l'absence si aucune adhésion active. Connaître un UUID ne donne pas accès au compte.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"responses":{"200":{"$ref":"#/components/responses/Account"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/members": {
+      "get":{"summary":"Lister les adhésions actives pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/MemberPage"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Rattacher un CLIENT déjà validé par UUID interne","description":"ADMIN récent/MFA seulement ; cible active/vérifiée et dossier APPROVED. INDIVIDUAL limité au titulaire, BUSINESS multi-membres. Pas de promotion, fusion email ou droit site implicite. Réadhésion = nouveau memberId sans les anciens droits.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/MemberAddBody"}}}},"responses":{"201":{"$ref":"#/components/responses/Member"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/members/{memberId}/remove": {
+      "post":{"summary":"Retirer une adhésion sans effacer son historique","description":"Perte d'accès dès la prochaine requête, même session encore valide. Le retrait n'efface ni l'identité ni ses autres adhésions.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/MemberId"},{"$ref":"#/components/parameters/IfMatch"}],"responses":{"200":{"$ref":"#/components/responses/Member"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites": {
+      "get":{"summary":"Lister les sites non archivés du compte pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/SitePage"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "post":{"summary":"Créer un site privé dans le compte","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"requestBody":{"$ref":"#/components/requestBodies/SiteReplacement"},"responses":{"201":{"$ref":"#/components/responses/Site"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites": {
+      "get":{"summary":"Lister uniquement ses sites autorisés non archivés","description":"Adhésion courante puis permission de site dans SQL avant LIMIT/OFFSET/count. Un membre sans permission reçoit une page vide et total zéro, pas la liste globale.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/SitePage"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}": {
+      "get":{"summary":"Détail privé d'un site pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"}],"responses":{"200":{"$ref":"#/components/responses/Site"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "put":{"summary":"Remplacer le profil du site avec précondition","description":"Nom/adresse/fuseau requis ; champs facultatifs absents/null effacés, contacts absents/null deviennent une liste vide. Compte et site immuables.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"$ref":"#/components/requestBodies/SiteReplacement"},"responses":{"200":{"$ref":"#/components/responses/Site"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "patch":{"summary":"Modifier les champs fournis du site avec précondition","description":"Champs absents/null préservés ; contacts fournis remplacent toute la liste. Utiliser PUT pour effacer un champ facultatif. Aucun transfert intercompte.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteBody"}}}},"responses":{"200":{"$ref":"#/components/responses/Site"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/sites/{siteId}": {
+      "get":{"summary":"Lire les coordonnées et contacts d'un site autorisé","description":"404 si site absent, archivé, d'un autre compte ou non accordé ; aucune projection de découverte TECHNICIAN n'existe dans ce lot.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"}],"responses":{"200":{"$ref":"#/components/responses/Site"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/archive": {
+      "post":{"summary":"Archiver le site sans supprimer ses équipements ou historiques","description":"Site et équipements enfants deviennent invisibles aux lectures actives. Aucune restauration automatique ou suppression en cascade.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"},{"$ref":"#/components/parameters/IfMatch"}],"responses":{"200":{"$ref":"#/components/responses/Site"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/equipment": {
+      "get":{"summary":"Lister le parc du compte pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteFilter"},{"$ref":"#/components/parameters/CategoryFilter"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/EquipmentPage"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/equipment": {
+      "get":{"summary":"Lister le parc dans ses seuls sites autorisés","description":"Filtres et total appliqués dans le même périmètre avant pagination. Filtre site non autorisé/étranger/absent : 404 ; catégorie sans résultat autorisé : total zéro.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteFilter"},{"$ref":"#/components/parameters/CategoryFilter"},{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"}],"responses":{"200":{"$ref":"#/components/responses/EquipmentPage"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/equipment": {
+      "post":{"summary":"Créer un équipement dans un site du même compte","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/SiteId"}],"requestBody":{"$ref":"#/components/requestBodies/EquipmentReplacement"},"responses":{"201":{"$ref":"#/components/responses/Equipment"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/equipment/{equipmentId}": {
+      "get":{"summary":"Lire un équipement du compte pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/EquipmentId"}],"responses":{"200":{"$ref":"#/components/responses/Equipment"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "put":{"summary":"Remplacer les informations d'équipement","description":"Libellé/catégorie requis. Facultatifs absents/null effacés et attributs absents/null remplacés par {}. Compte et site immuables.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/EquipmentId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"$ref":"#/components/requestBodies/EquipmentReplacement"},"responses":{"200":{"$ref":"#/components/responses/Equipment"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "patch":{"summary":"Modifier les champs fournis d'équipement","description":"Champs absents/null préservés ; attributs fournis remplacent l'objet complet. Utiliser PUT pour effacer un facultatif. Pas de changement de site, propriétaire, type d'identité ou prix.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/EquipmentId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/EquipmentBody"}}}},"responses":{"200":{"$ref":"#/components/responses/Equipment"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/equipment/{equipmentId}": {
+      "get":{"summary":"Lire un équipement de son périmètre courant","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/EquipmentId"}],"responses":{"200":{"$ref":"#/components/responses/Equipment"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/equipment/{equipmentId}/archive": {
+      "post":{"summary":"Archiver un équipement sans effacer ses références","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/EquipmentId"},{"$ref":"#/components/parameters/IfMatch"}],"responses":{"200":{"$ref":"#/components/responses/Equipment"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/summary": {
+      "get":{"summary":"Compter les sites et équipements actifs du compte pour ADMIN","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"responses":{"200":{"$ref":"#/components/responses/AssetSummary"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/client/accounts/{accountId}/summary": {
+      "get":{"summary":"Compter uniquement ses sites et équipements visibles","description":"Aucun total global intercompte ou incluant des sites non autorisés/archivés.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"}],"responses":{"200":{"$ref":"#/components/responses/AssetSummary"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-accounts/{accountId}/members/{userId}/site-access": {
+      "get":{"summary":"Lire les habilitations de l'adhésion courante","description":"userId désigne le membre cible de la commande ADMIN, jamais l'acteur. Une absence de politique signifie allSites=false, siteIds=[], version=0.","security":[{"SessionCookie":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/MemberUserId"}],"responses":{"200":{"$ref":"#/components/responses/SiteAccess"},"default":{"$ref":"#/components/responses/Problem"}}},
+      "put":{"summary":"Remplacer explicitement les habilitations de sites","description":"ADMIN récent/MFA et If-Match. allSites=true implique liste vide et inclut les futurs sites actifs ; sinon liste explicite de 0 à 100 sites du même compte. Changement effectif à la prochaine requête, historique append-only. Aucun élargissement par le client.","security":[{"SessionCookie":[],"Csrf":[]}],"parameters":[{"$ref":"#/components/parameters/AccountId"},{"$ref":"#/components/parameters/MemberUserId"},{"$ref":"#/components/parameters/IfMatch"}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteAccessBody"}}}},"responses":{"200":{"$ref":"#/components/responses/SiteAccess"},"default":{"$ref":"#/components/responses/Problem"}}}
+    },
+    "/api/web/v1/admin/client-invitations": {
+      "post": { "summary": "Inviter un nouveau client", "description": "ADMIN avec MFA et preuve primaire récents. Invitation 48 h configurables ; courriel via outbox chiffrée. Réponse sans token. Pour un destinataire déjà invité, utiliser resend ; jamais de création/fusion d'identité par email.", "security": [{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/Email"}, "responses":{"201":{"$ref":"#/components/responses/InvitationCreated"},"429":{"$ref":"#/components/responses/RateLimited"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/client-invitations/{id}": {
+      "get": { "summary":"Consulter une invitation sans son secret", "parameters":[{"$ref":"#/components/parameters/AdmissionId"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/Invitation"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/client-invitations/{id}/resend": {
+      "post": { "summary":"Renvoyer et révoquer le lien précédent", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "responses":{"200":{"$ref":"#/components/responses/Invitation"},"412":{"$ref":"#/components/responses/Problem"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/client/register": {
+      "post": { "summary":"Accepter une invitation avec un nouvel accès local", "description":"Token et email destinataire requis. Usage unique atomique ; aucun GET. Crée CLIENT PENDING, DRAFT et vérification email, sans login automatique. Identité existante : conflit générique, se connecter puis accepter explicitement. Une réponse perdue ne permet pas de réutiliser le token.", "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/ClientRegistration"}, "responses":{"201":{"description":"Accès créé ; vérifier l'email puis se connecter. Aucun corps ni token.","headers":{"Location":{"schema":{"type":"string","const":"/api/web/v1/onboarding/client"}}}},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/client/accept-invitation": {
+      "post": { "summary":"Accepter depuis son identité CLIENT vérifiée", "description":"Email courant lié au destinataire et rôle CLIENT sans autre rôle ; aucune conversion ni fusion par email. Cumul de rôles candidat refusé dans ce lot.", "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/ActionToken"}, "responses":{"200":{"$ref":"#/components/responses/ClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/client": {
+      "get": { "summary":"Lire son propre dossier client", "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/ClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/client/profile": {
+      "post": { "summary":"Sauvegarder son brouillon client", "description":"Remplacement des champs du formulaire seulement, DRAFT/NEEDS_INFORMATION. Null/absent efface un champ. 412 si version périmée.", "parameters":[{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/ClientProfile"}, "responses":{"200":{"$ref":"#/components/responses/ClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/client/submit": {
+      "post": { "summary":"Soumettre son dossier complet", "description":"Email vérifié, formulaire complet, DRAFT/NEEDS_INFORMATION seulement. Ne rend pas actif. Réautorisation avant rejeu ; clé identique/autre version : 409. Réception conservée 24 h, clé expirée refusée.", "parameters":[{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}], "security":[{"SessionCookie":[],"Csrf":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionReceipt"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/client/history": {
+      "get": { "summary":"Lire l'historique de son dossier", "parameters":[{"$ref":"#/components/parameters/AfterRevision"},{"$ref":"#/components/parameters/PageSize"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionHistory"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/clients": {
+      "get": { "summary":"Lister les dossiers clients dans un état", "parameters":[{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"},{"$ref":"#/components/parameters/AdmissionState"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionList"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/clients/{id}": {
+      "get": { "summary":"Examiner un dossier client", "parameters":[{"$ref":"#/components/parameters/AdmissionId"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdminClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/clients/{id}/history": {
+      "get": { "summary":"Historique client avec auteur de décision", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/AfterRevision"},{"$ref":"#/components/parameters/PageSize"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdminAdmissionHistory"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/clients/{id}/approve": {
+      "post": { "summary":"Approuver un dossier client soumis", "description":"Motif obligatoire ; identité PENDING/email vérifié et rôle CLIENT exclusif. Ne lève jamais une suspension et refuse le cumul CLIENT+TECHNICIAN (409) pour ne pas contourner les justificatifs technicien. Rend l'identité ACTIVE, sans inventer un compte/site du lot 05.", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/AdmissionDecision"}, "responses":{"200":{"$ref":"#/components/responses/ClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/clients/{id}/request-information": {
+      "post": { "summary":"Demander un complément client motivé", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/AdmissionDecision"}, "responses":{"200":{"$ref":"#/components/responses/ClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/clients/{id}/reject": {
+      "post": { "summary":"Refuser un dossier client soumis", "description":"Motif et historique conservés ; statut REJECTED et sessions révoquées. Pas de réouverture dans ce lot.", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/AdmissionDecision"}, "responses":{"200":{"$ref":"#/components/responses/ClientDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/technician/register": {
+      "post": { "summary":"Créer un accès technicien local web", "description":"202 identique pour adresse nouvelle/existante ; aucun rapprochement, connexion automatique ou activation. Vérification email préparée seulement pour le nouvel accès.", "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/TechnicianRegistration"}, "responses":{"202":{"$ref":"#/components/responses/Accepted"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/onboarding/technician/register": {
+      "post": { "summary":"Créer un accès technicien sans cookie", "description":"Même contrat que le web, 202 sans divulgation d'adresse existante ; aucun cookie d'authentification.", "security":[], "requestBody":{"$ref":"#/components/requestBodies/TechnicianRegistration"}, "responses":{"202":{"$ref":"#/components/responses/Accepted"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/technician/start": {
+      "post": { "summary":"Ouvrir/reprendre son brouillon technicien", "description":"Identité TECHNICIAN courante requise ; idempotent, ne fait pas revenir un dossier terminal en brouillon.", "security":[{"SessionCookie":[],"Csrf":[]}], "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/onboarding/technician/start": {
+      "post": { "summary":"Ouvrir/reprendre son brouillon par Bearer", "security":[{"MobileAccess":[]}], "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/technician": {
+      "get": { "summary":"Lire son dossier technicien", "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/onboarding/technician": {
+      "get": { "summary":"Lire son dossier technicien par Bearer", "security":[{"MobileAccess":[]}], "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/technician/profile": {
+      "post": { "summary":"Sauvegarder son profil déclaré", "description":"Remplacement du formulaire DRAFT/NEEDS_INFORMATION. Compétences déclarées uniquement, aucune certification implicite.", "parameters":[{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/TechnicianProfile"}, "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/onboarding/technician/profile": {
+      "post": { "summary":"Sauvegarder son profil par Bearer", "parameters":[{"$ref":"#/components/parameters/IfMatch"}], "security":[{"MobileAccess":[]}], "requestBody":{"$ref":"#/components/requestBodies/TechnicianProfile"}, "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/technician/submit": {
+      "post": { "summary":"Soumettre son profil technicien complet", "description":"Email vérifié requis. Ne donne aucune autorité de candidature ; validation documentaire encore bloquante.", "parameters":[{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}], "security":[{"SessionCookie":[],"Csrf":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionReceipt"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/onboarding/technician/submit": {
+      "post": { "summary":"Soumettre par Bearer, avec idempotence commune au web", "description":"Rejeu réautorisé ; même clé et même version rendent la même réception, autre version : 409. Une suspension/refus invalide le rejeu.", "parameters":[{"$ref":"#/components/parameters/IfMatch"},{"$ref":"#/components/parameters/IdempotencyKey"}], "security":[{"MobileAccess":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionReceipt"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/onboarding/technician/history": {
+      "get": { "summary":"Historique propre du technicien", "parameters":[{"$ref":"#/components/parameters/AfterRevision"},{"$ref":"#/components/parameters/PageSize"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionHistory"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/onboarding/technician/history": {
+      "get": { "summary":"Historique propre par Bearer", "parameters":[{"$ref":"#/components/parameters/AfterRevision"},{"$ref":"#/components/parameters/PageSize"}], "security":[{"MobileAccess":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionHistory"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/technicians": {
+      "get": { "summary":"Lister les dossiers techniciens dans un état", "parameters":[{"$ref":"#/components/parameters/Page"},{"$ref":"#/components/parameters/PageSize"},{"$ref":"#/components/parameters/AdmissionState"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdmissionList"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/technicians/{id}": {
+      "get": { "summary":"Examiner un dossier technicien", "parameters":[{"$ref":"#/components/parameters/AdmissionId"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdminTechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/technicians/{id}/history": {
+      "get": { "summary":"Historique technicien avec auteur de décision", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/AfterRevision"},{"$ref":"#/components/parameters/PageSize"}], "security":[{"SessionCookie":[]}], "responses":{"200":{"$ref":"#/components/responses/AdminAdmissionHistory"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/technicians/{id}/approve": {
+      "post": { "summary":"Approbation technicien bloquée sans justificatifs contrôlés", "description":"Règle obligatoire confirmée : 409 TECHNICIAN_DOCUMENTS_REQUIRED pour un dossier soumis. Aucun chemin de succès avant la livraison des contrôles documentaires et de leur politique. Aucune option de contournement.", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/AdmissionDecision"}, "responses":{"409":{"$ref":"#/components/responses/Problem"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/technicians/{id}/request-information": {
+      "post": { "summary":"Demander un complément technicien motivé", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/AdmissionDecision"}, "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/admin/onboardings/technicians/{id}/reject": {
+      "post": { "summary":"Refuser un dossier technicien soumis", "description":"Rejet motivé terminal, sessions web/mobile révoquées ; aucune suppression de l'historique.", "parameters":[{"$ref":"#/components/parameters/AdmissionId"},{"$ref":"#/components/parameters/IfMatch"}], "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/AdmissionDecision"}, "responses":{"200":{"$ref":"#/components/responses/TechnicianDossier"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/auth/google/client-registration/transactions": {
+      "post": { "summary":"Préparer une inscription Google client liée à une invitation", "x-google-optional":true, "description":"Intention explicite distincte du login. Email OIDC vérifié identique au destinataire, lien encore valide au callback. Nouvel accès PENDING seulement, aucun rapprochement d'identité existante.", "security":[{"SessionCookie":[],"Csrf":[]}], "requestBody":{"$ref":"#/components/requestBodies/GoogleClientRegistration"}, "responses":{"200":{"$ref":"#/components/responses/GoogleStart"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/web/v1/auth/google/technician-registration/transactions": {
+      "post": { "summary":"Préparer une inscription Google technicien web", "x-google-optional":true, "description":"Accès neuf PENDING avec DRAFT ; Google ne valide aucune compétence ni pièce.", "security":[{"SessionCookie":[],"Csrf":[]}], "responses":{"200":{"$ref":"#/components/responses/GoogleStart"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/api/mobile/v1/auth/google/technician-registration/transactions": {
+      "post": { "summary":"Préparer l'inscription Google technicien par navigateur système", "x-google-optional":true, "description":"Handoff S256 <=60 s conservé. Aucun jeton avant échange par verifier, aucun cookie mobile. Accès PENDING uniquement.", "security":[], "requestBody":{"$ref":"#/components/requestBodies/MobileGoogleStart"}, "responses":{"200":{"$ref":"#/components/responses/GoogleStart"},"default":{"$ref":"#/components/responses/Problem"}} }
+    },
+    "/health": {
+      "get": {
+        "operationId": "getProcessHealth",
+        "summary": "Vérifier que le processus HTTP répond",
+        "description": "Ni disponibilité PostgreSQL, ni readiness métier. Aucun détail interne. Seul GET est publiquement autorisé ; HEAD et OPTIONS ne le sont pas implicitement.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Processus disponible",
+            "headers": {
+              "X-Trace-Id": { "$ref": "#/components/headers/TraceId" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthResponse" },
+                "example": { "status": "UP" }
+              }
+            }
+          },
+          "406": { "$ref": "#/components/responses/Problem" },
+          "500": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/api/web/v1/auth/csrf": {
+      "get": { "summary": "Obtenir le CSRF et la session anonyme", "security": [], "responses": { "200": { "$ref": "#/components/responses/Csrf" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/login": {
+      "post": { "summary": "Connexion locale web", "description": "Cookie HttpOnly renouvelé ; inactivité 30 min, absolu 8 h. ADMIN reste MFA_PENDING. Relire ensuite le CSRF. Aucun jeton d'accès web.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Login" }, "responses": { "200": { "$ref": "#/components/responses/Authentication" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/logout": {
+      "post": { "summary": "Révoquer la session web", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/me": {
+      "get": { "summary": "Lire son identité courante", "description": "Aucun secret. ADMIN pré-MFA refusé. Compte en attente : aucune autorité métier active.", "security": [{ "SessionCookie": [] }], "responses": { "200": { "$ref": "#/components/responses/Me" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/email-verification/requests": {
+      "post": { "summary": "Demander/renvoyer la vérification email", "description": "202 générique ; lien 24 h, renvoi invalidant le précédent. Aucun GET ne consomme le token.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Email" }, "responses": { "202": { "$ref": "#/components/responses/Accepted" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/email-verification/confirm": {
+      "post": { "summary": "Confirmer l'email par token à usage unique", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/ActionToken" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/password-reset/requests": {
+      "post": { "summary": "Demander un reset", "description": "202 générique, token valable 30 min. Ni existence ni statut du compte révélés.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Email" }, "responses": { "202": { "$ref": "#/components/responses/Accepted" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/password-reset/confirm": {
+      "post": { "summary": "Réinitialiser le mot de passe", "description": "Usage unique atomique, nouveau mot de passe 15–128 points de code. Révoque toutes les sessions web/mobile, sans supprimer MFA, rôle ou suspension. Pas d'ajout implicite de password à un compte externe seul.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Reset" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/reauthenticate": {
+      "post": { "summary": "Prouver à nouveau le mot de passe", "description": "Renouvelle cookie et CSRF, ne renouvelle pas l'échéance absolue. Fraîcheur 5 min pour opérations sensibles ; ne remplace pas MFA.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Password" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/mfa/enrollment/start": {
+      "post": { "summary": "Préparer le premier facteur TOTP ADMIN", "description": "Email vérifié et authentification primaire récente, enrôlement lié à la session et valable 5 min. Secret à afficher une fois, sans log/cache.", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "200": { "$ref": "#/components/responses/Enrollment" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/mfa/replacement/start": {
+      "post": { "summary": "Préparer le remplacement du facteur", "description": "Mot de passe et MFA récents exigés. L'ancien facteur reste actif jusqu'à confirmation du nouveau.", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "200": { "$ref": "#/components/responses/Enrollment" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/mfa/enrollment/confirm": {
+      "post": { "summary": "Activer le facteur par un premier TOTP", "description": "TOTP SHA1/6 chiffres/30 s, fenêtre ±1, anti-rejeu atomique. Premier enrôlement : cookie/CSRF renouvelés. Remplacement : révocation de toutes les sessions et nouveau login obligatoire.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Enrollment" }, "responses": { "200": { "$ref": "#/components/responses/Activation" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/mfa/challenge": {
+      "post": { "summary": "Prouver le TOTP", "description": "ADMIN uniquement, authentification primaire récente. Cookie/CSRF renouvelés. Un pas déjà consommé ne peut pas être rejoué sur une autre session.", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Totp" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/mfa/recovery": {
+      "post": { "summary": "Utiliser un code MFA de récupération", "security": [{ "SessionCookie": [], "Csrf": [] }], "requestBody": { "$ref": "#/components/requestBodies/Recovery" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/mfa/recovery-codes/replace": {
+      "post": { "summary": "Renouveler les dix codes de récupération", "description": "Mot de passe et MFA récents. Les anciens codes deviennent immédiatement inutilisables. Valeurs montrées une fois.", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "200": { "$ref": "#/components/responses/Activation" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/login": {
+      "post": { "summary": "Connexion locale mobile technicien", "description": "Aucun cookie ni JWT. CLIENT/ADMIN refusés ; attente/email non vérifié ne confèrent aucun droit métier.", "security": [], "requestBody": { "$ref": "#/components/requestBodies/Login" }, "responses": { "200": { "$ref": "#/components/responses/Tokens" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/refresh": {
+      "post": { "summary": "Renouveler atomiquement la paire opaque", "description": "Access 5 min ; refresh 7 j d'inactivité, famille 30 j absolus. Ancien refresh consommé. Rejeu connu, y compris après réponse perdue : famille révoquée et nouveau login. Un seul refresh en vol dans Flutter.", "security": [], "requestBody": { "$ref": "#/components/requestBodies/Refresh" }, "responses": { "200": { "$ref": "#/components/responses/Tokens" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/logout": {
+      "post": { "summary": "Révoquer l'appareil par sa preuve refresh", "description": "Famille dérivée du refresh, jamais d'un sessionId fourni. Valeur inconnue bien formée : 204 sans effet sur les autres familles.", "security": [], "requestBody": { "$ref": "#/components/requestBodies/Refresh" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/logout-all": {
+      "post": { "summary": "Révoquer toutes ses sessions, web compris", "security": [{ "MobileAccess": [] }], "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/me": {
+      "get": { "summary": "Lire l'identité du Bearer courant", "security": [{ "MobileAccess": [] }], "responses": { "200": { "$ref": "#/components/responses/Me" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/reauthenticate": {
+      "post": { "summary": "Prouver à nouveau son mot de passe avant liaison", "security": [{ "MobileAccess": [] }], "requestBody": { "$ref": "#/components/requestBodies/Password" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/email-verification/requests": {
+      "post": { "summary": "Demander la vérification email sans cookie", "security": [], "requestBody": { "$ref": "#/components/requestBodies/Email" }, "responses": { "202": { "$ref": "#/components/responses/Accepted" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/email-verification/confirm": {
+      "post": { "summary": "Consommer la preuve email à usage unique", "security": [], "requestBody": { "$ref": "#/components/requestBodies/ActionToken" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/password-reset/requests": {
+      "post": { "summary": "Demander un reset sans cookie", "security": [], "requestBody": { "$ref": "#/components/requestBodies/Email" }, "responses": { "202": { "$ref": "#/components/responses/Accepted" }, "429": { "$ref": "#/components/responses/RateLimited" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/password-reset/confirm": {
+      "post": { "summary": "Réinitialiser et révoquer toutes les sessions", "security": [], "requestBody": { "$ref": "#/components/requestBodies/Reset" }, "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/google/transactions": {
+      "post": { "summary": "Préparer un login Google web", "x-google-optional": true, "description": "Option désactivée sans configuration réelle. Transaction LOGIN de 5 min, lancement unique lié au navigateur. Identité inconnue refusée, onboarding réservé au lot 04.", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "200": { "$ref": "#/components/responses/GoogleStart" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/identities/google/link": {
+      "post": { "summary": "Préparer une liaison Google explicite", "x-google-optional": true, "description": "Session récente et email vérifié, MFA récent pour ADMIN. Intention LINK et compte source revalidés au callback. Aucune fusion par email.", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "200": { "$ref": "#/components/responses/GoogleStart" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/web/v1/auth/identities/google/unlink": {
+      "post": { "summary": "Dissocier Google sans enfermer le compte", "x-google-optional": true, "description": "Preuves récentes et alternative locale valide requises ; révocation des sessions et nouveau login.", "security": [{ "SessionCookie": [], "Csrf": [] }], "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/google/transactions": {
+      "post": { "summary": "Préparer le login Google par navigateur système", "x-google-optional": true, "security": [], "requestBody": { "$ref": "#/components/requestBodies/MobileGoogleStart" }, "responses": { "200": { "$ref": "#/components/responses/GoogleStart" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/identities/google/link": {
+      "post": { "summary": "Préparer une liaison mobile récente", "x-google-optional": true, "description": "Le callback ne lie encore rien : échange avec verifier et Bearer de cette même session source requis.", "security": [{ "MobileAccess": [] }], "requestBody": { "$ref": "#/components/requestBodies/MobileGoogleStart" }, "responses": { "200": { "$ref": "#/components/responses/GoogleStart" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/identities/google/unlink": {
+      "post": { "summary": "Dissocier Google depuis le mobile", "x-google-optional": true, "security": [{ "MobileAccess": [] }], "responses": { "204": { "$ref": "#/components/responses/NoContent" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/api/mobile/v1/auth/google/exchange": {
+      "post": { "summary": "Échanger le code de remise et son verifier", "x-google-optional": true, "description": "Code <=60 s, transaction et S256 contrôlés, usage unique atomique. LOGIN : paire opaque ; LINK : Bearer source obligatoire en plus et réponse LINKED sans nouvelle paire. Réponse perdue après commit : recommencer le login.", "security": [ {}, { "MobileAccess": [] } ], "requestBody": { "$ref": "#/components/requestBodies/GoogleExchange" }, "responses": { "200": { "$ref": "#/components/responses/GoogleExchange" }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/oauth2/authorization/google": {
+      "get": { "summary": "Lancer une transaction Google préparée", "x-google-optional": true, "security": [], "parameters": [{ "name": "launch", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Opaque" } }], "responses": { "302": { "description": "Redirection vers Google avec state/nonce/PKCE S256 ; aucun jeton", "headers": { "Location": { "schema": { "type": "string", "format": "uri" } } } }, "default": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/login/oauth2/code/google": {
+      "get": { "summary": "Callback OIDC exact, traité par Spring", "x-google-optional": true, "description": "Échange serveur et validation signature/issuer/audience/temps/nonce/state. Web : session locale (ADMIN pré-MFA). Mobile : 303 vers la destination autorisée avec code et transaction dans le fragment, jamais de jeton Google/applicatif.", "security": [], "parameters": [{ "name": "state", "in": "query", "required": true, "schema": { "type": "string", "maxLength": 256 } }, { "name": "code", "in": "query", "schema": { "type": "string" } }, { "name": "error", "in": "query", "schema": { "type": "string" } }], "responses": { "200": { "$ref": "#/components/responses/Authentication" }, "303": { "description": "Code de remise <=60 s sur le seul App/Universal Link autorisé ; no-store/no-referrer", "headers": { "Location": { "schema": { "type": "string", "format": "uri" } }, "Cache-Control": { "schema": { "type": "string" } } } }, "default": { "$ref": "#/components/responses/Problem" } } }
+    }
+  },
+  "components": {
+    "parameters": {
+      "ContractId":{"name":"contractId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "ContractRevisionId":{"name":"revisionId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "TicketId":{"name":"ticketId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "CoverageAt":{"name":"at","in":"query","description":"Défaut heure serveur, entre 2000 et 2201 ; intervalle contractuel [début,fin).","schema":{"type":"string","format":"date-time"}},
+      "RevisionAfter":{"name":"after","in":"query","schema":{"type":"integer","minimum":-1,"default":-1}},
+      "TicketStateFilter":{"name":"state","in":"query","schema":{"$ref":"#/components/schemas/TicketState"}},
+      "RequestedPriorityFilter":{"name":"requestedPriority","in":"query","schema":{"$ref":"#/components/schemas/ServicePriority"}},
+      "TicketEquipmentFilter":{"name":"equipmentId","in":"query","description":"Équipement actif du même site autorisé, sinon 404.","schema":{"type":"string","format":"uuid"}},
+      "AccountId":{"name":"accountId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "SiteId":{"name":"siteId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "EquipmentId":{"name":"equipmentId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "MemberId":{"name":"memberId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "MemberUserId":{"name":"userId","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "SiteFilter":{"name":"siteId","in":"query","schema":{"type":"string","format":"uuid"}},
+      "CategoryFilter":{"name":"category","in":"query","schema":{"type":"string","minLength":1,"maxLength":80}},
+      "AdmissionId":{"name":"id","in":"path","required":true,"schema":{"type":"string","format":"uuid"}},
+      "IfMatch":{"name":"If-Match","in":"header","required":true,"description":"ETag fort de la dernière lecture ; pas de wildcard. 412 si périmé.","schema":{"type":"string","pattern":"^\"[0-9]{1,18}\"$"}},
+      "IdempotencyKey":{"name":"Idempotency-Key","in":"header","required":true,"schema":{"type":"string","pattern":"^[A-Za-z0-9_-]{16,100}$"}},
+      "Page":{"name":"page","in":"query","schema":{"type":"integer","minimum":0,"maximum":10000,"default":0}},
+      "PageSize":{"name":"size","in":"query","schema":{"type":"integer","minimum":1,"maximum":100,"default":20}},
+      "AfterRevision":{"name":"after","in":"query","schema":{"type":"integer","minimum":-1,"default":-1}},
+      "AdmissionState":{"name":"state","in":"query","schema":{"type":"string","enum":["DRAFT","SUBMITTED","NEEDS_INFORMATION","APPROVED","REJECTED"],"default":"SUBMITTED"}}
+    },
+    "securitySchemes": {
+      "SessionCookie": { "type": "apiKey", "in": "cookie", "name": "__Host-maint-session", "description": "Production HTTPS : HttpOnly/Secure, Path=/, sans Domain, SameSite=Lax. Dev HTTP : MAINT_DEV_SESSION. Sur login/demandes publiques, cookie de session anonyme lié au CSRF, pas une authentification préalable." },
+      "Csrf": { "type": "apiKey", "in": "header", "name": "X-CSRF-TOKEN", "description": "Valeur issue de GET /api/web/v1/auth/csrf avec le même cookie. Relire après login/MFA/réauthentification." },
+      "MobileAccess": { "type": "http", "scheme": "bearer", "bearerFormat": "opaque-256-bit", "description": "Access opaque local, jamais JWT ni jeton Google. Contrôle SQL de révocation/statut/version à chaque requête. Aucun cookie d'authentification." }
+    },
+    "requestBodies": {
+      "ContractDefinition":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ContractDefinitionBody"}}}},
+      "TicketReason":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketReasonBody"}}}},
+      "TicketMessage":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketMessageBody"}}}},
+      "SiteReplacement":{"required":true,"content":{"application/json":{"schema":{"allOf":[{"$ref":"#/components/schemas/SiteBody"},{"required":["name","address","timeZone"]}]}}}},
+      "EquipmentReplacement":{"required":true,"content":{"application/json":{"schema":{"allOf":[{"$ref":"#/components/schemas/EquipmentBody"},{"required":["label","category"]}]}}}},
+      "ClientRegistration":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientRegistrationBody"}}}},
+      "TechnicianRegistration":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicianRegistrationBody"}}}},
+      "ClientProfile":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientProfileBody"}}}},
+      "TechnicianProfile":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicianProfileBody"}}}},
+      "AdmissionDecision":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdmissionDecisionBody"}}}},
+      "GoogleClientRegistration":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/GoogleClientRegistrationBody"}}}},
+      "Login": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginBody" } } } },
+      "Email": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EmailBody" } } } },
+      "ActionToken": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TokenBody" } } } },
+      "Reset": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResetBody" } } } },
+      "Password": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PasswordBody" } } } },
+      "Enrollment": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EnrollmentBody" } } } },
+      "Totp": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TotpBody" } } } },
+      "Recovery": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RecoveryBody" } } } },
+      "Refresh": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RefreshBody" } } } },
+      "MobileGoogleStart": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MobileGoogleStart" } } } },
+      "GoogleExchange": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GoogleExchangeBody" } } } }
+    },
+    "headers": {
+      "TraceId": {
+        "description": "Identifiant UUID généré par le serveur, indépendant du header fourni par l'appelant.",
+        "schema": { "type": "string", "format": "uuid" }
+      }
+    },
+    "responses": {
+      "ContractRevision":{"description":"Révision ADMIN immuable, no-store ; ETag version du contrat, Location à la création.","headers":{"ETag":{"schema":{"type":"string"}},"Location":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ContractRevisionView"}}}},
+      "ContractPage":{"description":"Contrats du compte ADMIN, page/total scoped, no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ContractPageView"}}}},
+      "ContractHistory":{"description":"Révisions du contrat, curseur par version et no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ContractHistoryView"}}}},
+      "SiteContractPage":{"description":"Révisions applicables au site/instant demandé, no-store ; ne sélectionne pas un contrat","content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteContractPageView"}}}},
+      "SiteContractRevision":{"description":"Projection CLIENT pour un seul site, sans note interne ou autre site ; no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteContractRevisionView"}}}},
+      "TicketCommand":{"description":"Reçu minimal idempotent 24 h, no-store. resourceId=ticketId et version=ticket pour cycle/proposition/création ; messageId et numéro pour un échange. Rejouer ne répète aucun effet. Relire le détail pour l'état courant. Location et ETag sur création uniquement.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketCommandView"}}}},
+      "Ticket":{"description":"Ticket autorisé sans note interne, ETag version courante et no-store","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketView"}}}},
+      "TicketPage":{"description":"Résumé de tickets et total du même site/filtre, no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketPageView"}}}},
+      "ProposalHistory":{"description":"Versions CLIENT immuables, montants chaînes ou null explicite, no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ProposalHistoryView"}}}},
+      "TicketHistory":{"description":"Événements publics seulement, curseur version et no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketHistoryView"}}}},
+      "TicketMessages":{"description":"Échanges de la seule visibilité autorisée, curseur indépendant et no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketMessagesView"}}}},
+      "Account":{"description":"Compte autorisé, no-store. Location à la création et ETag fort.","headers":{"ETag":{"schema":{"type":"string"}},"Location":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientAccountView"}}}},
+      "AccountPage":{"description":"Page de comptes après contrôle de portée, total scoped ; no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientAccountPage"}}}},
+      "Member":{"description":"Adhésion et version, no-store ; aucune donnée de credential","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientMemberView"}}}},
+      "MemberPage":{"description":"Page des adhésions actives du compte pour ADMIN, no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientMemberPage"}}}},
+      "Site":{"description":"Site privé autorisé et ETag ; no-store. Location à la création.","headers":{"ETag":{"schema":{"type":"string"}},"Location":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteView"}}}},
+      "SitePage":{"description":"Sites autorisés non archivés et total de même portée ; no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/SitePage"}}}},
+      "Equipment":{"description":"Équipement privé autorisé et ETag ; no-store. Location à la création.","headers":{"ETag":{"schema":{"type":"string"}},"Location":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/EquipmentView"}}}},
+      "EquipmentPage":{"description":"Équipements autorisés non archivés et total scoped/filtré ; no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/EquipmentPage"}}}},
+      "AssetSummary":{"description":"Compteurs de même portée que les listes autorisées ; no-store","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AssetSummary"}}}},
+      "SiteAccess":{"description":"Habilitations de l'adhésion actuelle, ETag et no-store","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteAccessView"}}}},
+      "InvitationCreated":{"description":"Invitation créée, jamais de token brut ; no-store","headers":{"ETag":{"schema":{"type":"string"}},"Location":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientInvitationView"}}}},
+      "Invitation":{"description":"Invitation et version, no-store, sans token","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientInvitationView"}}}},
+      "ClientDossier":{"description":"Dossier client et ETag, no-store","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientDossierView"}}}},
+      "TechnicianDossier":{"description":"Dossier technicien et ETag, no-store ; déclarations non certifiées","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicianDossierView"}}}},
+      "AdminClientDossier":{"description":"Détail client pour ADMIN, no-store","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["userId","dossier"],"properties":{"userId":{"type":"string","format":"uuid"},"dossier":{"$ref":"#/components/schemas/ClientDossierView"}}}}}},
+      "AdminTechnicianDossier":{"description":"Détail technicien pour ADMIN, no-store","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["userId","dossier"],"properties":{"userId":{"type":"string","format":"uuid"},"dossier":{"$ref":"#/components/schemas/TechnicianDossierView"}}}}}},
+      "AdmissionReceipt":{"description":"Réception de soumission non sensible, no-store","headers":{"ETag":{"schema":{"type":"string"}}},"content":{"application/json":{"schema":{"type":"object","additionalProperties":false,"required":["version","state"],"properties":{"version":{"type":"integer","minimum":0},"state":{"type":"string","const":"SUBMITTED"}}}}}},
+      "AdmissionList":{"description":"Résultats bornés triés par création puis UUID, sans total global ni profil privé ; no-store","content":{"application/json":{"schema":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/AdmissionSummary"}}}}},
+      "AdmissionHistory":{"description":"Historique propre borné par révision, no-store","content":{"application/json":{"schema":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/AdmissionHistoryEvent"}}}}},
+      "AdminAdmissionHistory":{"description":"Historique ADMIN avec auteur UUID, no-store","content":{"application/json":{"schema":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/AdminAdmissionHistoryEvent"}}}}},
+      "NoContent": { "description": "Commande appliquée ; aucun corps", "headers": { "Cache-Control": { "schema": { "type": "string", "const": "no-store" } } } },
+      "Accepted": { "description": "Demande acceptée sans divulguer l'existence du compte", "headers": { "Cache-Control": { "schema": { "type": "string", "const": "no-store" } } } },
+      "RateLimited": { "description": "Quota partagé atteint ; attendre Retry-After (secondes)", "headers": { "Retry-After": { "schema": { "type": "integer", "minimum": 1 } }, "Cache-Control": { "schema": { "type": "string", "const": "no-store" } } }, "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/ProblemDetail" } } } },
+      "Csrf": { "description": "Session anonyme et token CSRF, no-store", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CsrfView" } } } },
+      "Authentication": { "description": "Cookie local renouvelé et niveau courant, no-store ; aucun access token web", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AuthenticationView" } } } },
+      "Me": { "description": "Identité propre et état courant, no-store", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MeView" } } } },
+      "Enrollment": { "description": "Secret provisoire et URI TOTP à traiter comme secrets ; no-store", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EnrollmentView" } } } },
+      "Activation": { "description": "Dix nouveaux codes bruts montrés une seule fois ; no-store", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActivationView" } } } },
+      "Tokens": { "description": "Paire locale brute pour stockage protégé côté client uniquement ; no-store", "headers": { "Cache-Control": { "schema": { "type": "string", "const": "no-store" } } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TokensView" } } } },
+      "GoogleStart": { "description": "Transaction et chemin relatif de lancement à ouvrir dans le navigateur ; no-store", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GoogleStart" } } } },
+      "GoogleExchange": { "description": "LOGIN : jetons locaux ; LINK : liaison confirmée sans nouvelle paire ; no-store", "content": { "application/json": { "schema": { "oneOf": [{ "$ref": "#/components/schemas/TokensView" }, { "$ref": "#/components/schemas/LinkedView" }] } } } },
+      "Problem": {
+        "description": "Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.",
+        "headers": {
+          "X-Trace-Id": { "$ref": "#/components/headers/TraceId" },
+          "Cache-Control": { "schema": { "type": "string", "const": "no-store" } }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetail" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ServicePriority":{"type":"string","enum":["LOW","NORMAL","HIGH","CRITICAL"]},
+      "TicketState":{"type":"string","enum":["OPEN","QUALIFIED","IN_PROGRESS","WAITING_CLIENT","RESOLVED","CLOSED","CANCELLED"]},
+      "ContractCoverageBody":{"type":"object","additionalProperties":false,"required":["siteId","wholeSite","equipmentIds"],"properties":{"siteId":{"type":"string","format":"uuid"},"wholeSite":{"type":"boolean"},"equipmentIds":{"type":"array","maxItems":100,"uniqueItems":true,"items":{"type":"string","format":"uuid"}}},"description":"wholeSite=true exige liste vide ; sinon au moins un équipement de ce site. Un seul élément de couverture par site."},
+      "ServiceWindow":{"type":"object","additionalProperties":false,"required":["startMinute","endMinute"],"properties":{"startMinute":{"type":"integer","minimum":0,"maximum":1439},"endMinute":{"type":"integer","minimum":1,"maximum":1440}},"description":"Minutes locales depuis minuit, [début,fin), début<fin. Scinder les plages traversant minuit ; aucune superposition."},
+      "WeeklyServiceWindow":{"type":"object","additionalProperties":false,"required":["dayOfWeek","startMinute","endMinute"],"properties":{"dayOfWeek":{"type":"integer","minimum":1,"maximum":7},"startMinute":{"type":"integer","minimum":0,"maximum":1439},"endMinute":{"type":"integer","minimum":1,"maximum":1440}}},
+      "ServiceDayOverride":{"type":"object","additionalProperties":false,"required":["date","windows"],"properties":{"date":{"type":"string","format":"date"},"windows":{"type":"array","maxItems":4,"items":{"$ref":"#/components/schemas/ServiceWindow"}}},"description":"Date locale 2000–2200 unique ; remplace le jour entier, liste vide = fermé, même en 24/7."},
+      "ServiceCalendar":{"type":"object","additionalProperties":false,"required":["mode","weekly","overrides"],"properties":{"mode":{"type":"string","enum":["ALWAYS","WEEKLY"]},"weekly":{"type":"array","maxItems":28,"items":{"$ref":"#/components/schemas/WeeklyServiceWindow"}},"overrides":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/ServiceDayOverride"}}},"description":"ALWAYS=24/7 et weekly vide ; WEEKLY exige 1 à 28 plages, max 4/jour sans chevauchement. Fuseau du site ; ni jours fériés ni objectifs implicites. Répétitions DST comptées en temps réel, heures inexistantes non comptées."},
+      "ContractSlaRule":{"type":"object","additionalProperties":false,"required":["priority","metric","targetMinutes","pauseWhileWaitingClient"],"properties":{"priority":{"$ref":"#/components/schemas/ServicePriority"},"metric":{"type":"string","enum":["ACKNOWLEDGEMENT","INTERVENTION_START","RESOLUTION"]},"targetMinutes":{"type":"integer","minimum":1,"maximum":525600},"pauseWhileWaitingClient":{"type":"boolean"}},"description":"Unicité priorité/compteur. Minutes de service depuis la déclaration ; absence de règle = aucun engagement par défaut. Alertes/statistiques complètes au lot 12."},
+      "ContractDefinitionBody":{"type":"object","additionalProperties":false,"required":["publicName","validFrom","validUntil","coverage","calendar","slaRules","reason"],"properties":{"publicName":{"type":"string","minLength":1,"maxLength":160},"internalNotes":{"type":["string","null"],"maxLength":2000},"validFrom":{"type":"string","format":"date-time"},"validUntil":{"type":"string","format":"date-time"},"coverage":{"type":"array","minItems":1,"maxItems":100,"items":{"$ref":"#/components/schemas/ContractCoverageBody"}},"calendar":{"$ref":"#/components/schemas/ServiceCalendar"},"slaRules":{"type":"array","maxItems":12,"items":{"$ref":"#/components/schemas/ContractSlaRule"}},"reason":{"type":"string","minLength":1,"maxLength":1000}},"description":"Validité [début,fin), entre 2000-01-01 et 2201-01-01. Instants normalisés à la microseconde, puis intervalle validé. Remplacement complet de définition par nouvelle révision, jamais mutation d'une ancienne."},
+      "ContractRevisionView":{"type":"object","additionalProperties":false,"required":["contractId","revisionId","version","definition","authorUserId","createdAt"],"properties":{"contractId":{"type":"string","format":"uuid"},"revisionId":{"type":"string","format":"uuid"},"version":{"type":"integer","minimum":0},"definition":{"$ref":"#/components/schemas/ContractDefinitionBody"},"authorUserId":{"type":"string","format":"uuid"},"createdAt":{"type":"string","format":"date-time"}}},
+      "ContractSummaryView":{"type":"object","additionalProperties":false,"required":["contractId","revisionId","version","publicName","validFrom","validUntil"],"properties":{"contractId":{"type":"string","format":"uuid"},"revisionId":{"type":"string","format":"uuid"},"version":{"type":"integer","minimum":0},"publicName":{"type":"string"},"validFrom":{"type":"string","format":"date-time"},"validUntil":{"type":"string","format":"date-time"}}},
+      "ContractPageView":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/ContractSummaryView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "ContractHistoryView":{"type":"object","additionalProperties":false,"required":["items","nextAfter"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/ContractSummaryView"}},"nextAfter":{"type":"integer","minimum":-1}}},
+      "SiteContractSummaryView":{"type":"object","additionalProperties":false,"required":["revision","wholeSite"],"properties":{"revision":{"$ref":"#/components/schemas/ContractSummaryView"},"wholeSite":{"type":"boolean"}}},
+      "SiteContractPageView":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/SiteContractSummaryView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "SiteContractRevisionView":{"type":"object","additionalProperties":false,"required":["contractId","revisionId","version","publicName","validFrom","validUntil","wholeSite","equipmentIds","calendar","slaRules"],"properties":{"contractId":{"type":"string","format":"uuid"},"revisionId":{"type":"string","format":"uuid"},"version":{"type":"integer","minimum":0},"publicName":{"type":"string"},"validFrom":{"type":"string","format":"date-time"},"validUntil":{"type":"string","format":"date-time"},"wholeSite":{"type":"boolean"},"equipmentIds":{"type":"array","maxItems":100,"items":{"type":"string","format":"uuid"}},"calendar":{"$ref":"#/components/schemas/ServiceCalendar"},"slaRules":{"type":"array","maxItems":12,"items":{"$ref":"#/components/schemas/ContractSlaRule"}}}},
+      "ClientProposalBody":{"type":"object","additionalProperties":false,"properties":{"remuneration":{"type":["string","null"],"pattern":"^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,2})?$","maxLength":13},"expenses":{"type":["string","null"],"pattern":"^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,2})?$","maxLength":13}},"description":"Forfaits HT/EUR distincts, 0 à 9 999 999 999,99. Chacun facultatif, null ≠ zéro. JSON numérique, exposant, négatif et précision >2 refusés sans arrondi. Lecture normalisée à deux décimales."},
+      "TicketCreateBody":{"type":"object","additionalProperties":false,"required":["title","description","requestedPriority"],"properties":{"equipmentId":{"type":["string","null"],"format":"uuid"},"title":{"type":"string","minLength":1,"maxLength":160},"description":{"type":"string","minLength":1,"maxLength":4000},"requestedPriority":{"$ref":"#/components/schemas/ServicePriority"},"proposal":{"oneOf":[{"$ref":"#/components/schemas/ClientProposalBody"},{"type":"null"}]}}},
+      "TicketQualifyBody":{"type":"object","additionalProperties":false,"required":["retainedPriority","reason"],"properties":{"retainedPriority":{"$ref":"#/components/schemas/ServicePriority"},"contractRevisionId":{"type":["string","null"],"format":"uuid"},"reason":{"type":"string","minLength":1,"maxLength":2000}}},
+      "TicketReasonBody":{"type":"object","additionalProperties":false,"required":["reason"],"properties":{"reason":{"type":"string","minLength":1,"maxLength":2000}}},
+      "TicketMessageBody":{"type":"object","additionalProperties":false,"required":["text"],"properties":{"text":{"type":"string","minLength":1,"maxLength":4000}}},
+      "TicketCommandView":{"type":"object","additionalProperties":false,"required":["resourceId","version","state"],"properties":{"resourceId":{"type":"string","format":"uuid"},"version":{"type":"integer","minimum":0},"state":{"type":"string","enum":["OPEN","QUALIFIED","IN_PROGRESS","WAITING_CLIENT","RESOLVED","CLOSED","CANCELLED","PUBLIC_MESSAGE","INTERNAL_NOTE"]}}},
+      "TicketSummaryView":{"type":"object","additionalProperties":false,"required":["ticketId","siteId","equipmentId","title","requestedPriority","retainedPriority","state","proposalNumber","version","createdAt"],"properties":{"ticketId":{"type":"string","format":"uuid"},"siteId":{"type":"string","format":"uuid"},"equipmentId":{"type":["string","null"],"format":"uuid"},"title":{"type":"string"},"requestedPriority":{"$ref":"#/components/schemas/ServicePriority"},"retainedPriority":{"oneOf":[{"$ref":"#/components/schemas/ServicePriority"},{"type":"null"}]},"state":{"$ref":"#/components/schemas/TicketState"},"proposalNumber":{"type":"integer","minimum":0},"version":{"type":"integer","minimum":0},"createdAt":{"type":"string","format":"date-time"}}},
+      "TicketView":{"type":"object","additionalProperties":false,"required":["ticket","description","siteTimeZone","contractRevisionId","coverage"],"properties":{"ticket":{"$ref":"#/components/schemas/TicketSummaryView"},"description":{"type":"string"},"siteTimeZone":{"type":"string"},"contractRevisionId":{"type":["string","null"],"format":"uuid"},"coverage":{"type":"string","enum":["UNQUALIFIED","OUT_OF_CONTRACT","COVERED"]}}},
+      "TicketPageView":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/TicketSummaryView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "ClientProposalView":{"type":"object","additionalProperties":false,"required":["number","remuneration","expenses","currency","taxBasis","remunerationBasis","expensesBasis","authorUserId","createdAt"],"properties":{"number":{"type":"integer","minimum":0},"remuneration":{"type":["string","null"],"pattern":"^[0-9]{1,10}\\.[0-9]{2}$"},"expenses":{"type":["string","null"],"pattern":"^[0-9]{1,10}\\.[0-9]{2}$"},"currency":{"const":"EUR"},"taxBasis":{"const":"HT"},"remunerationBasis":{"const":"FIXED"},"expensesBasis":{"const":"FIXED"},"authorUserId":{"type":"string","format":"uuid"},"createdAt":{"type":"string","format":"date-time"}}},
+      "ProposalHistoryView":{"type":"object","additionalProperties":false,"required":["items","nextAfter"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/ClientProposalView"}},"nextAfter":{"type":"integer","minimum":-1}}},
+      "TicketChangeView":{"type":"object","additionalProperties":false,"required":["version","action","state","actorUserId","publicReason","occurredAt"],"properties":{"version":{"type":"integer","minimum":0},"action":{"type":"string","enum":["CREATED","PROPOSAL_REVISED","QUALIFY","START","WAIT","RESUME","RESOLVE","CLOSE","REOPEN","CANCEL"]},"state":{"$ref":"#/components/schemas/TicketState"},"actorUserId":{"type":"string","format":"uuid"},"publicReason":{"type":["string","null"]},"occurredAt":{"type":"string","format":"date-time"}}},
+      "TicketHistoryView":{"type":"object","additionalProperties":false,"required":["items","nextAfter"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/TicketChangeView"}},"nextAfter":{"type":"integer","minimum":-1}}},
+      "TicketMessageView":{"type":"object","additionalProperties":false,"required":["number","messageId","authorUserId","text","createdAt"],"properties":{"number":{"type":"integer","minimum":0},"messageId":{"type":"string","format":"uuid"},"authorUserId":{"type":"string","format":"uuid"},"text":{"type":"string","maxLength":4000},"createdAt":{"type":"string","format":"date-time"}}},
+      "TicketMessagesView":{"type":"object","additionalProperties":false,"required":["items","nextAfter"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/TicketMessageView"}},"nextAfter":{"type":"integer","minimum":-1}}},
+      "AccountCreateBody":{"type":"object","additionalProperties":false,"required":["dossierId"],"properties":{"dossierId":{"type":"string","format":"uuid"}}},
+      "AccountNameBody":{"type":"object","additionalProperties":false,"required":["displayName"],"properties":{"displayName":{"type":"string","minLength":1,"maxLength":240}}},
+      "MemberAddBody":{"type":"object","additionalProperties":false,"required":["userId"],"properties":{"userId":{"type":"string","format":"uuid"}}},
+      "ClientAccountView":{"type":"object","additionalProperties":false,"required":["accountId","accountType","displayName","version"],"properties":{"accountId":{"type":"string","format":"uuid"},"accountType":{"type":"string","enum":["BUSINESS","INDIVIDUAL"]},"displayName":{"type":"string","maxLength":240},"version":{"type":"integer","minimum":0}}},
+      "ClientMemberView":{"type":"object","additionalProperties":false,"required":["memberId","userId","active","version"],"properties":{"memberId":{"type":"string","format":"uuid"},"userId":{"type":"string","format":"uuid"},"active":{"type":"boolean"},"version":{"type":"integer","minimum":0}}},
+      "ClientAccountPage":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/ClientAccountView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "ClientMemberPage":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/ClientMemberView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "SiteContact":{"type":"object","additionalProperties":false,"required":["name"],"properties":{"name":{"type":"string","minLength":1,"maxLength":100},"phone":{"type":["string","null"],"maxLength":40},"email":{"type":["string","null"],"maxLength":254}}},
+      "SiteBody":{"type":"object","additionalProperties":false,"description":"Création/PUT : nom, adresse et fuseau IANA non blancs requis. PATCH : absents/null préservés ; effacer les facultatifs via PUT. Pas de code d'accès secret dans les journaux ou notifications.","properties":{"name":{"type":["string","null"],"maxLength":120},"address":{"type":["string","null"],"maxLength":500},"timeZone":{"type":["string","null"],"maxLength":100},"contacts":{"type":["array","null"],"maxItems":10,"items":{"$ref":"#/components/schemas/SiteContact"}},"accessInstructions":{"type":["string","null"],"maxLength":2000}}},
+      "EquipmentBody":{"type":"object","additionalProperties":false,"description":"Création/PUT : libellé et catégorie non blancs requis. Attributs v1 plats/textuels ; nombres, null, objets et tableaux refusés. La catégorie est une déclaration, pas un catalogue certifié.","properties":{"label":{"type":["string","null"],"maxLength":120},"category":{"type":["string","null"],"maxLength":80},"internalReference":{"type":["string","null"],"maxLength":100},"brand":{"type":["string","null"],"maxLength":100},"model":{"type":["string","null"],"maxLength":100},"serialNumber":{"type":["string","null"],"maxLength":100},"location":{"type":["string","null"],"maxLength":200},"conditionDescription":{"type":["string","null"],"maxLength":200},"attributes":{"type":["object","null"],"maxProperties":20,"propertyNames":{"pattern":"^[A-Za-z][A-Za-z0-9_-]{0,39}$"},"additionalProperties":{"type":"string","minLength":1,"maxLength":200}}}},
+      "SiteView":{"type":"object","additionalProperties":false,"required":["siteId","profile","archived","version"],"properties":{"siteId":{"type":"string","format":"uuid"},"profile":{"$ref":"#/components/schemas/SiteBody"},"archived":{"type":"boolean"},"version":{"type":"integer","minimum":0}}},
+      "EquipmentView":{"type":"object","additionalProperties":false,"required":["equipmentId","siteId","profile","archived","version"],"properties":{"equipmentId":{"type":"string","format":"uuid"},"siteId":{"type":"string","format":"uuid"},"profile":{"$ref":"#/components/schemas/EquipmentBody"},"archived":{"type":"boolean"},"version":{"type":"integer","minimum":0}}},
+      "SitePage":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/SiteView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "EquipmentPage":{"type":"object","additionalProperties":false,"required":["items","total","page","size"],"properties":{"items":{"type":"array","maxItems":100,"items":{"$ref":"#/components/schemas/EquipmentView"}},"total":{"type":"integer","minimum":0},"page":{"type":"integer","minimum":0},"size":{"type":"integer","minimum":1,"maximum":100}}},
+      "AssetSummary":{"type":"object","additionalProperties":false,"required":["sites","equipment"],"properties":{"sites":{"type":"integer","minimum":0},"equipment":{"type":"integer","minimum":0}}},
+      "SiteAccessBody":{"type":"object","additionalProperties":false,"required":["allSites","siteIds"],"properties":{"allSites":{"type":"boolean"},"siteIds":{"type":"array","maxItems":100,"uniqueItems":true,"items":{"type":"string","format":"uuid"}}}},
+      "SiteAccessView":{"type":"object","additionalProperties":false,"required":["memberId","allSites","siteIds","version"],"properties":{"memberId":{"type":"string","format":"uuid"},"allSites":{"type":"boolean"},"siteIds":{"type":"array","maxItems":100,"items":{"type":"string","format":"uuid"}},"version":{"type":"integer","minimum":0}}},
+      "ClientRegistrationBody":{"type":"object","additionalProperties":false,"required":["token","email","password"],"properties":{"token":{"$ref":"#/components/schemas/Opaque"},"email":{"type":"string","maxLength":254},"password":{"type":"string","minLength":15,"maxLength":128,"writeOnly":true}}},
+      "TechnicianRegistrationBody":{"type":"object","additionalProperties":false,"required":["email","password"],"properties":{"email":{"type":"string","maxLength":254},"password":{"type":"string","minLength":15,"maxLength":128,"writeOnly":true}}},
+      "GoogleClientRegistrationBody":{"type":"object","additionalProperties":false,"required":["token","email"],"properties":{"token":{"$ref":"#/components/schemas/Opaque"},"email":{"type":"string","maxLength":254}}},
+      "ClientProfileBody":{"type":"object","additionalProperties":false,"description":"Brouillon incomplet autorisé. À la soumission : type, prénom, nom, téléphone et adresse obligatoires ; raison sociale pour BUSINESS, interdite pour INDIVIDUAL. Absence/null efface le champ.","properties":{"accountType":{"type":["string","null"],"enum":["BUSINESS","INDIVIDUAL",null]},"firstName":{"type":["string","null"],"maxLength":100},"lastName":{"type":["string","null"],"maxLength":100},"phone":{"type":["string","null"],"maxLength":40},"address":{"type":["string","null"],"maxLength":500},"organizationName":{"type":["string","null"],"maxLength":200}}},
+      "TechnicianProfileBody":{"type":"object","additionalProperties":false,"description":"Tous les champs sont requis à la soumission, dont au moins une compétence déclarée. Pas de SIRET/statut juridique ou preuve documentaire inventé.","properties":{"firstName":{"type":["string","null"],"maxLength":100},"lastName":{"type":["string","null"],"maxLength":100},"phone":{"type":["string","null"],"maxLength":40},"baseCity":{"type":["string","null"],"maxLength":200},"radiusKm":{"type":["integer","null"],"minimum":10,"maximum":200},"declaredSkills":{"type":["array","null"],"maxItems":20,"items":{"type":"string","minLength":1,"maxLength":80}}}},
+      "AdmissionDecisionBody":{"type":"object","additionalProperties":false,"required":["reason"],"properties":{"reason":{"type":"string","minLength":1,"maxLength":1000,"description":"Motif non blanc, sans caractères de contrôle. Aucun secret ni pièce complète."}}},
+      "ClientInvitationView":{"type":"object","additionalProperties":false,"required":["invitationId","email","expiresAt","version","accepted"],"properties":{"invitationId":{"type":"string","format":"uuid"},"email":{"type":"string"},"expiresAt":{"type":"string","format":"date-time"},"version":{"type":"integer","minimum":0},"accepted":{"type":"boolean"}}},
+      "ClientDossierView":{"type":"object","additionalProperties":false,"required":["dossierId","state","version","profile"],"properties":{"dossierId":{"type":"string","format":"uuid"},"state":{"$ref":"#/components/schemas/DossierState"},"version":{"type":"integer","minimum":0},"profile":{"$ref":"#/components/schemas/ClientProfileBody"}}},
+      "TechnicianDossierView":{"type":"object","additionalProperties":false,"required":["dossierId","state","version","profile","documentsStatus"],"properties":{"dossierId":{"type":"string","format":"uuid"},"state":{"$ref":"#/components/schemas/DossierState"},"version":{"type":"integer","minimum":0},"profile":{"$ref":"#/components/schemas/TechnicianProfileBody"},"documentsStatus":{"type":"string","const":"REQUIRED_NOT_AVAILABLE"}}},
+      "DossierState":{"type":"string","enum":["DRAFT","SUBMITTED","NEEDS_INFORMATION","APPROVED","REJECTED"]},
+      "AdmissionSummary":{"type":"object","additionalProperties":false,"required":["dossierId","state","version","createdAt"],"properties":{"dossierId":{"type":"string","format":"uuid"},"state":{"$ref":"#/components/schemas/DossierState"},"version":{"type":"integer","minimum":0},"createdAt":{"type":"string","format":"date-time"}}},
+      "AdmissionHistoryEvent":{"type":"object","additionalProperties":false,"required":["revision","action","reason","occurredAt"],"properties":{"revision":{"type":"integer","minimum":0},"action":{"type":"string","enum":["CREATED","DRAFT_SAVED","SUBMITTED","NEEDS_INFORMATION","APPROVED","REJECTED"]},"reason":{"type":["string","null"],"maxLength":1000},"occurredAt":{"type":"string","format":"date-time"}}},
+      "AdminAdmissionHistoryEvent":{"type":"object","additionalProperties":false,"required":["revision","actorUserId","action","reason","occurredAt"],"properties":{"revision":{"type":"integer","minimum":0},"actorUserId":{"type":"string","format":"uuid"},"action":{"type":"string","enum":["CREATED","DRAFT_SAVED","SUBMITTED","NEEDS_INFORMATION","APPROVED","REJECTED"]},"reason":{"type":["string","null"],"maxLength":1000},"occurredAt":{"type":"string","format":"date-time"}}},
+      "Opaque": { "type": "string", "minLength": 43, "maxLength": 43, "pattern": "^[A-Za-z0-9_-]{43}$", "description": "32 octets aléatoires en base64url sans padding, valeur sensible" },
+      "LoginBody": { "type": "object", "additionalProperties": false, "required": ["email", "password"], "properties": { "email": { "type": "string", "maxLength": 254 }, "password": { "type": "string", "maxLength": 128, "writeOnly": true } } },
+      "EmailBody": { "type": "object", "additionalProperties": false, "required": ["email"], "properties": { "email": { "type": "string", "minLength": 1, "maxLength": 254, "description": "Identifiant ASCII, insensible à la casse, points et suffixes + préservés" } } },
+      "TokenBody": { "type": "object", "additionalProperties": false, "required": ["token"], "properties": { "token": { "$ref": "#/components/schemas/Opaque" } } },
+      "ResetBody": { "type": "object", "additionalProperties": false, "required": ["token", "password"], "properties": { "token": { "$ref": "#/components/schemas/Opaque" }, "password": { "type": "string", "minLength": 15, "maxLength": 128, "writeOnly": true, "description": "Points de code Unicode, espaces conservés, liste locale de mots courants refusée, aucune normalisation/troncature" } } },
+      "PasswordBody": { "type": "object", "additionalProperties": false, "required": ["password"], "properties": { "password": { "type": "string", "maxLength": 128, "writeOnly": true } } },
+      "EnrollmentBody": { "type": "object", "additionalProperties": false, "required": ["enrollmentId", "code"], "properties": { "enrollmentId": { "type": "string", "format": "uuid" }, "code": { "type": "string", "pattern": "^[0-9]{6}$" } } },
+      "TotpBody": { "type": "object", "additionalProperties": false, "required": ["code"], "properties": { "code": { "type": "string", "pattern": "^[0-9]{6}$" } } },
+      "RecoveryBody": { "type": "object", "additionalProperties": false, "required": ["code"], "properties": { "code": { "$ref": "#/components/schemas/Opaque" } } },
+      "RefreshBody": { "type": "object", "additionalProperties": false, "required": ["refreshToken"], "properties": { "refreshToken": { "$ref": "#/components/schemas/Opaque" } } },
+      "CsrfView": { "type": "object", "additionalProperties": false, "required": ["headerName", "token"], "properties": { "headerName": { "type": "string", "const": "X-CSRF-TOKEN" }, "token": { "type": "string" } } },
+      "AuthenticationView": { "type": "object", "additionalProperties": false, "required": ["status"], "properties": { "status": { "type": "string", "enum": ["AUTHENTICATED", "EMAIL_PENDING", "MFA_PENDING"] } } },
+      "MeView": { "type": "object", "additionalProperties": false, "required": ["userId", "status", "roles", "emailVerified"], "properties": { "userId": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["PENDING", "ACTIVE", "SUSPENDED", "REJECTED"] }, "roles": { "type": "array", "uniqueItems": true, "items": { "type": "string", "enum": ["ADMIN", "CLIENT", "TECHNICIAN"] }, "description": "Rôles stockés ; leur présence ne vaut pas autorité effective sans état/email/MFA requis" }, "emailVerified": { "type": "boolean" } } },
+      "EnrollmentView": { "type": "object", "additionalProperties": false, "required": ["enrollmentId", "secret", "uri"], "properties": { "enrollmentId": { "type": "string", "format": "uuid" }, "secret": { "type": "string", "description": "Secret TOTP Base32 provisoire" }, "uri": { "type": "string", "format": "uri", "pattern": "^otpauth://totp/" } } },
+      "ActivationView": { "type": "object", "additionalProperties": false, "required": ["status", "recoveryCodes"], "properties": { "status": { "type": "string", "enum": ["AUTHENTICATED", "REAUTHENTICATION_REQUIRED"] }, "recoveryCodes": { "type": "array", "minItems": 10, "maxItems": 10, "items": { "$ref": "#/components/schemas/Opaque" } } } },
+      "TokensView": { "type": "object", "additionalProperties": false, "required": ["tokenType", "accessToken", "refreshToken", "accessExpiresAt", "refreshExpiresAt", "familyExpiresAt"], "properties": { "tokenType": { "type": "string", "const": "Bearer" }, "accessToken": { "$ref": "#/components/schemas/Opaque" }, "refreshToken": { "$ref": "#/components/schemas/Opaque" }, "accessExpiresAt": { "type": "string", "format": "date-time" }, "refreshExpiresAt": { "type": "string", "format": "date-time" }, "familyExpiresAt": { "type": "string", "format": "date-time" } } },
+      "MobileGoogleStart": { "type": "object", "additionalProperties": false, "required": ["challenge", "destinationId"], "properties": { "challenge": { "type": "string", "pattern": "^[A-Za-z0-9_-]{43}$", "description": "S256 du verifier conservé dans Flutter" }, "destinationId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,40}$", "description": "Identifiant opérateur préenregistré, jamais une URL" } } },
+      "GoogleStart": { "type": "object", "additionalProperties": false, "required": ["transactionId", "launchPath"], "properties": { "transactionId": { "type": "string", "format": "uuid" }, "launchPath": { "type": "string", "pattern": "^/oauth2/authorization/google\\?launch=", "description": "Code de lancement sensible à usage unique, transaction 5 min" } } },
+      "GoogleExchangeBody": { "type": "object", "additionalProperties": false, "required": ["transactionId", "code", "verifier"], "properties": { "transactionId": { "type": "string", "format": "uuid" }, "code": { "$ref": "#/components/schemas/Opaque" }, "verifier": { "type": "string", "pattern": "^[A-Za-z0-9._~-]{43,128}$", "writeOnly": true } } },
+      "LinkedView": { "type": "object", "additionalProperties": false, "required": ["status"], "properties": { "status": { "type": "string", "const": "LINKED" } } },
+      "HealthResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status"],
+        "properties": {
+          "status": { "type": "string", "const": "UP" }
+        }
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "title", "status", "detail", "instance", "code", "traceId"],
+        "properties": {
+          "type": { "type": "string", "format": "uri", "pattern": "^urn:maintenance:problem:" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "minimum": 400, "maximum": 599 },
+          "detail": { "type": "string", "description": "Message générique ; le client utilise code pour la traduction." },
+          "instance": { "type": "string", "format": "uri", "pattern": "^urn:maintenance:request:" },
+          "code": {
+            "type": "string",
+            "enum": ["INVALID_REQUEST", "AUTHENTICATION_REQUIRED", "ACCESS_DENIED", "RESOURCE_NOT_FOUND", "METHOD_NOT_ALLOWED", "NOT_ACCEPTABLE", "PAYLOAD_TOO_LARGE", "UNSUPPORTED_MEDIA_TYPE", "TOO_MANY_REQUESTS", "REQUEST_REJECTED", "INTERNAL_ERROR", "INVALID_CLIENT_INPUT", "INVALID_INVITATION", "CLIENT_DOSSIER_NOT_FOUND", "CLIENT_STATE_CONFLICT", "CLIENT_VERSION_STALE", "CLIENT_PROFILE_INCOMPLETE", "INVALID_TECHNICIAN_INPUT", "TECHNICIAN_DOSSIER_NOT_FOUND", "TECHNICIAN_STATE_CONFLICT", "TECHNICIAN_VERSION_STALE", "TECHNICIAN_PROFILE_INCOMPLETE", "TECHNICIAN_DOCUMENTS_REQUIRED", "INVALID_IDEMPOTENCY_KEY", "IDEMPOTENCY_CONFLICT", "INVALID_ACCOUNT_INPUT", "ACCOUNT_NOT_FOUND", "ACCOUNT_VERSION_STALE", "ACCOUNT_MEMBERSHIP_CONFLICT", "CLIENT_NOT_APPROVED", "INVALID_ASSET_INPUT", "ASSET_NOT_FOUND", "ASSET_VERSION_STALE", "INVALID_CONTRACT_INPUT", "CONTRACT_NOT_FOUND", "CONTRACT_VERSION_STALE", "CONTRACT_NOT_APPLICABLE", "INVALID_TICKET_INPUT", "TICKET_NOT_FOUND", "TICKET_VERSION_STALE", "TICKET_STATE_CONFLICT"]
+          },
+          "traceId": { "type": "string", "format": "uuid" },
+          "fieldErrors": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["field", "code"],
+              "properties": {
+                "field": { "type": "string" },
+                "code": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

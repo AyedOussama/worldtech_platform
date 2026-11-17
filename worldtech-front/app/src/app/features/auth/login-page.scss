@@ -1,0 +1,51 @@
+// WorldTech Login V1. Review: unslop by Damir Sokolovsky (@heydamir), CC BY 4.0.
+:host {
+  display: block;
+  --login-text: light-dark(#08132c, #f0f5ff);
+  --login-muted: light-dark(#52627a, #b4c4d9);
+  --login-card: light-dark(#fff, #15263f);
+  --login-field: light-dark(#f8fafd, #102038);
+  --login-border: light-dark(#d5deeb, #384d6b);
+  --login-link: light-dark(#0052d4, #98caff);
+  color: var(--login-text);
+}
+.login-layout { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 61fr) minmax(0, 39fr); height: 100svh; }
+.login-panel { min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 24px 28px; background: light-dark(#eef5fc, #0b172b) url('/assets/worldtech/login/graphics/vagues_fond_droite.svg') center / cover no-repeat; outline-offset: -4px; }
+form { display: flex; flex-direction: column; margin: 0; }
+.feedback { min-height: 0; display: grid; align-content: center; font-size: .8125rem; line-height: 1.38; }
+.feedback.active { margin-bottom: 10px; }
+.feedback p { margin: 0; padding: 8px 12px; border-left: 3px solid var(--login-link); border-radius: 6px; background: var(--wt-info-surface); }
+.feedback .feedback-error { color: var(--wt-error); border-color: currentColor; background: var(--wt-error-surface); }
+.countdown { display: block; margin-top: 4px; }
+.fields { display: grid; gap: 14px; font-size: .875rem; }
+.field label { display: block; font-weight: 700; color: var(--login-text); margin-bottom: 6px; cursor: pointer; }
+.input-wrap { position: relative; background: var(--login-field); border: 1px solid var(--login-border); border-radius: 10px; cursor: text; }
+.input-wrap:focus-within { border-color: var(--login-link); outline: 3px solid light-dark(#006ffd22, #89c5ff55); outline-offset: 1px; }
+.icon { position: absolute; top: 50%; left: 14px; transform: translateY(-50%); pointer-events: none; }
+.icon, .reveal img { filter: grayscale(1) brightness(.78); opacity: .75; pointer-events: none; }
+:host-context(.wt-dark) .icon, :host-context(.wt-dark) .reveal img { filter: grayscale(1) brightness(1.65); opacity: .85; }
+input { width: 100%; min-width: 0; height: 46px; padding: 0 44px; border: 0; border-radius: inherit; outline: none; background: transparent; color: var(--login-text); font-size: .875rem; cursor: text; }
+input::placeholder { color: light-dark(#64748b, #94a3b8); opacity: 1; }
+.reveal { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 8px; background: transparent; cursor: pointer; user-select: none; outline-offset: -2px; }
+.reveal:hover { background: light-dark(#e6effc, #233d5f); }
+.reveal:hover img { opacity: 1; }
+.invalid { border-color: var(--wt-error); }
+.forgot { align-self: flex-end; display: inline-flex; align-items: center; width: fit-content; min-height: 26px; margin: 8px 0 14px; padding: 2px 4px; border-radius: 6px; font-size: .8125rem; font-weight: 600; color: var(--login-link); text-decoration: none; cursor: pointer; }
+.forgot:hover { text-decoration: underline; }
+.primary { width: 100%; min-height: 48px; border: 0; border-radius: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px 16px; font-size: .96875rem; font-weight: 700; line-height: 1.3; color: #fff; background: linear-gradient(90deg, #0052d4, #0065ca 62%, #00d2ff); box-shadow: 0 8px 20px -4px #0066eb5c; scroll-margin-block: 16px; cursor: pointer; }
+.primary > svg { flex-shrink: 0; }
+.primary:hover:not(:disabled) { filter: brightness(.96); }
+.primary:disabled { opacity: .65; cursor: not-allowed; }
+.verified-session { margin: 24px 0; color: var(--login-muted); }
+.loading-mark { width: 16px; height: 16px; border: 2px solid #ffffff80; border-top-color: #fff; border-radius: 50%; }
+@media (max-width: 1199px) { .login-layout { grid-template-columns: minmax(0, 1fr) minmax(400px, 46%); } .login-panel { padding-inline: 18px; } }
+@media (max-height: 820px) {
+  .login-panel { padding-block: 14px; } .fields { gap: 10px; } .field label { margin-bottom: 4px; font-size: .8125rem; }
+  input { height: 42px; font-size: .8125rem; } .forgot { min-height: 24px; margin: 6px 0 10px; } .primary { min-height: 44px; font-size: .9375rem; }
+}
+@media (max-height: 700px) {
+  .login-panel { padding-block: 10px; } .feedback { font-size: .75rem; } .feedback p { padding: 5px 8px; }
+  .fields { gap: 8px; } .field label { margin-bottom: 3px; font-size: .78125rem; } input { height: 38px; font-size: .8125rem; }
+  .reveal { width: 32px; height: 32px; } .forgot { min-height: 20px; margin: 4px 0 8px; font-size: .75rem; } .primary { min-height: 40px; padding-block: 8px; font-size: .875rem; }
+}
+@media (max-width: 767px) { .login-layout { grid-template-columns: minmax(0, 1fr); } .login-panel { padding: 12px; } }

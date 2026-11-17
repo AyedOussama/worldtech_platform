@@ -1,0 +1,57 @@
+{
+  "synthetic": true,
+  "description": "Jeu de recette de référence ; adapter aux DTO réels sans secrets ni mots de passe.",
+  "accounts": [
+    {
+      "fixtureKey": "client-a",
+      "name": "Exemple Atelier",
+      "email": "contact-a@example.test",
+      "status": "APPROVED",
+      "sites": [
+        "site-a-paris"
+      ]
+    },
+    {
+      "fixtureKey": "client-b",
+      "name": "Exemple Services",
+      "email": "contact-b@example.test",
+      "status": "APPROVED",
+      "sites": [
+        "site-b-lyon"
+      ]
+    },
+    {
+      "fixtureKey": "client-pending",
+      "name": "Exemple Dossier",
+      "email": "pending@example.test",
+      "status": "SUBMITTED",
+      "sites": []
+    }
+  ],
+  "scenario": {
+    "ticketReference": "WT-1042",
+    "subject": "Accès réseau indisponible",
+    "siteFixtureKey": "site-a-paris",
+    "requestedPriority": "HIGH",
+    "ticketState": "QUALIFIED",
+    "clientProposal": {
+      "remuneration": "150.00",
+      "expenses": "20.00",
+      "currency": "EUR"
+    },
+    "publishedConditions": {
+      "remuneration": "180.00",
+      "expenses": "35.00",
+      "currency": "EUR",
+      "revision": 2
+    }
+  },
+  "instantUtc": "2026-11-10T09:00:00Z",
+  "siteTimeZone": "Europe/Paris",
+  "permissionCases": [
+    "client-a may read own ticket",
+    "client-b must not read client-a ticket or attachments",
+    "pre-MFA admin must not call privileged commands"
+  ]
+}
+

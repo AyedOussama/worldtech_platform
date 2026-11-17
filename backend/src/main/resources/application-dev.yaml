@@ -1,0 +1,28 @@
+spring:
+  config:
+    import: configtree:${MAINT_SECRETS_DIR}/
+  datasource:
+    url: ${MAINT_JDBC_URL:jdbc:postgresql://127.0.0.1:5432/maintenance}
+  flyway:
+    enabled: true
+    url: ${MAINT_JDBC_URL:jdbc:postgresql://127.0.0.1:5432/maintenance}
+    user: maint_migrator
+    password: ${migrator_password}
+    default-schema: app
+    schemas: [app]
+    create-schemas: false
+    clean-disabled: true
+    validate-on-migrate: true
+app:
+  identity:
+    cookie-name: MAINT_DEV_SESSION
+    secure-cookie: false
+  mail:
+    enabled: true
+spring.mail:
+  host: 127.0.0.1
+  port: 1025
+  properties:
+    mail.smtp.connectiontimeout: 3000
+    mail.smtp.timeout: 5000
+    mail.smtp.writetimeout: 5000

@@ -1,0 +1,39 @@
+:host { display: flex; flex-direction: column; justify-content: center; gap: 18px; width: 100%; max-width: 492px; height: auto; max-height: 100%; min-width: 0; min-height: 0; padding: 30px 36px 26px; border-radius: 24px; background: var(--login-card); border: 1px solid light-dark(#e2ecf7, #273b57); box-shadow: 0 20px 50px #0b1e4016, 0 4px 14px #0b1e400a; overflow: auto; overscroll-behavior: contain; scroll-padding-block: 16px; }
+.heading, .security { flex: none; }
+.logo { display: block; width: auto; max-width: min(100%, 240px); height: 52px; object-fit: contain; margin: 0 auto 12px; }
+.logo-dark { display: none; }
+:host-context(.wt-dark) { .logo-light { display: none; } .logo-dark { display: block; } }
+h1 { font-size: clamp(1.45rem, 1.9vw, 1.825rem); font-weight: 700; letter-spacing: -.025em; line-height: 1.2; color: var(--login-text); text-align: center; margin: 0 0 8px; }
+.heading p { margin: 0 auto; max-width: 42ch; color: var(--login-muted); font-size: .875rem; line-height: 1.45; text-align: center; }
+.body { flex: 0 1 auto; display: flex; flex-direction: column; gap: 16px; margin: 0; }
+.alternatives { display: grid; gap: 12px; }
+.divider { display: flex; align-items: center; gap: 14px; color: var(--login-muted); font-size: .8125rem; font-weight: 500; margin: 0; }
+.divider::before, .divider::after { content: ''; height: 1px; background: light-dark(#d8e2ef, #324663); flex: 1; }
+.google { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 46px; padding: 8px 16px; border: 1.5px solid light-dark(#244682, #6389c2); border-radius: 10px; color: var(--login-text); background: light-dark(#fff, #15263f); font-size: .9375rem; font-weight: 700; }
+.access { text-align: center; font-size: .8125rem; line-height: 1.45; padding-top: 2px; }
+.access p { margin: 0 0 4px; color: var(--login-text); font-weight: 500; }
+.access a { display: inline-flex; min-height: 28px; align-items: center; gap: 6px; color: var(--login-link); font-size: .875rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+.access a:hover { text-decoration: underline; }
+.security { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 14px; background: light-dark(#f1f6fc, #102038); border: 1px solid light-dark(#e3ecf7, #223754); text-align: left; }
+.security-badge { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; color: light-dark(#159947, #4ade80); background: light-dark(radial-gradient(circle, #dcfce7 0%, #bbf7d0 60%, #e7f9ee 100%), radial-gradient(circle, #17422b 0%, #113020 70%, #0e261b 100%)); box-shadow: 0 0 14px #22c55e38; }
+.security-copy { min-width: 0; }
+.security-copy strong { display: block; font-size: .875rem; font-weight: 700; line-height: 1.25; color: var(--login-text); }
+.security-copy p { margin: 2px 0 0; font-size: .78125rem; line-height: 1.35; color: var(--login-muted); }
+@media (max-width: 1199px) { :host { padding-inline: 26px; } }
+@media (max-height: 820px) {
+  :host { padding: 20px 28px 16px; gap: 12px; } .logo { height: 44px; margin-bottom: 8px; }
+  h1 { font-size: clamp(1.35rem, 1.75vw, 1.6rem); margin-bottom: 4px; } .heading p { font-size: .8125rem; line-height: 1.35; }
+  .body { gap: 12px; } .alternatives { gap: 8px; } .google { min-height: 42px; font-size: .875rem; }
+  .access a { min-height: 24px; font-size: .8125rem; } .security { padding: 10px 14px; gap: 12px; } .security-badge { width: 34px; height: 34px; }
+}
+@media (max-height: 700px) {
+  :host { padding: 12px 22px 10px; border-radius: 20px; gap: 8px; } .logo { height: 36px; margin-bottom: 4px; }
+  h1 { font-size: 1.25rem; margin-bottom: 2px; } .heading p { font-size: .75rem; line-height: 1.28; }
+  .body { gap: 8px; } .alternatives { gap: 6px; } .divider { font-size: .75rem; } .google { min-height: 38px; padding: 6px 12px; font-size: .8125rem; }
+  .access { font-size: .75rem; line-height: 1.25; padding-top: 0; } .access p { margin-bottom: 0; } .access a { min-height: 22px; font-size: .78125rem; }
+  .security { padding: 8px 12px; border-radius: 10px; gap: 10px; } .security-badge { width: 30px; height: 30px; }
+  .security-copy strong { font-size: .78125rem; } .security-copy p { font-size: .71875rem; margin-top: 0; }
+}
+@media (max-width: 767px) { :host { max-width: 460px; padding-inline: 22px; border-radius: 22px; } }
+@media (max-height: 650px) { :host(.has-feedback) { .heading p, .security { display: none; } } }
+@media (max-height: 590px) { .heading p, .security, .divider, .google { display: none; } }

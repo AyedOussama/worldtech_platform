@@ -1,0 +1,5 @@
+# Only the built application is sent to the image builder; never private configuration.
+**
+!Dockerfile
+!target/
+!target/maintenance-api.jar

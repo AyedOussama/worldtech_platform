@@ -1,0 +1,37 @@
+<form [id]="formId()" [formGroup]="form" (ngSubmit)="validate()" [attr.aria-busy]="busy()">
+  @if (issues().length) { <wt-error-summary [issues]="issues()" /> }
+  <div class="form-grid">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Site</mat-label>
+      <mat-select [id]="formId() + '-site'" formControlName="site" required>
+        @for (site of sites(); track site) { <mat-option [value]="site">{{ site }}</mat-option> }
+      </mat-select>
+      <mat-error>Choisissez un site</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Priorité demandée</mat-label>
+      <mat-select [id]="formId() + '-requestedPriority'" formControlName="requestedPriority" required>
+        <mat-option value="LOW">Basse</mat-option><mat-option value="NORMAL">Normale</mat-option><mat-option value="HIGH">Haute</mat-option>
+      </mat-select>
+      <mat-hint>À distinguer de la priorité retenue par l’administration</mat-hint>
+      <mat-error>Choisissez une priorité</mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Objet</mat-label>
+      <input matInput [id]="formId() + '-title'" formControlName="title" required maxlength="160" autocomplete="off" />
+      <mat-error>Renseignez un objet de 160 caractères maximum</mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Description</mat-label>
+      <textarea matInput [id]="formId() + '-description'" formControlName="description" required maxlength="2000" rows="4"></textarea>
+      <mat-error>Renseignez une description de 2 000 caractères maximum</mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width" appearance="outline" floatLabel="always" subscriptSizing="dynamic">
+      <mat-label>Rémunération proposée</mat-label>
+      <input matInput [id]="formId() + '-remuneration'" formControlName="remuneration" inputmode="decimal" maxlength="40" autocomplete="off" />
+      <span matTextSuffix>EUR HT</span>
+      <mat-hint>Proposition client facultative · Montant fixe, frais distincts · Aucun engagement</mat-hint>
+      <mat-error>Utilisez un montant positif ou nul et deux décimales maximum</mat-error>
+    </mat-form-field>
+  </div>
+</form>

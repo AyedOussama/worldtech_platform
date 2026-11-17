@@ -1,0 +1,7 @@
+{
+  "generator": "@hey-api/openapi-ts@0.97.0",
+  "source": "../backend/openapi/maintenance-api.json",
+  "sourceSha256": "b5f122cc7ac464b544b1ee0f98b4e8ae379bf6521af2156e8b0ab6f73db1f1c5",
+  "openapi": "3.1.0",
+  "apiVersion": "0.6.0"
+}

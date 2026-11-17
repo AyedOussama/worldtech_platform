@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: configtree:./.local/secrets/
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/maintenance
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://127.0.0.1:5432/maintenance
+    user: maint_migrator
+    password: ${migrator_password}
+    default-schema: app
+    schemas: [app]
+    create-schemas: false
+  mail:
+    host: 127.0.0.1
+    port: 1025
+server:
+  servlet:
+    session:
+      cookie:
+        name: MAINT_DEV_SESSION
+        secure: false
+
+# Connexion locale indépendante de Google. Le profil google est optionnel et séparé.
+# Ne pas désactiver CSRF même en dev ; le frontend doit suivre le contrat.

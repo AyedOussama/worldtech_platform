@@ -1,0 +1,29 @@
+.list-panel { overflow: clip; }
+.state-filters { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px 20px 0; border-bottom: 1px solid var(--wt-border); }
+.state-filter { display: inline-flex; gap: 8px; align-items: center; padding: 12px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--wt-secondary); font-size: .875rem; min-height: 48px; }
+.state-filter span { font-size: .8125rem; color: var(--wt-muted); }
+.state-filter.selected { border-bottom-color: var(--wt-accent); color: var(--wt-text); font-weight: 500; }
+.state-filter:hover { background: var(--wt-background); }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 16px; padding: 24px 24px 8px; }
+mat-form-field { flex: 1 1 12rem; min-width: 0; }
+mat-form-field.search-field { flex: 2 1 16rem; }
+.search-icon { margin-left: 12px; margin-right: 8px; color: var(--wt-secondary); }
+.list-context { display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; padding: 0 24px 12px; min-height: 48px; font-size: .8125rem; color: var(--wt-secondary); }
+.time-context { margin-left: auto; color: var(--wt-muted); }
+.list-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 12px 20px 12px 24px; font-size: .8125rem; color: var(--wt-secondary); }
+.pagination { display: flex; align-items: center; gap: 8px; }
+.loading-state { padding: 16px 24px 32px; color: var(--wt-secondary); }
+.skeleton-row { height: 64px; border-top: 1px solid var(--wt-border); background: var(--wt-background); margin-top: 12px; border-radius: 4px; }
+.fixture-tools { margin-top: 24px; font-size: .8125rem; color: var(--wt-secondary); }
+.fixture-tools summary { cursor: pointer; width: fit-content; min-height: 44px; padding: 12px 0; }
+.fixture-tools select { padding: 8px; min-height: 44px; border: 1px solid var(--wt-control-border); border-radius: 8px; background: var(--wt-surface); color: var(--wt-text); max-width: 100%; margin-left: 12px; }
+@media (max-width: 680px) {
+  .filter-bar { padding: 24px 16px 8px; gap: 16px 12px; }
+  .state-filters { padding: 8px 8px 0; gap: 0; }
+  .state-filter { padding: 12px 8px; }
+  .list-context { padding-inline: 16px; gap: 4px 12px; }
+  .time-context { margin-left: 0; flex-basis: 100%; }
+  .list-footer { padding-inline: 16px; }
+  .fixture-tools label { display: block; margin-bottom: 8px; }
+  .fixture-tools select { margin-left: 0; width: 100%; }
+}

@@ -1,0 +1,85 @@
+{
+  "source": "HTTP doubles, no real account or credentials",
+  "rootRedirect": "/connexion",
+  "initial": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pageHeight": 720,
+    "scrollY": 0,
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 780.796875,
+      "height": 720
+    },
+    "photo": {
+      "x": 242.046875,
+      "y": 122.390625,
+      "width": 515.3125,
+      "height": 597.59375
+    },
+    "card": {
+      "x": 812.796875,
+      "y": 16,
+      "width": 435.203125,
+      "height": 688
+    },
+    "internalOverflow": 0
+  },
+  "blurred": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pageHeight": 720,
+    "scrollY": 0,
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 780.796875,
+      "height": 720
+    },
+    "photo": {
+      "x": 242.046875,
+      "y": 122.390625,
+      "width": 515.3125,
+      "height": 597.59375
+    },
+    "card": {
+      "x": 812.796875,
+      "y": 16,
+      "width": 435.203125,
+      "height": 688
+    },
+    "internalOverflow": 0
+  },
+  "submitted": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pageHeight": 720,
+    "scrollY": 0,
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 780.796875,
+      "height": 720
+    },
+    "photo": {
+      "x": 242.046875,
+      "y": 122.390625,
+      "width": 515.3125,
+      "height": 597.59375
+    },
+    "card": {
+      "x": 812.796875,
+      "y": 16,
+      "width": 435.203125,
+      "height": 688
+    },
+    "internalOverflow": 0
+  }
+}

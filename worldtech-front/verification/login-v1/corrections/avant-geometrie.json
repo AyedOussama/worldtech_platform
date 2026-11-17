@@ -1,0 +1,81 @@
+{
+  "source": "HTTP doubles, no real account or credentials",
+  "initial": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pageHeight": 880,
+    "scrollY": 0,
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 780.796875,
+      "height": 879.796875
+    },
+    "photo": {
+      "x": 203.015625,
+      "y": 158.375,
+      "width": 593.390625,
+      "height": 721.421875
+    },
+    "card": {
+      "x": 812.796875,
+      "y": 56,
+      "width": 435.203125,
+      "height": 807.796875
+    }
+  },
+  "blurred": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pageHeight": 907,
+    "scrollY": 0,
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 780.796875,
+      "height": 907.296875
+    },
+    "photo": {
+      "x": 203.015625,
+      "y": 163.328125,
+      "width": 593.390625,
+      "height": 743.96875
+    },
+    "card": {
+      "x": 812.796875,
+      "y": 56,
+      "width": 435.203125,
+      "height": 835.296875
+    }
+  },
+  "submitted": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pageHeight": 1029,
+    "scrollY": 0,
+    "scene": {
+      "x": 0,
+      "y": 0,
+      "width": 780.796875,
+      "height": 1029.296875
+    },
+    "photo": {
+      "x": 203.015625,
+      "y": 185.28125,
+      "width": 593.390625,
+      "height": 844.015625
+    },
+    "card": {
+      "x": 812.796875,
+      "y": 56,
+      "width": 435.203125,
+      "height": 957.296875
+    }
+  }
+}

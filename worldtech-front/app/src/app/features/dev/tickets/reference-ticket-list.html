@@ -1,0 +1,27 @@
+<table class="ticket-table">
+  <caption class="visually-hidden">Tickets fictifs, heures de Paris. Ouvrir l’objet affiche un aperçu, pas une fiche serveur.</caption>
+  <thead><tr><th scope="col">Référence</th><th scope="col">Objet et prochaine action</th><th scope="col">{{ showAccount() ? 'Client / site' : 'Site' }}</th><th scope="col">Priorité</th><th scope="col">Statut</th><th scope="col">Actualisé</th></tr></thead>
+  <tbody>@for (ticket of tickets(); track ticket.reference) {
+    <tr [class.last-opened]="lastOpened() === ticket.reference">
+      <td class="reference tabular">{{ ticket.reference }}</td>
+      <td>
+        <button class="ticket-link" type="button" aria-haspopup="dialog" [attr.aria-label]="ticket.reference + ' — ' + ticket.title" (click)="ticketOpened.emit(ticket)">{{ ticket.title }}</button>
+        <div class="next-action"><span>{{ ticket.owner }}</span> · {{ ticket.nextAction }}</div>
+      </td>
+      <td class="site-cell">@if (showAccount()) { <span class="account">{{ ticket.account }}</span> }{{ ticket.site }}</td>
+      <td><span class="priority" [class.priority-high]="ticket.priority === 'HIGH'">@if (ticket.priority === 'HIGH') { <svg lucideArrowUp class="wt-icon" aria-hidden="true"></svg> }{{ priorities[ticket.priority] }}</span></td>
+      <td><wt-status-label [label]="states[ticket.state].label" [tone]="states[ticket.state].tone" /></td>
+      <td class="updated"><time [attr.datetime]="ticket.updatedAt">{{ formatDate(ticket.updatedAt) }}</time></td>
+    </tr>
+  }</tbody>
+</table>
+<div class="ticket-cards">@for (ticket of tickets(); track ticket.reference) {
+  <article class="ticket-card" [class.last-opened]="lastOpened() === ticket.reference">
+    <div class="card-top"><span class="reference tabular">{{ ticket.reference }}</span><span class="priority" [class.priority-high]="ticket.priority === 'HIGH'">Priorité {{ priorities[ticket.priority] | lowercase }}</span></div>
+    <h2><button class="ticket-link" type="button" aria-haspopup="dialog" [attr.aria-label]="ticket.reference + ' — ' + ticket.title" (click)="ticketOpened.emit(ticket)">{{ ticket.title }}</button></h2>
+    <p class="card-site">@if (showAccount()) { {{ ticket.account }} · }{{ ticket.site }}</p>
+    <wt-status-label [label]="states[ticket.state].label" [tone]="states[ticket.state].tone" />
+    <div class="next-action"><span>{{ ticket.owner }}</span> · {{ ticket.nextAction }}</div>
+    <p class="card-updated">Actualisé <time [attr.datetime]="ticket.updatedAt">{{ formatDate(ticket.updatedAt) }}</time></p>
+  </article>
+}</div>

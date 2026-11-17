@@ -1,0 +1,176 @@
+{
+  "date": "2026-11-12",
+  "inputPackFiles": 36,
+  "deployedFiles": 21,
+  "totalDeployedBytes": 882667,
+  "rights": "User-provided work illustrations. Commercial production rights/quality not certified; see input manifest.json. No new paid tool or dependency.",
+  "fullReferenceScreenshotPresent": false,
+  "used": [
+    {
+      "publicPath": "/assets/worldtech/login/branding/worldtech_logo_blanc.png",
+      "source": "WorldTech_Login_Assets_V1/branding/worldtech_logo_blanc.png",
+      "transform": "byte-identical copy",
+      "bytes": 121622,
+      "sha256": "cef46bd718da1bf9d5e6aaa8fef9074c0c30138fda7e9e451eb13f3e1efac758"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/branding/worldtech_logo_sombre.png",
+      "source": "WorldTech_Login_Assets_V1/branding/worldtech_logo_sombre.png",
+      "transform": "byte-identical copy",
+      "bytes": 231183,
+      "sha256": "36c4b3fa3683f75f3d1637d79122d9a63be69ed7859ae62b117323913353d591"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/graphics/arcs_connexion.svg",
+      "source": "WorldTech_Login_Assets_V1/graphics/arcs_connexion.svg",
+      "transform": "byte-identical copy",
+      "bytes": 789,
+      "sha256": "b8900c989b82f333544c77b192cfe6b7199d8f47df630206254f3c9731d1b7ff"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/graphics/carte_mondiale_transparente.webp",
+      "source": "WorldTech_Login_Assets_V1/graphics/carte_mondiale_transparente.png",
+      "transform": "Chromium Canvas; WebP quality 0.9; 900x324; alpha retained; no runtime conversion",
+      "bytes": 156350,
+      "sourceBytes": 1219251,
+      "sha256": "3dfdfe7ce4681ee3916545eb925fd51ed8e031ba415ce8e41fe3105c1db24395",
+      "sourceSha256": "ce40093ea086f4a8b6942d4fa7059759bc7d009ca47d13cd91f68ed054cf09f3"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/graphics/vagues_fond_droite.svg",
+      "source": "WorldTech_Login_Assets_V1/graphics/vagues_fond_droite.svg",
+      "transform": "byte-identical copy",
+      "bytes": 562,
+      "sha256": "e480934ffd4360f7b760c1ada19c88c2c8e41ee0a4d16f16432fd4e2fbd42bfb"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_arrow_right.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_arrow_right.svg",
+      "transform": "byte-identical copy",
+      "bytes": 217,
+      "sha256": "b1e1547473e14c7e4fe5af5c7aecc6d80f7c3db12aa15a6a80c823dbf998d39a"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_bolt.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_bolt.svg",
+      "transform": "byte-identical copy",
+      "bytes": 223,
+      "sha256": "d4dbd2fb905a5f1d9e56aedbf39bd30aef91f6eaa7b4c33627869c89cce52f5f"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_eye.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_eye.svg",
+      "transform": "byte-identical copy",
+      "bytes": 271,
+      "sha256": "099fda4e6584890d094cdcbd0620bf3a2cb230936c207aeca58d156b49b55b20"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_eye_off.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_eye_off.svg",
+      "transform": "byte-identical copy",
+      "bytes": 338,
+      "sha256": "2ef565f028dd601ce7992a264781f84e91039eec855a77a567de4cc3b3595ca5"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_globe.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_globe.svg",
+      "transform": "byte-identical copy",
+      "bytes": 290,
+      "sha256": "e098e60b38031127f24c8b850a73b7b936a84148a532125a87e6a243804382a6"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_google_g.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_google_g.svg",
+      "transform": "byte-identical copy",
+      "bytes": 693,
+      "sha256": "d7850eee464d2ce01c41dc23c52b0bae15c0cd6b973896700346e51c0bf72ec9"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_layers.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_layers.svg",
+      "transform": "byte-identical copy",
+      "bytes": 251,
+      "sha256": "ed4be491885c55bf13c4f409bc5ab857ce1a4037fea03c262b2003cccde0aa18"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_lock.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_lock.svg",
+      "transform": "byte-identical copy",
+      "bytes": 269,
+      "sha256": "8d9a7dbeffc349ec35a96b3f29943e59710ef70f264a912b12a97ac3aca79b5b"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_mail.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_mail.svg",
+      "transform": "byte-identical copy",
+      "bytes": 257,
+      "sha256": "5cfabeacc78286b61ea2a44f576bec179cbcb6ab8e28fcd2fea4561537775533"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_mission.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_mission.svg",
+      "transform": "byte-identical copy",
+      "bytes": 276,
+      "sha256": "9a64fa97ae52f82d354b73cdac67b78ffd72495cfb621af4cddf7ab194901040"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_reseaux.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_reseaux.svg",
+      "transform": "byte-identical copy",
+      "bytes": 360,
+      "sha256": "9ac369e62dfd9ce5ac7d44a872a821f038936c7389393a57fd391065ad715287"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_security.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_security.svg",
+      "transform": "byte-identical copy",
+      "bytes": 262,
+      "sha256": "b097b15244d1e2d531b92ff0919af57dae01d0269db16cb226be57372da2d099"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_support.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_support.svg",
+      "transform": "byte-identical copy",
+      "bytes": 351,
+      "sha256": "f03c45f02176d1b89f7296b5dfa9d5a78d89060385adf26fdb8d2d38ef88255a"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/icons/ic_systemes.svg",
+      "source": "WorldTech_Login_Assets_V1/icons/ic_systemes.svg",
+      "transform": "byte-identical copy",
+      "bytes": 325,
+      "sha256": "57a44edd12d9b043643b506fa4e91fcb60e71a02afd7c6109e1cf8e52c173b29"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/photos/photo_salle_serveurs.webp",
+      "source": "WorldTech_Login_Assets_V1/photos/photo_salle_serveurs.webp",
+      "transform": "byte-identical copy",
+      "bytes": 152072,
+      "sha256": "4d928fa196effa8b30d1dc83c82d5cd5e39da931d62ceb814df4e2958bb37d18"
+    },
+    {
+      "publicPath": "/assets/worldtech/login/photos/photo_technicien_datacenter.webp",
+      "source": "WorldTech_Login_Assets_V1/photos/photo_technicien_datacenter.webp",
+      "transform": "byte-identical copy",
+      "bytes": 215706,
+      "sha256": "304b074a4cbae9938393af9b603a640a874df6c41bfd5c2164515060b5a3e0d6"
+    }
+  ],
+  "notDeployed": [
+    "branding/worldtech_favicon_512.png",
+    "branding/worldtech_symbole.png",
+    "css/worldtech-tokens.css",
+    "demo-login.html",
+    "graphics/carte_mondiale_connectee.webp",
+    "icons/ic_calendar.svg",
+    "icons/ic_check.svg",
+    "icons/ic_location.svg",
+    "icons/ic_login.svg",
+    "manifest.json",
+    "personnage/technicien_detoure_approx.png",
+    "photos/photo_bureau_flou.webp",
+    "preview/planche_assets.png",
+    "preview/reference_montage_gauche.png",
+    "README.md"
+  ]
+}

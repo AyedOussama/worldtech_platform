@@ -1,0 +1,69 @@
+<a class="skip-link" href="#contenu" (click)="skipToContent($event, content)">Aller au contenu</a>
+<div class="login-layout">
+  <wt-login-visual />
+  <main #content id="contenu" class="login-panel" tabindex="-1" aria-labelledby="login-title">
+    <wt-login-card [authenticated]="session.state().kind === 'authenticated'" [feedback]="hasFeedback()">
+      @if (session.state().kind === 'authenticated') {
+        <p class="verified-session" role="status">Votre session a été vérifiée par le serveur.</p>
+        <button type="button" class="primary" (click)="continue()">
+          <span>Ouvrir mon espace</span>
+          <img src="/assets/worldtech/login/icons/ic_arrow_right.svg" width="20" height="20" alt="" />
+        </button>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()" [attr.aria-busy]="ui.busy()">
+          <div class="feedback" [class.active]="hasFeedback()">
+            @if (fieldIssues().length) {
+              <wt-error-summary [issues]="fieldIssues()" [compact]="true" />
+            } @else if (ui.error()) {
+              <p class="feedback-error" role="alert">{{ ui.error() }}
+                @if (ui.seconds() > 0) { <span class="countdown">Nouvel essai dans {{ ui.seconds() }} s</span> }
+              </p>
+            } @else if (ui.notice()) {
+              <p role="status">{{ ui.notice() }}</p>
+            } @else if (session.state().kind === 'expired') {
+              <p role="status">Votre session a expiré. Reconnectez-vous pour continuer.</p>
+            } @else if (session.state().kind === 'unavailable') {
+              <p class="visually-hidden" role="status">Le service de session est indisponible. Aucun accès privé n’a été ouvert.</p>
+            } @else if (session.state().kind === 'blocked') {
+              <p role="status">Votre session ne permet pas de reprendre l’accès. Reconnectez-vous pour la vérifier.</p>
+            }
+          </div>
+          <div class="fields">
+            <div class="field">
+              <label for="login-email">E-mail professionnel</label>
+              <div class="input-wrap" [class.invalid]="form.controls.email.touched && form.controls.email.invalid">
+                <img class="icon" src="/assets/worldtech/login/icons/ic_mail.svg" width="20" height="20" alt="" />
+                <input id="login-email" type="email" formControlName="email" autocomplete="username" inputmode="email" placeholder="votre.email@entreprise.com" maxlength="254" required [readonly]="ui.busy()" [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" [attr.aria-describedby]="form.controls.email.touched && form.controls.email.invalid ? 'login-email-error' : null" />
+              </div>
+              @if (form.controls.email.touched && form.controls.email.invalid) { <p id="login-email-error" class="visually-hidden">Renseignez une adresse email valide</p> }
+            </div>
+            <div class="field">
+              <label for="login-password">Mot de passe</label>
+              <div class="input-wrap" [class.invalid]="form.controls.password.touched && form.controls.password.invalid">
+                <img class="icon" src="/assets/worldtech/login/icons/ic_lock.svg" width="20" height="20" alt="" />
+                <input #passwordInput id="login-password" [type]="visible() ? 'text' : 'password'" formControlName="password" autocomplete="current-password" placeholder="Votre mot de passe" maxlength="256" required [readonly]="ui.busy()" [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'login-password-error' : null" />
+                <button class="reveal" type="button" [attr.aria-label]="visible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'" [attr.aria-pressed]="visible()" (mousedown)="$event.preventDefault()" (click)="togglePassword(passwordInput)">
+                  <img [src]="visible() ? '/assets/worldtech/login/icons/ic_eye.svg' : '/assets/worldtech/login/icons/ic_eye_off.svg'" width="20" height="20" alt="" />
+                </button>
+              </div>
+              @if (form.controls.password.touched && form.controls.password.invalid) { <p id="login-password-error" class="visually-hidden">Renseignez votre mot de passe</p> }
+            </div>
+          </div>
+          <a class="forgot" routerLink="/auth/mot-de-passe-oublie">Mot de passe oublié ?</a>
+          <button class="primary" type="submit" [disabled]="ui.busy() || session.busy() || ui.seconds() > 0">
+            @if (ui.busy()) {
+              <span class="loading-mark" aria-hidden="true"></span>Connexion…
+            } @else {
+              <svg class="login-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10 17 15 12 10 7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
+              </svg>
+              <span>Se connecter</span>
+            }
+          </button>
+        </form>
+      }
+    </wt-login-card>
+  </main>
+</div>

@@ -1,0 +1,59 @@
+html { font-family: var(--wt-font); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--wt-background); color: var(--wt-text); font-size: 1rem; line-height: 1.5; }
+button, input, select { font: inherit; }
+a { color: var(--wt-accent); text-underline-offset: 4px; }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--wt-accent);
+  outline-offset: 4px;
+}
+
+.skip-link { position: fixed; top: -160px; left: 16px; padding: 12px 16px; z-index: 1000; background: var(--wt-surface); }
+.skip-link:focus { top: 8px; }
+.public-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 32px; border-bottom: 1px solid var(--wt-border); }
+.brand { color: var(--wt-text); text-decoration: none; font-size: 1.25rem; font-weight: 600; }
+.theme-picker { display: flex; gap: 8px; align-items: center; color: var(--wt-secondary); font-size: .875rem; }
+.theme-picker select { min-height: 44px; border: 1px solid var(--wt-control-border); border-radius: 8px; padding: 8px 12px; background: var(--wt-surface); color: var(--wt-text); }
+.public-content { min-height: calc(100dvh - 168px); padding: 64px 32px; }
+.status-page, .startup-failure { width: 100%; max-width: 720px; margin: 0 auto; }
+.status-page h1, .startup-failure h1 { font-size: clamp(1.5rem, 4vw, 1.75rem); font-weight: 500; line-height: 1.3; margin: 0 0 16px; }
+.status-page p, .startup-failure p { max-width: 64ch; color: var(--wt-secondary); line-height: 1.65; margin: 0 0 24px; }
+.startup-failure { padding: 64px 24px; }
+.startup-failure button { min-height: 44px; padding: 8px 16px; border: 1px solid var(--wt-control-border); border-radius: 8px; background: var(--wt-surface); color: var(--wt-text); cursor: pointer; }
+.wt-splash { min-height: 100svh; display: grid; place-items: center; padding: 24px; background: light-dark( radial-gradient(circle at 50% 30%, #ffffff 0%, #eaf2fc 100%), radial-gradient(circle at 50% 30%, #132540 0%, #081326 100%) ); }
+.wt-splash-card { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 36px 44px; border-radius: 24px; background: light-dark(#ffffffeb, #13233ce6); border: 1px solid light-dark(#dbe6f4, #263c5a); box-shadow: 0 20px 50px #091d3e14; text-align: center; }
+.wt-splash-logo { width: min(240px, 65vw); height: auto; object-fit: contain; }
+.wt-splash-logo-dark { display: none; }
+html.wt-dark .wt-splash-logo-light { display: none; }
+html.wt-dark .wt-splash-logo-dark { display: block; }
+.wt-splash-spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid light-dark(#d8e6f8, #243b5c); border-top-color: #0066e6; border-right-color: #00d2ff; animation: wt-spin .85s linear infinite; }
+.wt-splash-text { margin: 0; font-size: .9375rem; font-weight: 500; color: light-dark(#475870, #b8c7dc); }
+@keyframes wt-spin { to { transform: rotate(360deg); } }
+.public-footer { padding: 24px 32px; color: var(--wt-secondary); font-size: .875rem; border-top: 1px solid var(--wt-border); }
+.component-example { display: grid; gap: 16px; max-width: 400px; margin: 32px 0 24px; }
+.component-example button { justify-self: start; }
+.component-example button, .status-page a[matButton] { min-height: 44px; }
+
+svg.wt-icon { width: 18px; height: 18px; stroke-width: 1.5; flex-shrink: 0; vertical-align: middle; }
+.tabular { font-variant-numeric: tabular-nums; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.muted { color: var(--wt-muted); }
+.text-secondary { color: var(--wt-secondary); }
+h1, h2, h3, p { overflow-wrap: anywhere; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+.panel { background: var(--wt-surface); border: 1px solid var(--wt-border); border-radius: var(--wt-radius-panel); }
+.inline-icon { display: inline-flex; align-items: center; gap: 8px; }
+.dialog-section { margin-block: 24px; }
+.dialog-section h3 { margin: 0 0 12px; font-size: 1rem; font-weight: 500; color: var(--wt-text); }
+.dialog-note { font-size: .875rem; color: var(--wt-secondary); }
+.catalogue-links { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 24px 32px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; scroll-behavior: auto !important; }
+}
+
+@media (max-width: 600px) {
+  .public-header { padding: 12px 16px; gap: 16px; flex-wrap: wrap; }
+  .public-content { padding: 40px 16px; }
+  .public-footer { padding: 24px 16px; }
+}

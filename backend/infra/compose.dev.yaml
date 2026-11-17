@@ -1,0 +1,76 @@
+# Development only. Secret files live outside the repository/OneDrive.
+name: maintenance-dev
+services:
+  db:
+    image: ${DB_IMAGE:?Executer scripts/lock-images.py}
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: maintenance
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+    - 127.0.0.1:${MAINT_DB_PORT:-5432}:5432
+    volumes:
+    - db_data:/var/lib/postgresql
+    - ./postgres/init.sh:/docker-entrypoint-initdb.d/10-maintenance.sh:ro
+    secrets:
+    - postgres_password
+    - migrator_password
+    - runtime_password
+    healthcheck:
+      test:
+      - CMD
+      - pg_isready
+      - -h
+      - 127.0.0.1
+      - -U
+      - postgres
+      - -d
+      - maintenance
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+    mem_limit: 1g
+  mailpit:
+    image: ${MAILPIT_IMAGE:?Executer scripts/lock-images.py}
+    ports:
+    - 127.0.0.1:${MAINT_SMTP_PORT:-1025}:1025
+    - 127.0.0.1:${MAINT_MAILPIT_PORT:-8025}:8025
+    restart: unless-stopped
+    mem_limit: 256m
+  garage:
+    profiles:
+    - documents
+    image: ${GARAGE_IMAGE:?Executer scripts/lock-images.py}
+    entrypoint:
+    - /garage
+    command:
+    - server
+    - --single-node
+    - --default-bucket
+    env_file:
+    - ${MAINT_LOCAL_DIR:?Run scripts/init-dev.py and export MAINT_LOCAL_DIR}/garage.env
+    volumes:
+    - ${MAINT_LOCAL_DIR:?}/garage.toml:/etc/garage.toml:ro
+    - garage_meta:/var/lib/garage/meta
+    - garage_data:/var/lib/garage/data
+    ports:
+    - 127.0.0.1:3900:3900
+    restart: unless-stopped
+    mem_limit: 512m
+secrets:
+  postgres_password:
+    file: ${MAINT_LOCAL_DIR:?}/secrets/postgres_password
+  migrator_password:
+    file: ${MAINT_LOCAL_DIR:?}/secrets/migrator_password
+  runtime_password:
+    file: ${MAINT_LOCAL_DIR:?}/secrets/runtime_password
+volumes:
+  db_data: null
+  garage_meta: null
+  garage_data: null

@@ -1,0 +1,43 @@
+WorldTech frontend — FE02
+
+Angular Material/CDK 22.2.6 — The MIT License
+Copyright (c) 2026 Google LLC.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+See the generated 3rdpartylicenses.txt alongside the built application for
+the other runtime copyright and license notices (Angular, RxJS/Apache-2.0 and tslib).
+Development tooling and optional-platform package license metadata is checked
+from package-lock.json by npm run check:licenses; this is not legal certification.
+
+Design review principles adapted from unslop by Damir Sokolovsky (@heydamir),
+https://github.com/heydamir/unslop, licensed CC BY 4.0.
+https://creativecommons.org/licenses/by/4.0/
+WorldTech is not endorsed by the author. Vendored sources are unchanged.
+
+IBM Plex Sans (Fontsource package 5.3.0), unmodified Latin WOFF2 400/500/600:
+Copyright 2019 IBM Corp. All rights reserved.
+Licensed under the SIL Open Font License 1.1. Full copyright and license:
+/licenses/ibm-plex-sans/LICENSE (distributed with this application).
+
+Lucide Angular 1.71.0:
+Copyright (c) 2026 Lucide Icons and Contributors, ISC License.
+Derived Feather icons: Copyright (c) 2013-present Cole Bemis, MIT License.
+The full unmodified notices for BOTH licenses, including the icon list, are
+distributed at /licenses/lucide-angular/LICENSE.

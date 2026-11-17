@@ -1,0 +1,61 @@
+# Example only: adapt upstream, build output, proxy trust, TLS and CSP at FE14.
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+    server_tokens off;
+
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
+
+    location = /runtime-config.json {
+        add_header Cache-Control "no-store" always;
+        try_files $uri =404;
+    }
+    location = /index.html {
+        add_header Cache-Control "no-store" always;
+        try_files $uri =404;
+    }
+
+    location = /api/web/v1 {
+        proxy_pass http://backend:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
+    }
+    location ^~ /api/web/v1/ {
+        proxy_pass http://backend:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
+    }
+    location ^~ /oauth2/ {
+        proxy_pass http://backend:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location ^~ /login/oauth2/ {
+        proxy_pass http://backend:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /api { return 404; }
+    location /api/ { return 404; }
+
+    location ~* \.(?:js|mjs|css|map|png|jpe?g|gif|webp|svg|ico|woff2?)$ {
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+    location / {
+        add_header Cache-Control "no-store" always;
+        try_files $uri $uri/ /index.html;
+    }
+}
+

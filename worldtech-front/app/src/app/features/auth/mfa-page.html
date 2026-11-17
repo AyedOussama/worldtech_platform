@@ -1,0 +1,63 @@
+<section class="auth-frame wide"><div class="auth-card">
+  <p class="auth-step">{{ manage ? 'Sécurité du compte' : 'Étape 2 · Administration' }}</p>
+  <header class="auth-heading"><h1>{{ activation() ? 'Conservez vos codes de récupération' : manage ? 'Double authentification' : 'Vérifier votre accès' }}</h1>
+    @if (!activation() && mode() !== 'enroll') {
+      <p>{{ manage ? 'Les modifications sensibles demandent des preuves récentes.' : mode() === 'recovery' ? 'Saisissez un code conservé hors ligne.' : 'Saisissez le code de votre application d’authentification.' }}</p>
+    }
+  </header>
+  @if (ui.issues().length) { <wt-error-summary [issues]="ui.issues()" /> }
+  <wt-auth-message [error]="ui.error()" [notice]="ui.notice()" [seconds]="ui.seconds()" />
+  @if (session.state().kind === 'initializing') { <p role="status">Vérification de votre session…</p> }
+  @else if (session.state().kind === 'logoutFailed') {
+    <p class="auth-notice">La déconnexion n’a pas été confirmée. Votre session serveur peut encore être active.</p>
+    <button matButton="filled" [disabled]="ui.busy() || ui.seconds() > 0" (click)="logout()">Réessayer la déconnexion</button>
+  }
+  @else if (!allowed()) {
+    <p class="auth-notice">Ce parcours ne peut pas être repris sans une connexion vérifiée. Aucun accès administrateur n’a été accordé.</p>
+    <a matButton="filled" routerLink="/connexion">Reprendre la connexion</a>
+  } @else if (activation(); as activation) {
+    <p>Chaque code est utilisable une fois. Conservez-les hors ligne dans un emplacement sûr ; ils ne seront plus affichés après fermeture.</p>
+    <ol class="recovery-codes" aria-label="Codes de récupération">@for (code of activation.recoveryCodes; track $index) { <li>{{ code }}</li> }</ol>
+    <label class="auth-option"><input #ack type="checkbox" [checked]="acknowledged()" (change)="acknowledged.set(ack.checked)" />J’ai conservé ces codes hors ligne</label>
+    <button matButton="filled" class="auth-submit" [disabled]="!acknowledged() || ui.busy() || ui.seconds() > 0" (click)="finish()">Continuer</button>
+  } @else {
+    @if (mode() === 'enroll') {
+      @if (enrollment(); as enrollment) {
+        <h2>Configurer votre application</h2>
+        <p>Ajoutez manuellement un compte TOTP, six chiffres, période de 30 secondes. La clé expire au plus tard après cinq minutes.</p>
+        @if (manage) { <p class="auth-notice">La confirmation désactive l’ancien facteur et révoque vos sessions. Conservez les nouveaux codes, puis reconnectez-vous.</p> }
+        <label class="auth-option"><input #show type="checkbox" [checked]="showSecret()" (change)="showSecret.set(show.checked)" />Afficher la clé de configuration</label>
+        @if (showSecret()) { <p class="auth-secret" aria-label="Clé de configuration TOTP">{{ enrollment.secret }}</p> }
+      } @else { <p class="auth-notice">La configuration ne peut plus être reprise. Reconnectez-vous ou recommencez explicitement.</p> }
+    }
+    @if (mode() !== 'enroll' || enrollment()) {
+      <form [formGroup]="codeForm" (ngSubmit)="submit()" [attr.aria-busy]="ui.busy()">
+        <div class="auth-fields"><mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>{{ mode() === 'recovery' ? 'Code de récupération' : 'Code à six chiffres' }}</mat-label>
+          <input matInput id="mfa-code" [formControl]="code" [type]="mode() === 'recovery' ? 'password' : 'text'" [attr.inputmode]="mode() === 'recovery' ? 'text' : 'numeric'" [attr.autocomplete]="mode() === 'recovery' ? 'off' : 'one-time-code'" [maxlength]="mode() === 'recovery' ? 43 : 6" required [readonly]="ui.busy()" />
+          <mat-error>{{ mode() === 'recovery' ? 'Renseignez le code complet' : 'Renseignez six chiffres' }}</mat-error>
+        </mat-form-field></div>
+        <button matButton="filled" type="submit" class="auth-submit" [disabled]="ui.busy() || session.busy() || ui.seconds() > 0">{{ ui.busy() ? 'Vérification…' : mode() === 'enroll' ? 'Confirmer la configuration' : 'Vérifier le code' }}</button>
+      </form>
+    }
+    <div class="auth-actions">
+      @if (mode() !== 'challenge') { <button matButton [disabled]="ui.busy()" (click)="choose('challenge')">Utiliser mon application</button> }
+      @if (mode() !== 'recovery') { <button matButton [disabled]="ui.busy()" (click)="choose('recovery')">Utiliser un code de récupération</button> }
+      <button matButton [disabled]="ui.busy() || ui.seconds() > 0" (click)="start()">{{ mode() === 'enroll' ? 'Recommencer la configuration' : manage ? 'Remplacer le facteur' : 'Configurer mon application' }}</button>
+    </div>
+    @if (manage) {
+      <h2>Vérifier à nouveau votre mot de passe</h2>
+      <form [formGroup]="passwordForm" (ngSubmit)="reauthenticate()">
+        <div class="auth-fields"><mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Mot de passe actuel</mat-label>
+          <input matInput id="mfa-password" type="password" [formControl]="password" autocomplete="current-password" maxlength="256" required [readonly]="ui.busy()" /><mat-error>Renseignez votre mot de passe</mat-error>
+        </mat-form-field></div>
+        <button matButton="outlined" type="submit" class="auth-submit" [disabled]="ui.busy() || ui.seconds() > 0">Vérifier mon mot de passe</button>
+      </form>
+      <button matButton="outlined" class="auth-submit" [disabled]="ui.busy() || ui.seconds() > 0" (click)="replaceCodes()">Renouveler les codes de récupération</button>
+      <p class="auth-caption">Le renouvellement invalide les anciens codes. Le remplacement du facteur révoque les sessions et demande une nouvelle connexion.</p>
+    }
+    <nav class="auth-secondary"><a routerLink="/auth/email-verification">Confirmer mon adresse email</a>
+      <button matButton [disabled]="ui.busy()" (click)="logout()">Se déconnecter</button>
+    </nav>
+  }
+</div></section>

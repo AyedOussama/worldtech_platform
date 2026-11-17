@@ -1,0 +1,89 @@
+# Référence v1.1 ; le module Java d'authentification reste à implémenter.
+# app.auth.* : propriétés métier à binder/valider ; aucun effet magique de ces clés.
+spring:
+  application:
+    name: maintenance-api
+  datasource:
+    url: ${MAINT_JDBC_URL}
+    username: maint_app
+    password: ${runtime_password}
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 3000
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: app
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: false
+  session:
+    jdbc:
+      initialize-schema: never
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+server:
+  port: 8080
+  error:
+    include-message: never
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        name: __Host-maint-session
+        path: /
+        secure: true
+        http-only: true
+        same-site: lax
+management:
+  server:
+    port: 8081
+    address: ${MAINT_MANAGEMENT_ADDRESS:127.0.0.1}
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+app:
+  auth:
+    google:
+      enabled: false
+    password:
+      minimum-length: 15
+      maximum-length: 128
+      argon2:
+        memory-kib: 19456
+        iterations: 2
+        parallelism: 1
+    web:
+      absolute-session-ttl: 8h
+      recent-authentication-ttl: 5m
+    mobile:
+      access-token-ttl: 5m
+      refresh-idle-ttl: 7d
+      session-absolute-ttl: 30d
+    email-verification-token-ttl: 24h
+    password-reset-token-ttl: 30m
+    mfa:
+      admin-required: true
+      encryption-key: ${mfa_encryption_key}
+
+# Production : configtree:/run/secrets/ ; URL JDBC avec validation TLS du fournisseur.
+# Session web et filtre Bearer opaque mobile distincts ; refus par défaut en Java.
+# Les durées proposées doivent être validées et couvertes par des tests avec Clock.

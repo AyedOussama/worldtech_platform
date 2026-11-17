@@ -1,0 +1,8 @@
+{
+  "appName": "WorldTech",
+  "apiBaseUrl": "/api/web/v1",
+  "googleLoginEnabled": false,
+  "telemetryEnabled": false,
+  "buildVersion": "unreleased"
+}
+

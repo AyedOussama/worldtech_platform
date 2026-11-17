@@ -1,0 +1,31 @@
+@if (!hasToken() && !reset) { <wt-recovery-page /> } @else {
+  <section class="auth-frame"><div class="auth-card">
+    <header class="auth-heading"><h1>{{ reset ? 'Nouveau mot de passe' : 'Confirmation de votre adresse email' }}</h1>
+      <p>{{ reset ? 'Choisissez un mot de passe unique pour WorldTech' : 'Confirmez votre adresse pour poursuivre votre accès' }}</p></header>
+    @if (done()) {
+      <p role="status">{{ reset ? 'Votre mot de passe a été mis à jour. Reconnectez-vous ; les règles de validation et de double authentification restent applicables.' : 'Votre adresse email est confirmée. Reconnectez-vous pour actualiser votre accès.' }}</p>
+    } @else if (!hasToken()) {
+      <p class="auth-notice">Ce lien est absent ou ne peut pas être repris après rechargement. Rouvrez le lien reçu ou demandez-en un nouveau.</p>
+      <a matButton="filled" routerLink="/auth/mot-de-passe-oublie">Demander un nouveau lien</a>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="submit()" [attr.aria-busy]="ui.busy()">
+        @if (ui.issues().length) { <wt-error-summary [issues]="ui.issues()" /> }
+        @if (reset) {
+          <div class="auth-fields">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Nouveau mot de passe</mat-label>
+              <input matInput id="new-password" type="password" formControlName="password" autocomplete="new-password" maxlength="256" required [readonly]="ui.busy()" />
+              <mat-hint>15 à 128 caractères. Les espaces sont conservés.</mat-hint><mat-error>Choisissez un mot de passe de 15 à 128 caractères</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Confirmer le mot de passe</mat-label>
+              <input matInput id="confirm-password" type="password" formControlName="confirmation" autocomplete="new-password" maxlength="256" required [readonly]="ui.busy()" />
+              <mat-error>Confirmez votre mot de passe</mat-error>
+            </mat-form-field>
+          </div>
+        }
+        <wt-auth-message [error]="ui.error()" [notice]="ui.notice()" [seconds]="ui.seconds()" />
+        <button matButton="filled" type="submit" class="auth-submit" [disabled]="ui.busy() || ui.seconds() > 0">{{ ui.busy() ? 'Confirmation…' : reset ? 'Mettre à jour le mot de passe' : 'Confirmer mon adresse' }}</button>
+      </form>
+    }
+    <nav class="auth-secondary"><a routerLink="/connexion">Retour à la connexion</a></nav>
+  </div></section>
+}

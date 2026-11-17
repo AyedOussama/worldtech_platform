@@ -1,0 +1,103 @@
+<section data-development-only="WT_DEV_TICKETS_ONLY">
+  <wt-page-header [title]="title" [description]="space === 'admin' ? 'Qualification et suivi des demandes' : 'Atelier Boréal · Vos demandes par site'">
+    @if (space === 'client') {
+      <button matButton="filled" type="button" (click)="openForm()"><span class="inline-icon"><svg lucidePlus class="wt-icon" aria-hidden="true"></svg>Déclarer un incident fictif</span></button>
+    } @else {
+      <button matButton="outlined" type="button" (click)="openForm()">Formulaire de référence</button>
+    }
+    <button matIconButton type="button" aria-label="Options de la liste" [matMenuTriggerFor]="listMenu"><svg lucideEllipsis class="wt-icon" aria-hidden="true"></svg></button>
+    <mat-menu #listMenu="matMenu">
+      <button mat-menu-item (click)="resetFilters()">Réinitialiser les filtres</button>
+      <button mat-menu-item (click)="showInfo()">À propos de cet aperçu</button>
+    </mat-menu>
+  </wt-page-header>
+
+  <div class="list-panel panel">
+    <div class="state-filters" role="group" aria-label="Filtrer par statut">
+      @for (tab of tabs; track tab.value) {
+        <button type="button" class="state-filter" [class.selected]="state() === tab.value"
+          [attr.aria-pressed]="state() === tab.value" (click)="setFilter('state', tab.value)">
+          {{ tab.label }} <span class="tabular">{{ count(tab.value) }}</span>
+        </button>
+      }
+    </div>
+    <div class="filter-bar" role="search" aria-label="Filtres des tickets fictifs">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-label>Rechercher un ticket fictif</mat-label>
+        <svg matPrefix lucideSearch class="wt-icon search-icon" aria-hidden="true"></svg>
+        <input #search matInput type="search" maxlength="160" [value]="query()" (input)="setFilter('q', search.value)" autocomplete="off" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Site</mat-label>
+        <mat-select [value]="site()" (selectionChange)="setFilter('site', $event.value)">
+          <mat-option value="">Tous les sites</mat-option>
+          @for (option of sites; track option) { <mat-option [value]="option">{{ option }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Priorité</mat-label>
+        <mat-select [value]="priority()" (selectionChange)="setFilter('priority', $event.value)">
+          <mat-option value="">Toutes les priorités</mat-option>
+          @for (key of priorityKeys; track key) { <mat-option [value]="key">{{ priorities[key] }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="list-context">
+      <span role="status">{{ scenario() === 'ready' ? filtered().length + (filtered().length === 1 ? ' ticket fictif' : ' tickets fictifs') : 'État de démonstration' }}</span>
+      @if (activeFilters()) { <button matButton type="button" (click)="resetFilters()">Effacer les filtres</button> }
+      <span class="time-context">10 novembre 2026 · Heures de Paris</span>
+    </div>
+
+    @switch (scenario()) {
+      @case ('loading') {
+        <div class="loading-state" aria-busy="true" aria-label="Chargement simulé"><p>Chargement simulé des tickets…</p>
+          @for (row of [1, 2, 3]; track row) { <div class="skeleton-row" aria-hidden="true"></div> }
+        </div>
+      }
+      @case ('empty') {
+        <wt-empty-state title="Aucun incident dans cet exemple" message="La liste fictive est vide. Aucun dossier réel n’a été consulté.">
+          <button matButton="outlined" (click)="scenario.set('ready')">Afficher les données fictives</button>
+        </wt-empty-state>
+      }
+      @case ('network') {
+        <wt-empty-state title="Réseau indisponible — simulation" message="Dans un parcours réel, les filtres et la saisie doivent rester disponibles.">
+          <button matButton="outlined" (click)="scenario.set('ready')">Revenir aux données fictives</button>
+        </wt-empty-state>
+      }
+      @case ('forbidden') {
+        <wt-empty-state title="Accès refusé — simulation" message="Une réponse serveur refusée ne doit pas être remplacée par des données de démonstration.">
+          <button matButton="outlined" (click)="scenario.set('ready')">Quitter la simulation de refus</button>
+        </wt-empty-state>
+      }
+      @case ('stale') {
+        <wt-empty-state title="Version périmée — simulation" message="Une nouvelle lecture serveur serait nécessaire avant de répéter une commande. Aucun rejeu automatique.">
+          <button matButton="outlined" (click)="scenario.set('ready')">Revenir aux données fictives</button>
+        </wt-empty-state>
+      }
+      @default {
+        @if (filtered().length === 0) {
+          <wt-empty-state title="Aucun résultat" message="Modifiez la recherche ou réinitialisez les filtres.">
+            <button matButton="outlined" (click)="resetFilters()">Réinitialiser les filtres</button>
+          </wt-empty-state>
+        } @else {
+          <wt-reference-ticket-list [tickets]="displayed()" [showAccount]="space === 'admin'" [lastOpened]="lastOpened()" (ticketOpened)="openTicket($event)" />
+          <footer class="list-footer">
+            <span class="tabular">{{ range() }}</span>
+            <nav class="pagination" aria-label="Pagination des tickets fictifs">
+              <button matIconButton type="button" aria-label="Page précédente" [disabled]="pageIndex() === 0" (click)="setPage(pageIndex() - 1)"><svg lucideChevronLeft class="wt-icon" aria-hidden="true"></svg></button>
+              <span class="tabular">Page {{ pageIndex() + 1 }} sur {{ pageCount() }}</span>
+              <button matIconButton type="button" aria-label="Page suivante" [disabled]="pageIndex() + 1 === pageCount()" (click)="setPage(pageIndex() + 1)"><svg lucideChevronRight class="wt-icon" aria-hidden="true"></svg></button>
+            </nav>
+          </footer>
+        }
+      }
+    }
+  </div>
+  <details class="fixture-tools"><summary>Tester les états de l’interface</summary>
+    <label for="list-scenario">État de la liste</label>
+    <select #scenarioChoice id="list-scenario" [value]="scenario()" (change)="setScenario(scenarioChoice.value)">
+      <option value="ready">Données fictives</option><option value="loading">Chargement simulé</option><option value="empty">Liste vide</option>
+      <option value="network">Erreur réseau</option><option value="forbidden">Accès refusé</option><option value="stale">Version périmée</option>
+    </select>
+  </details>
+</section>

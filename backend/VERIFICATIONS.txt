@@ -1,0 +1,42 @@
+Vérifications courantes — contrats et tickets du lot 06 — 02 novembre 2026
+
+Maven verify final à 10:54:23 locale : 138 Surefire + 155 Failsafe = 293, zéro échec/erreur/skip.
+PostgreSQL/PostGIS, Tomcat et SMTP Mailpit réels isolés ; aucun H2 ni email externe.
+Identité web/CSRF, vérification/reset, MFA/bootstrap et mobile opaque conservés et retestés.
+Invitations client atomiques, dossiers versionnés, soumissions idempotentes et décisions ADMIN testés.
+Comptes BUSINESS/INDIVIDUAL, membres, sites/contacts, équipements et habilitations testés.
+Parc : ADMIN seul écrit ; CLIENT lit son périmètre SQL avant pagination/filtres/totaux, aucun site par défaut.
+Révocation immédiate à la prochaine requête, réadhésion sans ancien droit, concurrence et FK vérifiées.
+Contrats/calendriers/SLA par révisions immuables, SQL interdit aussi l'ajout tardif aux anciennes couvertures.
+Tickets par site autorisé ; équipement, contrat et proposition facultatifs, forfaits CLIENT HT/EUR, null non égal à zéro.
+Priorités demandée/retenue séparées, résolution ADMIN sans mission, confirmation/persistance CLIENT explicites.
+Notes internes et échanges publics séparés jusqu'aux tables/curseurs/versions, aucun contenu libre dans l'outbox.
+Concurrence création/idempotence, qualification/proposition et révision de contrat ; rollback audit/outbox réel.
+Justificatifs technicien obligatoires : approbation bloquée dans le domaine et SQL, sans contournement.
+Cumul CLIENT+TECHNICIAN refusé par l'admission ; pas d'activation technicien via approbation client.
+OIDC : 24 tests avec double signé local, dont 5 inscriptions explicites ; Google réel non validé et désactivé.
+Scripts Python : six tests réussis ; ACL/idempotence/locks.
+OpenAPI 3.1/version 0.6.0 : 117 chemins/83 schémas, validation indépendante et inventaire GET/POST/PUT/PATCH.
+Validateur statique et manifeste public 300 fichiers ; distincts des tests HTTP/SQL réellement exécutés.
+Sources : Trivy 0.76.1 secret uniquement, zéro constat ; aucun gros scan d'image relancé.
+Neuf secrets externes + clé décodée absents des sources et de 42 345 entrées JAR/bibliothèques imbriquées.
+JAR SHA-256 : 279ec3b2ae9fd550a3c0ac7d568ef53c9b646b23b7a6eda836dcc401ccd5c641.
+POM/dépendances et V1-V13 inchangés ; V14-V16 additives. Base Compose persistante toujours V1.
+Ancien SBOM/OSV du lot 03 conservé hors dépôt ; pas de nouveau scan dépendances/images au lot 06.
+Autres projets Docker laissés intacts et arrêtés ; aucun conteneur de test restant.
+
+Non vérifiés : pièces technicien exactes/chaîne documentaire privée-antivirus, frontends,
+Google réel/staging/App Links, console opérateur réelle, nouvelle image lot 06,
+CI distante, TLS/proxy cible, charge cible, restauration, revue indépendante et pentest.
+Missions/affectations, calcul d'échéances/alertes/statistiques SLA, livraison complète d'événements et purge non livrés.
+PostGIS lot 02 : 6 observations critiques/126 élevées non traitées ; patch Temurin en écart.
+Recette backend locale obtenue ; pas de certification ASVS ou approbation production.
+
+Preuves courantes : docs/preuves/lot-06-verifications.md.
+Contrat et décisions : docs/lot-06-contrats-tickets.md.
+Comptes/parc historiques : docs/preuves/lot-05-verifications.md.
+Admission historique : docs/preuves/lot-04-verifications.md.
+Contrat et réserve documentaire : docs/lot-04-onboarding.md.
+Identité et scans historiques : docs/preuves/lot-03-verifications.md.
+Historique et risques conservés : docs/preuves/lot-02-verifications.md.
+État du pack initial : docs/preuves/VERIFICATIONS-pack-initial.txt.

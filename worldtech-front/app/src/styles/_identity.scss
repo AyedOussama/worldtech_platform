@@ -1,0 +1,24 @@
+.auth-frame { width: 100%; max-width: 480px; margin-inline: auto; }
+.auth-frame.wide { max-width: 640px; }
+.auth-card { background: var(--wt-surface); border: 1px solid var(--wt-border); border-radius: 12px; padding: 32px; }
+.auth-heading { margin-bottom: 32px; }
+.auth-heading h1 { font-weight: 500; font-size: 1.75rem; line-height: 1.3; margin: 0 0 12px; }
+.auth-heading p { margin: 0; color: var(--wt-secondary); }
+.auth-step { font-size: .8125rem; color: var(--wt-muted); margin: 0 0 8px; }
+.auth-fields { display: grid; gap: 24px; }
+.auth-fields mat-form-field { width: 100%; min-width: 0; }
+.auth-submit { width: 100%; margin-top: 24px; }
+.auth-secondary { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 24px; font-size: .875rem; }
+.auth-secondary a { min-height: 44px; display: inline-flex; align-items: center; }
+.auth-caption { color: var(--wt-muted); font-size: .8125rem; margin: 24px 0 0; }
+.auth-error, .auth-notice { font-size: .9375rem; padding: 16px; border-left: 3px solid var(--wt-error); border-radius: 4px; margin: 24px 0; color: var(--wt-error); background: var(--wt-error-surface); }
+.auth-notice { color: var(--wt-text); border-color: var(--wt-accent); background: var(--wt-info-surface); }
+.auth-wait { color: var(--wt-secondary); font-size: .875rem; }
+.auth-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.auth-card h2 { font-size: 1.125rem; font-weight: 500; margin: 32px 0 16px; }
+.auth-secret { font-family: ui-monospace, monospace; overflow-wrap: anywhere; user-select: all; background: var(--wt-selected); border-radius: 8px; padding: 16px; }
+.recovery-codes { font-family: ui-monospace, monospace; font-size: .875rem; padding-left: 24px; overflow-wrap: anywhere; }
+.recovery-codes li { padding: 8px 0; }
+.auth-option { display: flex; align-items: start; gap: 12px; padding-block: 12px; }
+.auth-option input { width: 20px; height: 20px; flex-shrink: 0; }
+@media (max-width: 600px) { .auth-card { padding: 24px 20px; } .auth-heading h1 { font-size: 1.5rem; } }

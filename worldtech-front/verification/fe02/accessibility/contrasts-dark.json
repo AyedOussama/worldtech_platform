@@ -1,0 +1,62 @@
+[
+  {
+    "selector": ".state-filter.selected",
+    "property": "color",
+    "foreground": "rgb(243, 244, 246)",
+    "background": "rgb(25, 28, 34)",
+    "ratio": 15.507058101294565,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".ticket-link",
+    "property": "color",
+    "foreground": "rgb(243, 244, 246)",
+    "background": "rgb(25, 28, 34)",
+    "ratio": 15.507058101294565,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".status-label[data-tone=\"warning\"]",
+    "property": "color",
+    "foreground": "rgb(244, 202, 118)",
+    "background": "rgb(52, 43, 28)",
+    "ratio": 8.987699619853512,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".status-label[data-tone=\"info\"]",
+    "property": "color",
+    "foreground": "rgb(140, 173, 255)",
+    "background": "rgb(32, 44, 69)",
+    "ratio": 6.325535186256913,
+    "min": 4.5,
+    "outlineStyle": "none",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".theme-picker select",
+    "property": "borderColor",
+    "foreground": "rgb(115, 129, 152)",
+    "background": "rgb(25, 28, 34)",
+    "ratio": 4.325330695566591,
+    "min": 3,
+    "outlineStyle": "solid",
+    "outlineWidth": "3px"
+  },
+  {
+    "selector": ".theme-picker select",
+    "property": "outlineColor",
+    "foreground": "rgb(140, 173, 255)",
+    "background": "rgb(25, 28, 34)",
+    "ratio": 7.749896796236119,
+    "min": 3,
+    "outlineStyle": "solid",
+    "outlineWidth": "3px"
+  }
+]
