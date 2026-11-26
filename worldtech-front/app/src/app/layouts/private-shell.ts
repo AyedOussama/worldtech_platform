@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { LucideShieldCheck, LucideUserRound } from '@lucide/angular';
+import { LucideBriefcaseBusiness, LucideHardHat, LucideShieldCheck, LucideUserRound, LucideUsersRound } from '@lucide/angular';
 import { ApplicationShell, NavigationItem } from './application-shell';
 import { SessionService } from '../core/auth/session-service';
 import { AuthFormState } from '../features/auth/auth-form-state';
@@ -28,7 +28,12 @@ export class PrivateShell {
   private readonly router = inject(Router);
   protected readonly space: 'admin' | 'client' = inject(ActivatedRoute).snapshot.pathFromRoot.some((route) => route.routeConfig?.path === 'admin') ? 'admin' : 'client';
   protected readonly items: readonly NavigationItem[] = [{ label: 'Mon accès', icon: LucideUserRound, path: '/' + this.space },
-    ...(this.space === 'admin' ? [{ label: 'Sécurité', icon: LucideShieldCheck, path: '/auth/securite' }] : []),
+    ...(this.space === 'admin' ? [
+      { label: 'Missions', icon: LucideBriefcaseBusiness, path: '/admin/missions' },
+      { label: 'Techniciens', icon: LucideHardHat, path: '/admin/techniciens' },
+      { label: 'Clients', icon: LucideUsersRound, path: '/admin/clients' },
+      { label: 'Sécurité', icon: LucideShieldCheck, path: '/auth/securite' },
+    ] : []),
   ];
   protected logout(): void {
     this.ui.run(this.session.logout(), () => void this.router.navigateByUrl('/connexion', { replaceUrl: true }));

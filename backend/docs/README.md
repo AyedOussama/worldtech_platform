@@ -1,8 +1,8 @@
 # Backend — documentation et état d'avancement
 
-## État courant — contrats et tickets du lot 06 vérifiés localement
+## État courant — missions et découverte du lot 07 vérifiées localement
 
-Lots antérieurs conservés ; contrats/calendriers versionnés et tickets par site testés sur PostgreSQL réel : **293 Java + 6 Python**. Forfaits CLIENT facultatifs HT/EUR sans facture implicite, notes internes séparées, résolution ADMIN puis confirmation CLIENT. Approbation technicien bloquée sans pièces contrôlées (09), Google désactivé. Aucun frontend, mission, upload ou déploiement.
+Lots antérieurs conservés ; missions ADMIN publiées par révisions financières immuables et découverte mobile bornée testées sur PostgreSQL/PostGIS réel : **320 tests Java (154 Surefire + 166 Failsafe)**. Rémunération HT/EUR obligatoire, frais facultatifs distincts de zéro, point public approximatif sans adresse ni contact privé. Approbation technicien bloquée sans pièces contrôlées (09), Google désactivé. Aucun frontend, affectation, upload ou déploiement.
 
 - [Démarrer et tester le backend](../README-dev.md).
 - [Compte rendu du lot 01](lot-01-socle.md) et [preuves](preuves/lot-01-verifications.md).
@@ -11,9 +11,10 @@ Lots antérieurs conservés ; contrats/calendriers versionnés et tickets par si
 - [Preuves historiques du lot 03 : 172 tests Java + 6 Python](preuves/lot-03-verifications.md).
 - [Contrat du lot 04](lot-04-onboarding.md), [preuves historiques](preuves/lot-04-verifications.md), [revue de menace](securite/onboarding.md).
 - [Contrat du lot 05](lot-05-comptes-parc.md), [preuves historiques](preuves/lot-05-verifications.md).
-- [Contrat et décisions du lot 06](lot-06-contrats-tickets.md), [preuves courantes et matrice SEC](preuves/lot-06-verifications.md).
-- [Contrat OpenAPI](../openapi/maintenance-api.json).
-- Suite possible : **07 — missions, conditions financières ADMIN et découverte géographique**, après ses arbitrages, sans démarrage automatique. Dépendance documentaire technicien (09) et réserves de production toujours ouvertes : images, staging, revue et pentest.
+- [Contrat et décisions du lot 06](lot-06-contrats-tickets.md), [preuves historiques](preuves/lot-06-verifications.md).
+- [Contrat et décisions du lot 07](lot-07-missions.md), [preuves courantes et limites](preuves/lot-07-verifications.md).
+- [Contrat OpenAPI 0.7.0](../openapi/maintenance-api.json).
+- Suite possible : **08 — candidatures et affectations**, sans démarrage automatique. Dépendance documentaire technicien (09) et réserves de production toujours ouvertes : images, staging, revue et pentest.
 
 ## Cadrage historique — lot 00
 

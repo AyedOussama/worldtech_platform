@@ -594,6 +594,119 @@ export type ProblemDetail = {
     }>;
 };
 
+export type MissionCreateBody = {
+    ticketId?: string | null;
+    contractRevisionId?: string | null;
+    title: string;
+    publicSummary: string;
+    skills: Array<string>;
+    windowStart: string;
+    windowEnd: string;
+    publicLatitude: number;
+    publicLongitude: number;
+    publicLabel?: string | null;
+};
+
+export type MissionFinancialBody = {
+    /**
+     * Montant HT EUR, deux décimales au maximum, sans arrondi.
+     */
+    remuneration: string;
+    /**
+     * Frais HT EUR facultatifs ; null distinct de zéro.
+     */
+    expenses?: string | null;
+    /**
+     * Motif interne de révision, jamais exposé au mobile.
+     */
+    reason?: string | null;
+};
+
+export type MissionCommandView = {
+    resourceId: string;
+    version: number;
+    state: 'DRAFT' | 'PUBLISHED';
+};
+
+export type MissionSummaryView = {
+    missionId: string;
+    siteId: string;
+    ticketId?: string | null;
+    contractRevisionId?: string | null;
+    title: string;
+    publicSummary: string;
+    skills: Array<string>;
+    windowStart: string;
+    windowEnd: string;
+    publicLatitude: string;
+    publicLongitude: string;
+    publicLabel?: string | null;
+    state: 'DRAFT' | 'PUBLISHED';
+    financialRevision: number;
+    version: number;
+    createdAt: string;
+    publishedAt?: string | null;
+};
+
+export type MissionFinancialView = {
+    number: number;
+    remuneration: string;
+    expenses?: string | null;
+    currency: string;
+    taxBasis: string;
+    remunerationBasis: string;
+    expensesBasis: string;
+    reason?: string | null;
+    authorUserId: string;
+    createdAt: string;
+};
+
+export type MissionDetailView = {
+    mission: MissionSummaryView;
+    financial?: MissionFinancialView | null;
+};
+
+export type MissionPageView = {
+    items: Array<MissionSummaryView>;
+    total: number;
+    page: number;
+    size: number;
+};
+
+export type MissionFinancialHistoryView = {
+    items: Array<MissionFinancialView>;
+    nextAfter: number;
+};
+
+export type MissionDiscoveryTermsView = {
+    revision: number;
+    remuneration: string;
+    expenses?: string | null;
+    currency: string;
+    taxBasis: string;
+    remunerationBasis: string;
+    expensesBasis: string;
+};
+
+export type MissionDiscoveryItemView = {
+    missionId: string;
+    title: string;
+    publicSummary: string;
+    skills: Array<string>;
+    windowStart: string;
+    windowEnd: string;
+    publicLatitude: string;
+    publicLongitude: string;
+    publicLabel?: string | null;
+    distanceMeters: number;
+    financial: MissionDiscoveryTermsView;
+};
+
+export type MissionDiscoveryPageView = {
+    items: Array<MissionDiscoveryItemView>;
+    nextCursor?: string | null;
+};
+
 export type ClientRegistrationBodyWritable = {
     token: Opaque;
     email: string;
@@ -676,6 +789,38 @@ export type PageSize = number;
 export type AfterRevision = number;
 
 export type AdmissionState = 'DRAFT' | 'SUBMITTED' | 'NEEDS_INFORMATION' | 'APPROVED' | 'REJECTED';
+
+export type MissionId = string;
+
+export type MissionStateFilter = 'DRAFT' | 'PUBLISHED';
+
+export type MissionAfterRevision = number;
+
+export type MissionLatitude = number;
+
+export type MissionLongitude = number;
+
+export type MissionRadiusKm = number;
+
+/**
+ * Compétences répétées, 1 à 10 valeurs de 80 caractères maximum, insensibles à la casse.
+ */
+export type MissionSkills = Array<string>;
+
+/**
+ * Début de fenêtre minimal ; heure serveur si absente ou passée.
+ */
+export type MissionWindowFrom = string;
+
+/**
+ * Fin de fenêtre maximale ; doit être postérieure à from.
+ */
+export type MissionWindowTo = string;
+
+/**
+ * Curseur opaque Base64URL issu de nextCursor.
+ */
+export type MissionCursor = string;
 
 export type ContractDefinition = ContractDefinitionBody;
 
@@ -4654,3 +4799,245 @@ export type GetLoginOauth2CodeGoogleResponses = {
 };
 
 export type GetLoginOauth2CodeGoogleResponse = GetLoginOauth2CodeGoogleResponses[keyof GetLoginOauth2CodeGoogleResponses];
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsData = {
+    body?: never;
+    path: {
+        accountId: string;
+        siteId: string;
+    };
+    query?: {
+        state?: 'DRAFT' | 'PUBLISHED';
+        page?: number;
+        size?: number;
+    };
+    url: '/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/missions';
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsError = GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsErrors[keyof GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsErrors];
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponses = {
+    /**
+     * Page de missions du site
+     */
+    200: MissionPageView;
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponse = GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponses[keyof GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponses];
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsData = {
+    body: MissionCreateBody;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        accountId: string;
+        siteId: string;
+    };
+    query?: never;
+    url: '/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/missions';
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsError = PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsErrors[keyof PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsErrors];
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponses = {
+    /**
+     * Mission brouillon créée
+     */
+    201: MissionCommandView;
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponse = PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponses[keyof PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsResponses];
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdData = {
+    body?: never;
+    path: {
+        accountId: string;
+        siteId: string;
+        missionId: string;
+    };
+    query?: never;
+    url: '/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/missions/{missionId}';
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdError = GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdErrors[keyof GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdErrors];
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdResponses = {
+    /**
+     * Détail ADMIN avec ETag de version
+     */
+    200: MissionDetailView;
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdResponse = GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdResponses[keyof GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdResponses];
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishData = {
+    body: MissionFinancialBody;
+    headers: {
+        /**
+         * ETag fort de la dernière lecture ; pas de wildcard. 412 si périmé.
+         */
+        'If-Match': string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        accountId: string;
+        siteId: string;
+        missionId: string;
+    };
+    query?: never;
+    url: '/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/missions/{missionId}/publish';
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishError = PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishErrors[keyof PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishErrors];
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishResponses = {
+    /**
+     * Mission publiée
+     */
+    200: MissionCommandView;
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishResponse = PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishResponses[keyof PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdPublishResponses];
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsData = {
+    body?: never;
+    path: {
+        accountId: string;
+        siteId: string;
+        missionId: string;
+    };
+    query?: {
+        after?: number;
+        size?: number;
+    };
+    url: '/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/missions/{missionId}/financial-revisions';
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsError = GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsErrors[keyof GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsErrors];
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponses = {
+    /**
+     * Révisions par numéro croissant
+     */
+    200: MissionFinancialHistoryView;
+};
+
+export type GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponse = GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponses[keyof GetApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponses];
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsData = {
+    body: MissionFinancialBody;
+    headers: {
+        /**
+         * ETag fort de la dernière lecture ; pas de wildcard. 412 si périmé.
+         */
+        'If-Match': string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        accountId: string;
+        siteId: string;
+        missionId: string;
+    };
+    query?: never;
+    url: '/api/web/v1/admin/client-accounts/{accountId}/sites/{siteId}/missions/{missionId}/financial-revisions';
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsError = PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsErrors[keyof PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsErrors];
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponses = {
+    /**
+     * Nouvelle révision courante
+     */
+    200: MissionCommandView;
+};
+
+export type PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponse = PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponses[keyof PostApiWebV1AdminClientAccountsByAccountIdSitesBySiteIdMissionsByMissionIdFinancialRevisionsResponses];
+
+export type GetApiMobileV1TechnicianMissionsNearbyData = {
+    body?: never;
+    path?: never;
+    query: {
+        latitude: number;
+        longitude: number;
+        radiusKm?: number;
+        /**
+         * Compétences répétées, 1 à 10 valeurs de 80 caractères maximum, insensibles à la casse.
+         */
+        skills?: Array<string>;
+        /**
+         * Début de fenêtre minimal ; heure serveur si absente ou passée.
+         */
+        from?: string;
+        /**
+         * Fin de fenêtre maximale ; doit être postérieure à from.
+         */
+        to?: string;
+        /**
+         * Curseur opaque Base64URL issu de nextCursor.
+         */
+        cursor?: string;
+        size?: number;
+    };
+    url: '/api/mobile/v1/technician/missions/nearby';
+};
+
+export type GetApiMobileV1TechnicianMissionsNearbyErrors = {
+    /**
+     * Erreur expurgée RFC 9457. Les refus de sécurité utilisent aussi ce format, sans redirection vers une page de connexion. Aucun access token, message d'exception, SQL, valeur rejetée ou URL demandée dans le corps.
+     */
+    default: ProblemDetail;
+};
+
+export type GetApiMobileV1TechnicianMissionsNearbyError = GetApiMobileV1TechnicianMissionsNearbyErrors[keyof GetApiMobileV1TechnicianMissionsNearbyErrors];
+
+export type GetApiMobileV1TechnicianMissionsNearbyResponses = {
+    /**
+     * Missions publiques à proximité
+     */
+    200: MissionDiscoveryPageView;
+};
+
+export type GetApiMobileV1TechnicianMissionsNearbyResponse = GetApiMobileV1TechnicianMissionsNearbyResponses[keyof GetApiMobileV1TechnicianMissionsNearbyResponses];

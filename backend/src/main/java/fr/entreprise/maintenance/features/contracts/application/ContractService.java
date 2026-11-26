@@ -58,6 +58,8 @@ public class ContractService implements ContractCoverage {
     }
     public ContractStore.SiteRevision siteRevision(IdentitySession actor,UUID account,UUID site,UUID revision) { assets.authorizeSite(actor,account,site,false); return store.siteRevision(account,site,revision); }
     @Override @Transactional(propagation=Propagation.MANDATORY)
+    public void requireAccountRevision(UUID accountId,UUID revisionId) { store.requireRevision(accountId,revisionId); }
+    @Override @Transactional(propagation=Propagation.MANDATORY)
     public void requireApplicable(UUID accountId,UUID revisionId,UUID siteId,UUID equipmentId,Instant declaredAt) { store.applicable(accountId,revisionId,siteId,equipmentId,declaredAt); }
     private static void bounds(int page,int size) { if(page<0 || page>10000 || size<1 || size>100) { throw ContractFailure.invalid(); } }
     private static void historyBounds(long after,int size) { if(after< -1 || size<1 || size>100) { throw ContractFailure.invalid(); } }

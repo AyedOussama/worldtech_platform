@@ -63,6 +63,9 @@ public class JdbcContractStore implements ContractStore {
         var definition=new ContractDefinition(row.name(),row.notes(),row.from(),row.until(),coverage,calendar(account,revision,row.mode()),rules(account,revision),row.reason());
         return new ContractRevision(row.contract(),revision,row.number(),definition,row.author(),row.created());
     }
+    @Override public void requireRevision(UUID account,UUID revision) {
+        if(jdbc.queryForObject("SELECT count(*) FROM app.contract_revision WHERE account_id=? AND revision_id=?",Long.class,account,revision)==0) { throw missing(); }
+    }
     @Override public ContractRevision applicable(UUID account,UUID revision,UUID site,UUID equipment,Instant at) {
         var ids=jdbc.query("SELECT r.contract_id"+SITE+" AND r.revision_id=? AND r.valid_from<=? AND r.valid_until>? AND (c.coverage_mode='SITE' OR EXISTS(SELECT 1 FROM app.contract_equipment_coverage e WHERE e.account_id=r.account_id AND e.revision_id=r.revision_id AND e.site_id=c.site_id AND e.equipment_id=?))",
                 (r,i)->r.getObject(1,UUID.class),account,site,revision,ts(at),ts(at),equipment);

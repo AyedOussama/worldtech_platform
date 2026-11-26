@@ -19,7 +19,7 @@ class AdmissionMigrationIT {
             }
             try(var c=PostgisFixture.migrator(database);var s=c.createStatement();var r=s.executeQuery("SELECT string_agg(version||':'||checksum,',' ORDER BY installed_rank) FROM app.flyway_schema_history")) { r.next(); before=r.getString(1); }
             var upgrade=PostgisFixture.migration(database).load();
-            assertThat(upgrade.migrate().migrationsExecuted).isEqualTo(9);
+            assertThat(upgrade.migrate().migrationsExecuted).isEqualTo(11);
             upgrade.validate(); assertThat(upgrade.migrate().migrationsExecuted).isZero();
             try(var c=PostgisFixture.migrator(database);var s=c.createStatement();var r=s.executeQuery("SELECT string_agg(version||':'||checksum,',' ORDER BY installed_rank) FROM app.flyway_schema_history WHERE version::integer<=7")) { r.next(); assertThat(r.getString(1)).isEqualTo(before); }
             try(var c=PostgisFixture.runtime(database);var s=c.prepareStatement("SELECT count(*) FROM app.auth_session WHERE session_id=? AND revoked_at IS NULL AND authenticated_at IS NOT NULL")) {

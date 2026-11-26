@@ -1,0 +1,43 @@
+
+> worldtech-web@0.1.0 start
+> ng serve --host localhost --port 4200 --proxy-config proxy.conf.json
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names                    |  Raw size
+styles.css          | styles                   |  33.82 kB | 
+main.js             | main                     |  12.86 kB | 
+chunk-X32G33UH.js   | -                        |  12.21 kB | 
+chunk-475JW6AP.js   | -                        |   7.79 kB | 
+chunk-ZM5ECEYY.js   | -                        |   3.34 kB | 
+chunk-LERTRZOA.js   | -                        |   2.22 kB | 
+chunk-IYSYJF74.js   | -                        |   1.63 kB | 
+chunk-DJOGPJGE.js   | -                        |   1.18 kB | 
+chunk-VUJOFXKG.js   | -                        | 987 bytes | 
+chunk-PTSUB7PQ.js   | -                        | 892 bytes | 
+
+                    | Initial total            |  76.93 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-QNCKF2DX.js   | ticket-reference-page    | 126.01 kB | 
+chunk-V3KVWZWW.js   | admin-missions-page      |  80.41 kB | 
+chunk-LL3AHMR2.js   | login-page               |  79.97 kB | 
+chunk-L4DWYNZX.js   | mfa-page                 |  36.04 kB | 
+chunk-IMD4HILR.js   | -                        |  23.82 kB | 
+chunk-X45MNM6W.js   | action-confirmation-page |  18.34 kB | 
+chunk-44XUNAVO.js   | -                        |  11.41 kB | 
+chunk-4DJVLMQT.js   | -                        |  10.94 kB | 
+chunk-A5YIOF3C.js   | admin-entry              |   8.98 kB | 
+chunk-3RHTXMI4.js   | account-access-page      |   8.64 kB | 
+chunk-QSPQ32RP.js   | component-example        |   7.43 kB | 
+chunk-7WHQ5KVJ.js   | -                        |   6.82 kB | 
+chunk-CDXWGCDK.js   | -                        |   5.34 kB | 
+chunk-NT55R4QP.js   | session-unavailable      |   4.50 kB | 
+chunk-QWOZRNJS.js   | -                        |   4.50 kB | 
+...and 10 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [8.824 seconds] - 2026-11-24T08:23:18.895Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m

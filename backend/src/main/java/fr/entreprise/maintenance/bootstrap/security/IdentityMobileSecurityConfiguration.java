@@ -21,6 +21,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -46,6 +47,7 @@ public class IdentityMobileSecurityConfiguration {
         };
         // A web cookie never authenticates this channel, including MFA_PENDING administrators.
         http.securityMatcher("/api/mobile/v1/**")
+                .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .securityContext(context -> context.securityContextRepository(new NullSecurityContextRepository()))
                 .csrf(AbstractHttpConfigurer::disable) // Only this cookie-free, stateless channel, never the web chain.
@@ -61,6 +63,7 @@ public class IdentityMobileSecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/mobile/v1/auth/reauthenticate", "/api/mobile/v1/auth/identities/google/link",
                                 "/api/mobile/v1/auth/identities/google/unlink").hasAuthority("IDENTITY_READ")
                         .requestMatchers(HttpMethod.GET, "/api/mobile/v1/me").hasAuthority("IDENTITY_READ")
+                        .requestMatchers(HttpMethod.GET, "/api/mobile/v1/technician/missions/nearby").hasRole("TECHNICIAN")
                         .requestMatchers(HttpMethod.POST,"/api/mobile/v1/onboarding/technician/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/mobile/v1/onboarding/technician","/api/mobile/v1/onboarding/technician/history").hasAuthority("IDENTITY_READ")
                         .requestMatchers(HttpMethod.POST,"/api/mobile/v1/onboarding/technician/start","/api/mobile/v1/onboarding/technician/profile","/api/mobile/v1/onboarding/technician/submit").hasAuthority("IDENTITY_READ")

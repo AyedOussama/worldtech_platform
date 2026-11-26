@@ -16,7 +16,7 @@ class ContractsTicketsMigrationIT {
             }
             String before;
             try(var c=PostgisFixture.migrator(db);var s=c.createStatement();var r=s.executeQuery("SELECT string_agg(version||':'||checksum,',' ORDER BY installed_rank) FROM app.flyway_schema_history")) { r.next(); before=r.getString(1); }
-            var flyway=PostgisFixture.migration(db).load(); assertThat(flyway.migrate().migrationsExecuted).isEqualTo(3); flyway.validate(); assertThat(flyway.migrate().migrationsExecuted).isZero();
+            var flyway=PostgisFixture.migration(db).load(); assertThat(flyway.migrate().migrationsExecuted).isEqualTo(5); flyway.validate(); assertThat(flyway.migrate().migrationsExecuted).isZero();
             try(var c=PostgisFixture.migrator(db);var s=c.createStatement();var r=s.executeQuery("SELECT string_agg(version||':'||checksum,',' ORDER BY installed_rank) FROM app.flyway_schema_history WHERE version::int<=13")) { r.next(); assertThat(r.getString(1)).isEqualTo(before); }
             try(var c=PostgisFixture.runtime(db);var s=c.createStatement();var r=s.executeQuery("SELECT result_version,result_state,result_resource_id,(SELECT count(*) FROM app.ticket),(SELECT count(*) FROM app.maintenance_contract) FROM app.command_receipt")) { r.next(); assertThat(r.getLong(1)).isEqualTo(3); assertThat(r.getString(2)).isEqualTo("SUBMITTED"); assertThat(r.getObject(3)).isNull(); assertThat(r.getInt(4)).isZero(); assertThat(r.getInt(5)).isZero(); }
         }

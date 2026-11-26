@@ -1,0 +1,251 @@
+<wt-page-header title="Missions" description="Préparez les interventions du site, publiez leurs conditions et suivez les révisions.">
+  <button matButton="filled" type="button" [disabled]="loading() || !accountId()" (click)="openCreate()">
+    <svg lucidePlus class="wt-icon" aria-hidden="true"></svg>
+    Nouvelle mission
+  </button>
+  <button matButton type="button" [disabled]="loading() || busy()" (click)="reload()">
+    <svg lucideRefreshCw class="wt-icon" aria-hidden="true"></svg>
+    Actualiser
+  </button>
+</wt-page-header>
+
+@if (error()) { <p class="feedback feedback-error" role="alert">{{ error() }}</p> }
+@if (notice()) { <p class="feedback feedback-notice" role="status">{{ notice() }}</p> }
+@if (issues().length > 0) { <wt-error-summary [issues]="issues()" /> }
+
+<section class="context-bar" aria-label="Périmètre de travail">
+  <div class="context-fields">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Compte client</mat-label>
+      <mat-select [value]="accountId()" [disabled]="loading() || busy()" (selectionChange)="selectAccount($event.value)">
+        @for (account of accounts(); track account.accountId) {
+          <mat-option [value]="account.accountId">{{ account.displayName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Site</mat-label>
+      <mat-select [value]="siteId()" [disabled]="loading() || busy() || sites().length === 0" (selectionChange)="selectSite($event.value)">
+        @for (site of sites(); track site.siteId) {
+          <mat-option [value]="site.siteId">{{ siteLabel(site) }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="context-summary" aria-live="polite">
+    <span class="context-count"><strong>{{ counts().all }}</strong> missions</span>
+    <span>{{ counts().draft }} à publier</span>
+    <span>{{ counts().published }} publiées</span>
+  </div>
+  @if (loading()) { <span class="loading" role="status">Chargement…</span> }
+</section>
+
+@if (!loading() && accounts().length === 0) {
+  <wt-empty-state title="Aucun compte client" message="Créez un compte client avant de préparer une mission." />
+} @else if (!loading() && accountId() && sites().length === 0) {
+  <wt-empty-state title="Aucun site" message="Ce compte client ne possède pas encore de site." />
+} @else {
+  <div class="workspace">
+    <aside class="mission-rail" aria-labelledby="queue-title">
+      <div class="rail-head">
+        <div><h2 id="queue-title">File de missions</h2><p>{{ filteredMissions().length }} sur {{ counts().all }}</p></div>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrer les missions">
+        <button type="button" class="filter" [class.active]="filter() === 'ALL'" [attr.aria-pressed]="filter() === 'ALL'" (click)="setFilter('ALL')">
+          Toutes <span>{{ counts().all }}</span>
+        </button>
+        <button type="button" class="filter" [class.active]="filter() === 'DRAFT'" [attr.aria-pressed]="filter() === 'DRAFT'" (click)="setFilter('DRAFT')">
+          À publier <span>{{ counts().draft }}</span>
+        </button>
+        <button type="button" class="filter" [class.active]="filter() === 'PUBLISHED'" [attr.aria-pressed]="filter() === 'PUBLISHED'" (click)="setFilter('PUBLISHED')">
+          Publiées <span>{{ counts().published }}</span>
+        </button>
+      </div>
+      @if (filteredMissions().length === 0) {
+        <div class="rail-empty">
+          <p>Aucune mission dans ce filtre.</p>
+          <button matButton type="button" (click)="setFilter('ALL')">Afficher toutes les missions</button>
+        </div>
+      } @else {
+        <ul class="mission-list">
+          @for (mission of filteredMissions(); track mission.missionId) {
+            <li>
+              <button type="button" class="mission-row" [class.selected]="mission.missionId === selectedId()" (click)="selectMission(mission.missionId)">
+                <span class="mission-copy">
+                  <strong>{{ mission.title }}</strong>
+                  <span>{{ formatWindow(mission.windowStart, mission.windowEnd) }}</span>
+                </span>
+                <span class="mission-meta">
+                  <wt-status-label [label]="stateLabel(mission.state)" [tone]="stateTone(mission.state)" />
+                  <span class="version tabular">v{{ mission.version }}</span>
+                </span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </aside>
+
+    <section class="mission-stage" aria-label="Détail de la mission">
+      @if (mode() === 'create') {
+        <div class="stage-head">
+          <div>
+            <p class="kicker">Nouveau brouillon</p>
+            <h2>Préparer une mission</h2>
+            <p>Renseignez les informations publiques, puis ajoutez les conditions financières à la publication.</p>
+          </div>
+          <button matButton type="button" [disabled]="busy()" (click)="cancelCreate()">Annuler</button>
+        </div>
+        <form class="mission-form" [formGroup]="missionForm" (ngSubmit)="createMission()" novalidate>
+          <fieldset>
+            <legend>Présentation</legend>
+            <div class="form-grid">
+              <mat-form-field class="span-2" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Titre</mat-label>
+                <input id="mission-title" matInput formControlName="title" maxlength="160" autocomplete="off">
+              </mat-form-field>
+              <mat-form-field class="span-2" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Résumé public</mat-label>
+                <textarea id="mission-summary" matInput formControlName="publicSummary" rows="3" maxlength="2000"></textarea>
+              </mat-form-field>
+              <mat-form-field class="span-2" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Compétences, séparées par des virgules</mat-label>
+                <input id="mission-skills" matInput formControlName="skills" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Créneau et localisation</legend>
+            <div class="form-grid">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Début</mat-label>
+                <input id="mission-window-start" matInput type="datetime-local" formControlName="windowStart">
+              </mat-form-field>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Fin</mat-label>
+                <input id="mission-window-end" matInput type="datetime-local" formControlName="windowEnd">
+              </mat-form-field>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Latitude publique</mat-label>
+                <input id="mission-latitude" matInput formControlName="publicLatitude" inputmode="decimal" autocomplete="off">
+              </mat-form-field>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Longitude publique</mat-label>
+                <input id="mission-longitude" matInput formControlName="publicLongitude" inputmode="decimal" autocomplete="off">
+              </mat-form-field>
+              <mat-form-field class="span-2" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Libellé public, facultatif</mat-label>
+                <input id="mission-label" matInput formControlName="publicLabel" maxlength="200" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </fieldset>
+          <div class="form-actions">
+            <button matButton="filled" type="submit" [disabled]="busy() || !accountId() || !siteId()">Créer le brouillon</button>
+            @if (busy()) { <span class="form-status" role="status">Création en cours…</span> }
+          </div>
+        </form>
+      } @else if (detailLoading()) {
+        <div class="stage-loading" role="status">Chargement de la mission…</div>
+      } @else if (detail(); as current) {
+        <div class="stage-head">
+          <div class="stage-title">
+            <p class="kicker">Version {{ current.mission.version }} · révision {{ current.mission.financialRevision }}</p>
+            <h2>{{ current.mission.title }}</h2>
+            <p class="mission-id tabular">{{ current.mission.missionId }}</p>
+          </div>
+          <div class="stage-actions">
+            <wt-status-label [label]="stateLabel(current.mission.state)" [tone]="stateTone(current.mission.state)" />
+            <button matButton type="button" [disabled]="busy()" (click)="refreshSelected()">Recharger la mission</button>
+          </div>
+        </div>
+
+        <div class="next-action">
+          <span class="next-dot" aria-hidden="true"></span>
+          <span>Prochaine action</span>
+          <strong>{{ nextAction(current.mission.state) }}</strong>
+        </div>
+
+        <dl class="mission-facts">
+          <div><dt>Fenêtre</dt><dd>{{ formatWindow(current.mission.windowStart, current.mission.windowEnd) }}</dd></div>
+          <div><dt>Localisation publique</dt><dd>{{ locationLabel(current.mission) }}</dd></div>
+          <div><dt>Compétences</dt><dd class="chips">@for (skill of current.mission.skills; track skill) { <span>{{ skill }}</span> }</dd></div>
+        </dl>
+
+        <div class="public-summary">
+          <h3>Résumé public</h3>
+          <p>{{ current.mission.publicSummary }}</p>
+        </div>
+
+        <section class="finance-block" aria-labelledby="finance-title">
+          <div class="section-heading">
+            <div><h3 id="finance-title">Conditions financières</h3><p>Révision {{ current.mission.financialRevision }}</p></div>
+          </div>
+          @if (current.financial; as financial) {
+            <div class="finance-figures">
+              <div class="finance-figure"><span>Rémunération HT</span><wt-money-display [value]="financial.remuneration" /></div>
+              <div class="finance-figure"><span>Frais HT</span><wt-money-display [value]="financial.expenses ?? null" /></div>
+            </div>
+            @if (financial.reason) { <p class="finance-reason">Motif : {{ financial.reason }}</p> }
+          } @else {
+            <p class="draft-note">Aucune condition publiée. La mission doit être publiée pour être visible des techniciens.</p>
+          }
+          <form class="finance-form" [formGroup]="financialForm" (ngSubmit)="submitFinancial()" novalidate>
+            <div class="section-heading">
+              <div>
+                <h4>@if (current.mission.state === 'DRAFT') { Publier la mission } @else { Créer une révision }</h4>
+                <p>Version attendue : {{ current.mission.version }}. Une version périmée est refusée par le serveur.</p>
+              </div>
+            </div>
+            <div class="form-grid">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Rémunération HT (EUR)</mat-label>
+                <input id="mission-remuneration" matInput formControlName="remuneration" inputmode="decimal" autocomplete="off">
+              </mat-form-field>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Frais HT (EUR), facultatifs</mat-label>
+                <input id="mission-expenses" matInput formControlName="expenses" inputmode="decimal" autocomplete="off">
+              </mat-form-field>
+              <mat-form-field class="span-2" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Motif, facultatif</mat-label>
+                <textarea id="mission-reason" matInput formControlName="reason" rows="2" maxlength="2000"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="form-actions">
+              <button matButton="filled" type="submit" [disabled]="busy()">
+                @if (current.mission.state === 'DRAFT') { Publier } @else { Enregistrer la révision }
+              </button>
+              @if (busy()) { <span class="form-status" role="status">Commande en cours…</span> }
+            </div>
+          </form>
+        </section>
+
+        <section class="history-block" aria-labelledby="history-title">
+          <div class="section-heading"><div><h3 id="history-title">Historique financier</h3><p>Les versions publiées restent consultables.</p></div></div>
+          @if (history().length === 0) {
+            <p class="draft-note">Aucune condition financière enregistrée.</p>
+          } @else {
+            <ol class="timeline">
+              @for (revision of history(); track revision.number) {
+                <li>
+                  <span class="timeline-dot" aria-hidden="true"></span>
+                  <div class="timeline-body">
+                    <div class="timeline-head"><strong>Révision {{ revision.number }}</strong><span>{{ formatDateTime(revision.createdAt) }}</span></div>
+                    <div class="timeline-money">
+                      <span>Rémunération <wt-money-display [value]="revision.remuneration" /></span>
+                      <span>Frais <wt-money-display [value]="revision.expenses ?? null" /></span>
+                    </div>
+                    @if (revision.reason) { <p>{{ revision.reason }}</p> }
+                  </div>
+                </li>
+              }
+            </ol>
+          }
+        </section>
+      } @else {
+        <wt-empty-state title="Aucune mission sélectionnée" message="Choisissez une mission dans la file ou préparez un nouveau brouillon.">
+          <button matButton="filled" type="button" [disabled]="!accountId()" (click)="openCreate()">Créer une mission</button>
+        </wt-empty-state>
+      }
+    </section>
+  </div>
+}

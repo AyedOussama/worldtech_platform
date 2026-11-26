@@ -1,0 +1,106 @@
+<wt-page-header title="Techniciens" description="Consultez les candidatures en attente et les techniciens validés.">
+  <button matButton type="button" [disabled]="loading()" (click)="reload()">
+    <svg lucideRefreshCw class="wt-icon" aria-hidden="true"></svg>
+    Actualiser
+  </button>
+</wt-page-header>
+
+@if (error()) { <p class="feedback feedback-error" role="alert">{{ error() }}</p> }
+
+<section class="directory-summary" aria-label="État des techniciens">
+  <span class="summary-count"><strong>{{ counts().pending }}</strong> en attente</span>
+  <span class="summary-count"><strong>{{ counts().approved }}</strong> validés</span>
+  @if (loading()) { <span class="loading" role="status">Chargement…</span> }
+</section>
+
+<div class="workspace">
+  <aside class="directory-rail" aria-labelledby="technician-queue-title">
+    <div class="rail-head">
+      <div><h2 id="technician-queue-title">Techniciens</h2><p>{{ list().length }} dans ce filtre</p></div>
+    </div>
+    <div class="filters" role="group" aria-label="Filtrer les techniciens">
+      <button type="button" class="filter" [class.active]="filter() === 'PENDING'" [attr.aria-pressed]="filter() === 'PENDING'" (click)="setFilter('PENDING')">
+        En attente <span>{{ counts().pending }}</span>
+      </button>
+      <button type="button" class="filter" [class.active]="filter() === 'APPROVED'" [attr.aria-pressed]="filter() === 'APPROVED'" (click)="setFilter('APPROVED')">
+        Validés <span>{{ counts().approved }}</span>
+      </button>
+    </div>
+    @if (loading()) {
+      <div class="rail-empty"><p>Chargement des techniciens…</p></div>
+    } @else if (list().length === 0) {
+      <div class="rail-empty"><p>Aucun technicien dans ce filtre.</p></div>
+    } @else {
+      <ul class="directory-list">
+        @for (item of list(); track item.dossierId) {
+          <li>
+            <button type="button" class="directory-row" [class.selected]="item.dossierId === selectedId()" (click)="select(item)">
+              <span class="directory-copy">
+                <strong>{{ dossierReference(item.dossierId) }}</strong>
+                <span>{{ formatDateTime(item.createdAt) }}</span>
+              </span>
+              <span class="directory-meta">
+                <wt-status-label [label]="stateLabel(item.state)" [tone]="stateTone(item.state)" />
+                <span class="version tabular">v{{ item.version }}</span>
+              </span>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+
+  <section class="directory-stage" aria-label="Détail du technicien">
+    @if (detailLoading()) {
+      <div class="stage-loading" role="status">Chargement du dossier…</div>
+    } @else if (detail(); as current) {
+      <div class="stage-head">
+        <div class="stage-title">
+          <p class="kicker">Candidature technicien</p>
+          <h2>{{ technicianName(current.dossier.profile) }}</h2>
+          <p class="record-id tabular">{{ current.dossier.dossierId }} · utilisateur {{ current.userId }}</p>
+        </div>
+        <wt-status-label [label]="stateLabel(current.dossier.state)" [tone]="stateTone(current.dossier.state)" />
+      </div>
+
+      <dl class="directory-facts">
+        <div><dt>Téléphone</dt><dd>{{ current.dossier.profile.phone || 'Non renseigné' }}</dd></div>
+        <div><dt>Ville de base</dt><dd>{{ current.dossier.profile.baseCity || 'Non renseignée' }}</dd></div>
+        <div><dt>Rayon d’intervention</dt><dd>{{ radiusLabel(current.dossier.profile.radiusKm) }}</dd></div>
+      </dl>
+
+      <section class="detail-block" aria-labelledby="technician-skills-title">
+        <div class="section-heading"><div><h3 id="technician-skills-title">Compétences déclarées</h3><p>Déclarations du technicien, non certifiées.</p></div></div>
+        @if (current.dossier.profile.declaredSkills?.length) {
+          <div class="chips">
+            @for (skill of current.dossier.profile.declaredSkills; track skill) { <span>{{ skill }}</span> }
+          </div>
+        } @else {
+          <p class="note">Aucune compétence déclarée.</p>
+        }
+      </section>
+
+      <p class="note">Justificatifs : {{ documentsLabel(current.dossier.documentsStatus) }}. La validation des justificatifs reste une étape administrative distincte.</p>
+
+      <section class="history-block" aria-labelledby="technician-history-title">
+        <div class="section-heading"><div><h3 id="technician-history-title">Historique</h3><p>{{ history().length }} événement(s)</p></div></div>
+        @if (history().length === 0) {
+          <p class="note">Aucun événement enregistré.</p>
+        } @else {
+          <ol class="timeline">
+            @for (event of history(); track event.revision) {
+              <li>
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head"><strong>{{ actionLabel(event.action) }}</strong><span>{{ formatDateTime(event.occurredAt) }}</span></div>
+                <div class="timeline-meta"><span>Révision {{ event.revision }}</span><span class="record-id">{{ event.actorUserId }}</span></div>
+                @if (event.reason) { <p>{{ event.reason }}</p> }
+              </li>
+            }
+          </ol>
+        }
+      </section>
+    } @else {
+      <wt-empty-state title="Sélectionnez un technicien" message="Choisissez un dossier dans la liste pour consulter son profil et son historique." />
+    }
+  </section>
+</div>

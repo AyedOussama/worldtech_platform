@@ -25,6 +25,7 @@ public class JdbcSecurityAudit implements SecurityAudit {
                 UUID.randomUUID(), Timestamp.from(clock.instant()), actor, action.name(),
                 action==Action.ACCOUNT_CHANGED ? "client_account" : action==Action.ASSET_CHANGED ? "asset"
                         : action==Action.CONTRACT_CHANGED ? "contract" : action.name().startsWith("TICKET_") ? "ticket"
+                        : action.name().startsWith("MISSION_") ? "mission"
                         : action.name().startsWith("CLIENT_") ? "client_admission" : action.name().startsWith("TECHNICIAN_") ? "technician_admission" : "identity",resource,traceId);
     }
 }

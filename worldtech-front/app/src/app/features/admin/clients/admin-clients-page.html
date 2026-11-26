@@ -1,0 +1,115 @@
+<wt-page-header title="Clients" description="Retrouvez les comptes validés et les demandes d’inscription en attente.">
+  <button matButton type="button" [disabled]="loading()" (click)="reload()">
+    <svg lucideRefreshCw class="wt-icon" aria-hidden="true"></svg>
+    Actualiser
+  </button>
+</wt-page-header>
+
+@if (error()) { <p class="feedback feedback-error" role="alert">{{ error() }}</p> }
+
+<section class="directory-summary" aria-label="État des clients">
+  <span class="summary-count"><strong>{{ counts().validated }}</strong> validés</span>
+  <span class="summary-count"><strong>{{ counts().pending }}</strong> en attente</span>
+  @if (loading()) { <span class="loading" role="status">Chargement…</span> }
+</section>
+
+<div class="workspace">
+  <aside class="directory-rail" aria-labelledby="client-queue-title">
+    <div class="rail-head">
+      <div><h2 id="client-queue-title">Comptes clients</h2><p>{{ rows().length }} dans ce filtre</p></div>
+    </div>
+    <div class="filters" role="group" aria-label="Filtrer les clients">
+      <button type="button" class="filter" [class.active]="filter() === 'VALIDATED'" [attr.aria-pressed]="filter() === 'VALIDATED'" (click)="setFilter('VALIDATED')">
+        Validés <span>{{ counts().validated }}</span>
+      </button>
+      <button type="button" class="filter" [class.active]="filter() === 'PENDING'" [attr.aria-pressed]="filter() === 'PENDING'" (click)="setFilter('PENDING')">
+        En attente <span>{{ counts().pending }}</span>
+      </button>
+    </div>
+    @if (loading()) {
+      <div class="rail-empty"><p>Chargement des clients…</p></div>
+    } @else if (rows().length === 0) {
+      <div class="rail-empty"><p>Aucun client dans ce filtre.</p></div>
+    } @else {
+      <ul class="directory-list">
+        @for (row of rows(); track row.id) {
+          <li>
+            <button type="button" class="directory-row" [class.selected]="isSelected(row)" (click)="select(row)">
+              <span class="directory-copy">
+                <strong>{{ row.label }}</strong>
+                <span>{{ row.meta }}</span>
+              </span>
+              <span class="directory-meta">
+                @if (row.kind === 'account') {
+                  <wt-status-label label="Validé" tone="success" />
+                } @else {
+                  <wt-status-label [label]="stateLabel(row.summary.state)" [tone]="stateTone(row.summary.state)" />
+                }
+                <span class="version tabular">v{{ row.version }}</span>
+              </span>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+
+  <section class="directory-stage" aria-label="Détail du client">
+    @if (detailLoading()) {
+      <div class="stage-loading" role="status">Chargement du dossier…</div>
+    } @else if (accountDetail(); as account) {
+      <div class="stage-head">
+        <div class="stage-title">
+          <p class="kicker">Compte client validé</p>
+          <h2>{{ account.displayName }}</h2>
+          <p class="record-id tabular">{{ account.accountId }}</p>
+        </div>
+        <wt-status-label label="Validé" tone="success" />
+      </div>
+
+      <dl class="directory-facts">
+        <div><dt>Type de compte</dt><dd>{{ accountTypeLabel(account.accountType) }}</dd></div>
+        <div><dt>Version</dt><dd class="tabular">v{{ account.version }}</dd></div>
+        <div><dt>Sites</dt><dd>{{ assetSummary()?.sites ?? '—' }}</dd></div>
+        <div><dt>Équipements</dt><dd>{{ assetSummary()?.equipment ?? '—' }}</dd></div>
+      </dl>
+
+      <p class="note">Les missions de ce compte se préparent depuis l’espace Missions.</p>
+    } @else if (admissionDetail(); as current) {
+      <div class="stage-head">
+        <div class="stage-title">
+          <p class="kicker">Demande client</p>
+          <h2>{{ clientName(current.dossier.profile) }}</h2>
+          <p class="record-id tabular">{{ current.dossier.dossierId }} · utilisateur {{ current.userId }}</p>
+        </div>
+        <wt-status-label [label]="stateLabel(current.dossier.state)" [tone]="stateTone(current.dossier.state)" />
+      </div>
+
+      <dl class="directory-facts">
+        <div><dt>Type de compte</dt><dd>{{ profileTypeLabel(current.dossier.profile.accountType) }}</dd></div>
+        <div><dt>Téléphone</dt><dd>{{ current.dossier.profile.phone || 'Non renseigné' }}</dd></div>
+        <div><dt>Adresse</dt><dd>{{ current.dossier.profile.address || 'Non renseignée' }}</dd></div>
+      </dl>
+
+      <section class="history-block" aria-labelledby="client-history-title">
+        <div class="section-heading"><div><h3 id="client-history-title">Historique</h3><p>{{ history().length }} événement(s)</p></div></div>
+        @if (history().length === 0) {
+          <p class="note">Aucun événement enregistré.</p>
+        } @else {
+          <ol class="timeline">
+            @for (event of history(); track event.revision) {
+              <li>
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head"><strong>{{ actionLabel(event.action) }}</strong><span>{{ formatDateTime(event.occurredAt) }}</span></div>
+                <div class="timeline-meta"><span>Révision {{ event.revision }}</span><span class="record-id">{{ event.actorUserId }}</span></div>
+                @if (event.reason) { <p>{{ event.reason }}</p> }
+              </li>
+            }
+          </ol>
+        }
+      </section>
+    } @else {
+      <wt-empty-state title="Sélectionnez un client" message="Choisissez un compte ou une demande dans la liste pour consulter son détail." />
+    }
+  </section>
+</div>

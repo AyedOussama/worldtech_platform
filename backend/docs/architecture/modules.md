@@ -86,3 +86,11 @@ Audit technique via le port existant ; événements métier de version/portée a
 `tickets` possède besoin, priorité demandée/retenue, propositions CLIENT, cycle et chronologies ; ni visite ni conditions financières ADMIN. Notes internes et messages publics sont physiquement distincts, y compris leurs curseurs. `shared.idempotency.CommandReceipts` conserve les résultats techniques minimaux, sans contenu métier libre ; le résultat historique ne remplace pas la lecture courante. Extension nullable compatible avec les réceptions d'admission existantes.
 
 Producteurs → `notifications.publicapi.BusinessEvents` pour métadonnées d'outbox atomiques, et `audit.publicapi.SecurityAudit` pour la trace corrélée. Aucun nouveau worker de livraison/notification complète au lot 06 ; la revalidation des destinataires/reprises reste au lot 11. Aucun cycle vers les producteurs ni modèle générique de finance/SLA ajouté à `shared`. [Contrat du lot 06](../lot-06-contrats-tickets.md).
+
+## Mise en œuvre du lot 07
+
+`missions` possède mission, compétences et révisions financières. Il appelle `assets.publicapi.AssetAccess` pour un site actif, `tickets.publicapi.TicketContext` pour un ticket qualifié et `contracts.publicapi.ContractCoverage` pour une révision applicable ; aucune lecture SQL de leurs tables ni autorisation fournie par un DTO. La rémunération courante est lue dans le même verrou que la mission.
+
+La découverte mobile utilise `identity.publicapi.ActiveTechnician`, distinct du simple statut ACTIVE : session MOBILE, email vérifié, rôle TECHNICIAN exclusif. `JdbcMissionDiscovery` borne la requête en SQL (publiée, rayon, compétences, fenêtre), trie distance/identifiant et pagine par keyset ; aucun chargement complet ni compteur global. Le point public est un `geography(Point,4326)` séparé du point privé du site.
+
+Producteurs → mêmes ports d'audit/outbox ; événements de mission métadonnées seulement. Aucun candidat, affectation ou détail privé de mission n'est ajouté avant les lots 08/10. [Contrat du lot 07](../lot-07-missions.md).

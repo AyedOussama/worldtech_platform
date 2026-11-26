@@ -1,6 +1,6 @@
 # Matrice des autorisations et suivi de l'admission
 
-Conception du 27 octobre 2026, suivi du 02 novembre 2026. Identité/admission/parc conservés ; contrats/tickets du lot 06 implémentés, recette locale décrite dans [les preuves courantes](../preuves/lot-06-verifications.md). Lots suivants non livrés. Exigences SEC-01/02/03 et SEC-06 à SEC-16 ; ADMIN/CLIENT/TECHNICIAN seulement. Attente, suspension et pré-MFA restent des états.
+Conception du 27 octobre 2026, suivi du 18 novembre 2026. Identité/admission/parc/contrats/tickets conservés ; missions et découverte du lot 07 implémentées, recette locale décrite dans [les preuves courantes](../preuves/lot-07-verifications.md). Lots suivants non livrés. Exigences SEC-01/02/03 et SEC-06 à SEC-16 ; ADMIN/CLIENT/TECHNICIAN seulement. Attente, suspension et pré-MFA restent des états.
 
 ## Principes communs
 
@@ -95,7 +95,19 @@ Le manque de permission ne donne pas un total global. Le privilège de site appa
 | Notes internes | ADMIN récent/MFA seulement | Aucun contenu, compteur, trou de curseur ou changement de version publique révélant l'ajout d'une note |
 | Rejeu technique | Même acteur/opération/clé/contenu, accès courant réautorisé et agrégat verrouillé avant réception | Droits retirés, site archivé ou suspension refusent aussi le rejeu ; résultat minimal historique, pas un nouveau droit |
 
-Le refus de couverture est générique (`CONTRACT_NOT_APPLICABLE`) aussi bien pour une révision inconnue, étrangère, hors période ou inadaptée à l'équipement. Aucun endpoint d'upload, pièce distante, mission/affectation ou découverte n'est ouvert par cette tranche. Les événements d'outbox sont des métadonnées, pas des notifications publiquement consultables.
+Le refus de couverture est générique (`CONTRACT_NOT_APPLICABLE`) aussi bien pour une révision inconnue, étrangère, hors période ou inadaptée à l'équipement. Aucun endpoint d'upload, pièce distante, affectation ou candidature n'est ouvert par cette tranche. Les événements d'outbox sont des métadonnées, pas des notifications publiquement consultables.
+
+### Missions et découverte du lot 07
+
+| Opération | Autorisé | Refus / contrôle |
+|---|---|---|
+| Créer un brouillon | ADMIN WEB récent/MFA, site actif du compte, ticket/révision cohérents si fournis | Aucun choix d'état, de version, d'auteur ou de prix publié depuis le corps ; pas de site étranger |
+| Publier / réviser les conditions | ADMIN récent/MFA, brouillon ou mission publiée, If-Match courant, idempotence | Ticket lié non qualifié, contrat non applicable, ancienne version, révision ou montant invalide ; aucune réécriture d'historique |
+| Lire une mission ADMIN | ADMIN récent/MFA, compte/site autorisés | Aucun autre site ; le motif et les détails restent dans le canal ADMIN |
+| Découvrir à proximité | TECHNICIAN MOBILE actif, email vérifié, rôle exclusif ; mission publiée, rayon 10–200 km, page bornée | Attente/suspension, cumul de rôle, cookie WEB, mission brouillon, coordonnées ou curseur invalides ; aucune adresse, contact, identité ou lien privé |
+| Projection mobile | Conditions publiées, point public approximatif, distance | Point privé du site, compte, ticket, contrat, auteur, motif, proposition CLIENT ou prix facturé |
+
+La découverte ne donne aucun droit de candidature ou de réservation : la seule visibilité d'une mission publiée ne vaut pas affectation. Le point/distance sont des données publiques destinées à trier, pas une localisation exacte du site. Aucun `DELETE` runtime n'est accordé sur missions, compétences ou révisions.
 
 - 401 JSON pour identité absente/invalide sur une route protégée ; aucune page HTML de login ni redirection d'API inattendue.
 - 403 pour rôle, niveau MFA, statut ou CSRF insuffisant. Pour une lecture d'objet par un acteur authentifié du bon type mais hors périmètre, 404 masqué identique à l'absence, sans révéler l'existence de l'objet.

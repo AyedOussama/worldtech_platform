@@ -5,7 +5,10 @@
     (closedStart)="closeNavigation()" (closed)="restoreNavigationFocus()">
     <div class="sidebar-inner">
       <div class="sidebar-brand">
-        <a class="brand" [routerLink]="preview() ? '/dev' : '/connexion'">WorldTech</a>
+        <a class="brand" [routerLink]="preview() ? '/dev' : '/connexion'">
+          <img class="brand-logo" src="/assets/worldtech/login/branding/worldtech_logo_blanc.png"
+            width="2172" height="724" alt="WorldTech" />
+        </a>
         @if (mobile()) {
           <button matIconButton type="button" aria-label="Fermer la navigation" (click)="closeNavigation()">
             <svg lucideX class="wt-icon" aria-hidden="true"></svg>

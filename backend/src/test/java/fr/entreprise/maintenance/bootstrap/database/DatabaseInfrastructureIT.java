@@ -81,7 +81,7 @@ class DatabaseInfrastructureIT {
         try (Connection connection = PostgisFixture.migrator(DATABASE)) {
             assertThat(scalar(connection, "SELECT version || ':' || checksum || ':' || installed_on::text "
                     + "FROM app.flyway_schema_history WHERE success AND version = '1'")).isEqualTo(before);
-            assertThat(scalar(connection, "SELECT count(*)::text FROM app.flyway_schema_history")).isEqualTo("16");
+            assertThat(scalar(connection, "SELECT count(*)::text FROM app.flyway_schema_history")).isEqualTo("18");
         }
     }
 

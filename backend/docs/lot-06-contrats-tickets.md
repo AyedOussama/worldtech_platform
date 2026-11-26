@@ -105,4 +105,4 @@ La recette locale globale est obtenue ; [preuves de clôture et limites](preuves
 
 Pas de frontend, mission/affectation, compte rendu attesté, stockage/antivirus/upload, facturation ou prix publié technicien. Pas de rétention/purge complète, calcul d'échéance/alerte SLA, statistique, charge cible, image runtime renouvelée, CI distante, déploiement, staging ou pentest. Les futures clôtures avec missions devront vérifier les travaux actifs par un port dédié ; le présent lot n'invente pas une autorisation toujours vraie pour des missions inexistantes.
 
-Suite possible : **07 — missions, conditions financières ADMIN et découverte géographique**, après ses seuls arbitrages nécessaires ; aucun démarrage automatique. Justificatifs technicien obligatoires et blocage du lot 09 conservés, Google toujours désactivé, risques d'infrastructure/production antérieurs non levés.
+Suite : **07 — missions, conditions financières ADMIN et découverte géographique**, depuis livré localement ([contrat](lot-07-missions.md)). Justificatifs technicien obligatoires et blocage du lot 09 conservés, Google toujours désactivé, risques d'infrastructure/production antérieurs non levés.

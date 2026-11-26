@@ -1,0 +1,442 @@
+
+> worldtech-web@0.1.0 start
+> ng serve --host localhost --port 4200 --proxy-config proxy.conf.json
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names                    |  Raw size
+styles.css          | styles                   |  21.68 kB | 
+chunk-COH47TJH.js   | -                        |  13.69 kB | 
+main.js             | main                     |  12.82 kB | 
+chunk-YI4RMDGD.js   | -                        |   7.79 kB | 
+chunk-ZM5ECEYY.js   | -                        |   3.34 kB | 
+chunk-LERTRZOA.js   | -                        |   2.22 kB | 
+chunk-DJOGPJGE.js   | -                        |   1.18 kB | 
+chunk-VUJOFXKG.js   | -                        | 987 bytes | 
+chunk-PTSUB7PQ.js   | -                        | 892 bytes | 
+
+                    | Initial total            |  64.59 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-FVQE6T7U.js   | ticket-reference-page    | 137.67 kB | 
+chunk-HX4Q5MOE.js   | login-page               |  79.94 kB | 
+chunk-2ZNQLFSA.js   | mfa-page                 |  36.01 kB | 
+chunk-IMD4HILR.js   | -                        |  23.82 kB | 
+chunk-72MITY2M.js   | action-confirmation-page |  18.31 kB | 
+chunk-5WMUJAIE.js   | -                        |  10.94 kB | 
+chunk-VF6ZKF3R.js   | account-access-page      |   8.61 kB | 
+chunk-QSPQ32RP.js   | component-example        |   7.43 kB | 
+chunk-7WHQ5KVJ.js   | -                        |   6.82 kB | 
+chunk-42PIBX32.js   | -                        |   5.21 kB | 
+chunk-QWOZRNJS.js   | -                        |   4.50 kB | 
+chunk-AL66F6FX.js   | -                        |   4.49 kB | 
+chunk-NJHC5CLN.js   | session-unavailable      |   4.47 kB | 
+chunk-VCBC7X4X.js   | -                        |   4.32 kB | 
+chunk-JOLTKF7X.js   | -                        |   3.63 kB | 
+...and 8 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [6.451 seconds] - 2026-11-17T10:47:48.908Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m11:48:28[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m11:48:28[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_sombre.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m14:02:02[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m14:02:02[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m14:02:07[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m14:02:07[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m14:16:45[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m14:16:45[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m15:40:11[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:40:13[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:40:17[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:40:27[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:41:39[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/me[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:41:41[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m15:41:41[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m15:41:41[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:41:47[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m15:43:00[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/web/v1/auth/csrf[39m
+Error: connect ECONNREFUSED 127.0.0.1:18080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16)
+[2m09:58:40[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:58:40[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:03:42[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:03:42[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:03:43[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:03:43[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:19:39[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:19:39[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+styles.css          | styles                   |  21.68 kB | 
+chunk-COH47TJH.js   | -                        |  13.69 kB | 
+main.js             | main                     |  12.82 kB | 
+chunk-YI4RMDGD.js   | -                        |   7.79 kB | 
+chunk-ZM5ECEYY.js   | -                        |   3.34 kB | 
+chunk-LERTRZOA.js   | -                        |   2.22 kB | 
+chunk-DJOGPJGE.js   | -                        |   1.18 kB | 
+chunk-VUJOFXKG.js   | -                        | 987 bytes | 
+chunk-PTSUB7PQ.js   | -                        | 892 bytes | 
+
+                    | Initial total            |  64.59 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-FVQE6T7U.js   | ticket-reference-page    | 137.67 kB | 
+chunk-HX4Q5MOE.js   | login-page               |  79.94 kB | 
+chunk-2ZNQLFSA.js   | mfa-page                 |  36.01 kB | 
+chunk-IMD4HILR.js   | -                        |  23.82 kB | 
+chunk-72MITY2M.js   | action-confirmation-page |  18.31 kB | 
+chunk-5WMUJAIE.js   | -                        |  10.94 kB | 
+chunk-VF6ZKF3R.js   | account-access-page      |   8.61 kB | 
+chunk-QSPQ32RP.js   | component-example        |   7.43 kB | 
+chunk-7WHQ5KVJ.js   | -                        |   6.82 kB | 
+chunk-42PIBX32.js   | -                        |   5.21 kB | 
+chunk-QWOZRNJS.js   | -                        |   4.50 kB | 
+chunk-AL66F6FX.js   | -                        |   4.49 kB | 
+chunk-NJHC5CLN.js   | session-unavailable      |   4.47 kB | 
+chunk-VCBC7X4X.js   | -                        |   4.32 kB | 
+chunk-JOLTKF7X.js   | -                        |   3.63 kB | 
+...and 8 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.416 seconds] - 2026-11-18T09:34:32.530Z
+
+[2m10:35:16[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m10:35:16[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.715 seconds] - 2026-11-19T08:33:41.320Z
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: PageHeader is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:4:
+[37m      37 │     [32mPageHeader[37m, ErrorSummary, EmptyState, MoneyDisplay, StatusLabel,
+         ╵     [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: ErrorSummary is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:16:
+[37m      37 │     PageHeader, [32mErrorSummary[37m, EmptyState, MoneyDisplay, StatusLabel,
+         ╵                 [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: EmptyState is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:30:
+[37m      37 │     PageHeader, ErrorSummary, [32mEmptyState[37m, MoneyDisplay, StatusLabel,
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: MoneyDisplay is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:42:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, [32mMoneyDisplay[37m, StatusLabel,
+         ╵                                           [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: StatusLabel is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:56:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, MoneyDisplay, [32mStatusLabel[37m,
+         ╵                                                         [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "dd". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.html:125:193:
+[37m      125 │ ....publicLabel) { · {{ current.mission.publicLabel } }[32m}</dd[37m></div>
+          ╵                                                        [32m~~~~~[0m
+
+  Error occurs in the template of component AdminMissionsPage.
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:40:15:
+[37m      40 │   templateUrl: [32m'./admin-missions-page.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.260 seconds] - 2026-11-19T08:33:45.227Z
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: PageHeader is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:4:
+[37m      37 │     [32mPageHeader[37m, ErrorSummary, EmptyState, MoneyDisplay, StatusLabel,
+         ╵     [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: ErrorSummary is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:16:
+[37m      37 │     PageHeader, [32mErrorSummary[37m, EmptyState, MoneyDisplay, StatusLabel,
+         ╵                 [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: EmptyState is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:30:
+[37m      37 │     PageHeader, ErrorSummary, [32mEmptyState[37m, MoneyDisplay, StatusLabel,
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: MoneyDisplay is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:42:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, [32mMoneyDisplay[37m, StatusLabel,
+         ╵                                           [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: StatusLabel is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:56:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, MoneyDisplay, [32mStatusLabel[37m,
+         ╵                                                         [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "dd". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.html:125:193:
+[37m      125 │ ....publicLabel) { · {{ current.mission.publicLabel } }[32m}</dd[37m></div>
+          ╵                                                        [32m~~~~~[0m
+
+  Error occurs in the template of component AdminMissionsPage.
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:40:15:
+[37m      40 │   templateUrl: [32m'./admin-missions-page.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.188 seconds] - 2026-11-19T08:33:48.234Z
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: PageHeader is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:4:
+[37m      37 │     [32mPageHeader[37m, ErrorSummary, EmptyState, MoneyDisplay, StatusLabel,
+         ╵     [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: ErrorSummary is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:16:
+[37m      37 │     PageHeader, [32mErrorSummary[37m, EmptyState, MoneyDisplay, StatusLabel,
+         ╵                 [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: EmptyState is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:30:
+[37m      37 │     PageHeader, ErrorSummary, [32mEmptyState[37m, MoneyDisplay, StatusLabel,
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: MoneyDisplay is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:42:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, [32mMoneyDisplay[37m, StatusLabel,
+         ╵                                           [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: StatusLabel is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:56:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, MoneyDisplay, [32mStatusLabel[37m,
+         ╵                                                         [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "dd". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.html:125:193:
+[37m      125 │ ....publicLabel) { · {{ current.mission.publicLabel } }[32m}</dd[37m></div>
+          ╵                                                        [32m~~~~~[0m
+
+  Error occurs in the template of component AdminMissionsPage.
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:40:15:
+[37m      40 │   templateUrl: [32m'./admin-missions-page.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.253 seconds] - 2026-11-19T08:33:51.932Z
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: PageHeader is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:4:
+[37m      37 │     [32mPageHeader[37m, ErrorSummary, EmptyState, MoneyDisplay, StatusLabel,
+         ╵     [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: ErrorSummary is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:16:
+[37m      37 │     PageHeader, [32mErrorSummary[37m, EmptyState, MoneyDisplay, StatusLabel,
+         ╵                 [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: EmptyState is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:30:
+[37m      37 │     PageHeader, ErrorSummary, [32mEmptyState[37m, MoneyDisplay, StatusLabel,
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: MoneyDisplay is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:42:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, [32mMoneyDisplay[37m, StatusLabel,
+         ╵                                           [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: StatusLabel is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:56:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, MoneyDisplay, [32mStatusLabel[37m,
+         ╵                                                         [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "dd". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.html:125:193:
+[37m      125 │ ....publicLabel) { · {{ current.mission.publicLabel } }[32m}</dd[37m></div>
+          ╵                                                        [32m~~~~~[0m
+
+  Error occurs in the template of component AdminMissionsPage.
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:40:15:
+[37m      40 │   templateUrl: [32m'./admin-missions-page.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.285 seconds] - 2026-11-19T08:34:13.357Z
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: PageHeader is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:4:
+[37m      37 │     [32mPageHeader[37m, ErrorSummary, EmptyState, MoneyDisplay, StatusLabel,
+         ╵     [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: ErrorSummary is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:16:
+[37m      37 │     PageHeader, [32mErrorSummary[37m, EmptyState, MoneyDisplay, StatusLabel,
+         ╵                 [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: EmptyState is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:30:
+[37m      37 │     PageHeader, ErrorSummary, [32mEmptyState[37m, MoneyDisplay, StatusLabel,
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: MoneyDisplay is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:42:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, [32mMoneyDisplay[37m, StatusLabel,
+         ╵                                           [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: StatusLabel is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:56:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, MoneyDisplay, [32mStatusLabel[37m,
+         ╵                                                         [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "dd". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.html:125:193:
+[37m      125 │ ....publicLabel) { · {{ current.mission.publicLabel } }[32m}</dd[37m></div>
+          ╵                                                        [32m~~~~~[0m
+
+  Error occurs in the template of component AdminMissionsPage.
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:40:15:
+[37m      40 │   templateUrl: [32m'./admin-missions-page.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.278 seconds] - 2026-11-19T08:34:16.310Z
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: PageHeader is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:4:
+[37m      37 │     [32mPageHeader[37m, ErrorSummary, EmptyState, MoneyDisplay, StatusLabel,
+         ╵     [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: ErrorSummary is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:16:
+[37m      37 │     PageHeader, [32mErrorSummary[37m, EmptyState, MoneyDisplay, StatusLabel,
+         ╵                 [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: EmptyState is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:30:
+[37m      37 │     PageHeader, ErrorSummary, [32mEmptyState[37m, MoneyDisplay, StatusLabel,
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: MoneyDisplay is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:42:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, [32mMoneyDisplay[37m, StatusLabel,
+         ╵                                           [32m~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: StatusLabel is not used within the template of AdminMissionsPage[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:37:56:
+[37m      37 │     PageHeader, ErrorSummary, EmptyState, MoneyDisplay, [32mStatusLabel[37m,
+         ╵                                                         [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "dd". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.html:125:193:
+[37m      125 │ ....publicLabel) { · {{ current.mission.publicLabel } }[32m}</dd[37m></div>
+          ╵                                                        [32m~~~~~[0m
+
+  Error occurs in the template of component AdminMissionsPage.
+
+    C:/Users/MSI/Documents/WorldTech/worldtech_platform/worldtech-front/app/src/app/features/admin/missions/admin-missions-page.ts:40:15:
+[37m      40 │   templateUrl: [32m'./admin-missions-page.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[2m09:35:54[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:35:54[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:36:42[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:36:42[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:39:02[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:39:02[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_sombre.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:40:13[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913
+[2m09:40:13[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mNG0913: An image with src http://localhost:4200/assets/worldtech/login/branding/worldtech_logo_blanc.png has intrinsic file dimensions much larger than its rendered size. This can negatively impact application loading performance. For more information about addressing or disabling this warning, see https://v22.angular.dev/errors/NG0913. Find more at https://v22.angular.dev/errors/NG0913

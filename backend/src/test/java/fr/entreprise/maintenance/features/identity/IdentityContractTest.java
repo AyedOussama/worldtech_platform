@@ -14,6 +14,8 @@ import fr.entreprise.maintenance.features.clients.api.ClientAccountController;
 import fr.entreprise.maintenance.features.assets.api.AssetController;
 import fr.entreprise.maintenance.features.contracts.api.ContractController;
 import fr.entreprise.maintenance.features.tickets.api.TicketController;
+import fr.entreprise.maintenance.features.missions.api.MissionController;
+import fr.entreprise.maintenance.features.missions.api.MissionDiscoveryController;
 import fr.entreprise.maintenance.features.technicians.api.TechnicianOnboardingController;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,8 @@ class IdentityContractTest {
         var document = JsonMapper.builder().build().readTree(Path.of("openapi/maintenance-api.json").toFile());
         Set<String> delivered = new HashSet<>();
         for (Class<?> controller : java.util.List.of(HealthController.class, WebIdentityController.class, WebIdentityActionsController.class,
-                WebMfaController.class, MobileIdentityController.class, GoogleIdentityController.class,ClientOnboardingController.class,TechnicianOnboardingController.class,ClientAccountController.class,AssetController.class,ContractController.class,TicketController.class)) {
+                WebMfaController.class, MobileIdentityController.class, GoogleIdentityController.class,ClientOnboardingController.class,TechnicianOnboardingController.class,ClientAccountController.class,AssetController.class,ContractController.class,TicketController.class,
+                MissionController.class,MissionDiscoveryController.class)) {
             for (var method : controller.getDeclaredMethods()) {
                 var get = method.getAnnotation(GetMapping.class); var post = method.getAnnotation(PostMapping.class);
                 var put=method.getAnnotation(PutMapping.class); var patch=method.getAnnotation(PatchMapping.class);

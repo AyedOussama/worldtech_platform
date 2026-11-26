@@ -2,6 +2,8 @@
 @use './styles/tokens';
 @use './styles/foundation';
 @use './styles/identity';
+@use './styles/admin-missions';
+@use './styles/admin-directory';
 
 html {
   @include mat.theme((

@@ -1,8 +1,8 @@
 # Plan des lots et contrat du prochain lot
 
-27 octobre 2026 — plan de réalisation, actualisé au lot 06 le 02 novembre 2026. Source : quinze prompts existants, cahier backend §15. Un lot/tranche vérifiable à la fois ; les travaux indépendants peuvent avancer sans inventer les règles d'un autre lot.
+27 octobre 2026 — plan de réalisation, actualisé au lot 07 le 18 novembre 2026. Source : quinze prompts existants, cahier backend §15. Un lot/tranche vérifiable à la fois ; les travaux indépendants peuvent avancer sans inventer les règles d'un autre lot.
 
-**Lot 06 implémenté et vérifié localement ; suite possible : 07 — missions, conditions financières ADMIN et découverte géographique**, après ses arbitrages nécessaires. Approbation technicien toujours bloquée sans pièces contrôlées (09), Google désactivé. Les [preuves courantes de 06](preuves/lot-06-verifications.md) et [écarts de 02](preuves/lot-02-verifications.md) ne valent pas approbation de production. Aucun lot suivant démarré automatiquement.
+**Lot 07 implémenté et vérifié localement ; suite possible : 08 — candidatures et affectations**, sans démarrage automatique. Approbation technicien toujours bloquée sans pièces contrôlées (09), Google désactivé. Les [preuves courantes de 07](preuves/lot-07-verifications.md) et [écarts de 02](preuves/lot-02-verifications.md) ne valent pas approbation de production.
 
 ## 1. Dépendances et critères de sortie
 
@@ -15,7 +15,7 @@
 | 04 Onboarding | Identité locale 03 + outbox minimale ; 09 pour approbation technicien | Invitation → dossier → décision admin, droits d'attente et consommation concurrente testés | Parcours locaux et Google explicites testés localement ; approbation client, complément/refus livrés ; approbation technicien bloquée sans pièces contrôlées |
 | 05 Comptes/sites | 04 côté clients ; aucune approbation technicien nécessaire | Comptes/membres, parc et habilitations ; FK cohérentes et tests multi-comptes/sites | Livré localement : 243 Java + 6 Python, ADMIN seul écrit, CLIENT lit son périmètre ; V12–V13 et montée depuis V11 vérifiées |
 | 06 Tickets/contrats | 05 côté clients | Contrats versionnés, calendrier, incident et proposition client ; droits et contraintes de son contrat | Livré localement : 293 Java + 6 Python ; V14–V16, forfaits CLIENT facultatifs HT/EUR, couverture explicite et cycle confirmé, droits/concurrence/immutabilité testés |
-| 07 Missions/géographie | 06 | Publication, révisions admin, découverte bornée sans fuite ; tests spatiaux sur base réelle | À réaliser |
+| 07 Missions/géographie | 06 | Publication, révisions admin, découverte bornée sans fuite ; tests spatiaux sur base réelle | Livré localement : 320 Java ; V17–V18, rémunération HT/EUR obligatoire, frais facultatifs, découverte TECHNICIAN ACTIVE bornée et index GiST testés ; affectation non incluse |
 | 08 Candidatures/affectation | 07 | Sélection/confirmation/expiration atomiques ; une affectation active et conditions acceptées conservées | À réaliser |
 | 09 Documents | 05 ; contrat des pièces d'admission 04 | Objets privés, autorisation par parent, quotas, quarantaine/scan ; indisponibilité du scan testée | À réaliser, parallélisable avec 06–08 ; requis avant approbation technicien |
 | 10 Interventions/rapports | 08 + 09 | Exécution, versions, attestation, PDF et rejeu hors ligne ; réaffectation/version périmée explicites | À réaliser |
@@ -93,4 +93,10 @@ ADMIN seul gère comptes, membres, droits, sites/contacts et équipements ; CLIE
 
 Proposition CLIENT : forfaits HT/EUR séparés, chacun facultatif, null non assimilé à zéro ; déclaration possible hors contrat, aucun paiement/facture/marge déduit. Contrats ADMIN par révisions immuables et couverture explicite, calendriers et objectifs SLA par révision sans défaut commercial. Pas de jour férié ou pause d'attente implicitement appliqué. Ticket par site, qualification ADMIN (priorité retenue distincte), résolution sans mission possible ; confirmation CLIENT pour CLOSED, persistance depuis RESOLVED pour réouvrir, aucune clôture automatique. [Détails et bornes](lot-06-contrats-tickets.md).
 
-07 doit lire ses règles de publication, compétences, fenêtres et géographie avant de figer ses API. Les choix financiers de la proposition CLIENT ne définissent pas implicitement les conditions publiées aux techniciens. Périmètre métropole/territoires et point public approximatif sont à arrêter ; aucune adresse/contact/position privée dans la découverte. Ni affectation ni approbation technicien à simuler pour contourner leurs dépendances aux lots 08/09.
+07 a figé ses règles après arbitrage : rémunération HT/EUR obligatoire, frais facultatifs distincts de zéro, révisions immuables, point public approximatif saisi par ADMIN, découverte bornée. Les choix financiers de la proposition CLIENT ne définissent pas les conditions publiées aux techniciens. Ni affectation ni approbation technicien ne sont simulées pour contourner leurs dépendances aux lots 08/09.
+
+## 8. Contrat confirmé du lot 07
+
+ADMIN seul crée et publie une mission depuis un site autorisé ; ticket et révision contractuelle facultatifs mais cohérents. Première révision financière à la publication, suivantes append-only avec motif interne. Compétences, fenêtre UTC et point public bornés. TECHNICIAN actif vérifié découvre uniquement les missions publiées par rayon 10–200 km, compétences et fenêtre, avec curseur stable ; aucune identité privée, adresse, contact, ticket ou contrat dans la projection. [Détails et limites](lot-07-missions.md).
+
+08 devra réserver une mission et ses conditions courantes de façon atomique, avec une seule affectation active ; 09 reste requis avant toute approbation technicien réelle.

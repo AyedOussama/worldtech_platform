@@ -110,6 +110,7 @@ public class IdentityWebSecurityConfiguration {
         String coverage=fr.entreprise.maintenance.features.contracts.api.ContractController.CLIENT;
         String adminTickets=fr.entreprise.maintenance.features.tickets.api.TicketController.ADMIN;
         String clientTickets=fr.entreprise.maintenance.features.tickets.api.TicketController.CLIENT;
+        String adminMissions=fr.entreprise.maintenance.features.missions.api.MissionController.ADMIN;
         http.securityMatcher("/api/web/v1/**")
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/api/web/v1/auth/csrf").permitAll()
@@ -126,10 +127,12 @@ public class IdentityWebSecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,clientTickets,clientTickets+"/{ticketId}/proposals",clientTickets+"/{ticketId}/confirm-resolution",
                                 clientTickets+"/{ticketId}/report-persistence",clientTickets+"/{ticketId}/messages").hasRole("CLIENT")
                         .requestMatchers(HttpMethod.GET,contracts,contracts+"/{contractId}",contracts+"/{contractId}/revisions",contracts+"/{contractId}/revisions/{revisionId}",
-                                adminTickets,adminTickets+"/{ticketId}",adminTickets+"/{ticketId}/proposals",adminTickets+"/{ticketId}/history",adminTickets+"/{ticketId}/messages",adminTickets+"/{ticketId}/internal-notes").hasRole("ADMIN")
+                                adminTickets,adminTickets+"/{ticketId}",adminTickets+"/{ticketId}/proposals",adminTickets+"/{ticketId}/history",adminTickets+"/{ticketId}/messages",adminTickets+"/{ticketId}/internal-notes",
+                                adminMissions,adminMissions+"/{missionId}",adminMissions+"/{missionId}/financial-revisions").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,contracts,contracts+"/{contractId}/revisions",adminTickets+"/{ticketId}/qualify",adminTickets+"/{ticketId}/start",
                                 adminTickets+"/{ticketId}/wait-client",adminTickets+"/{ticketId}/resume",adminTickets+"/{ticketId}/resolve",adminTickets+"/{ticketId}/cancel",
-                                adminTickets+"/{ticketId}/messages",adminTickets+"/{ticketId}/internal-notes").hasRole("ADMIN")
+                                adminTickets+"/{ticketId}/messages",adminTickets+"/{ticketId}/internal-notes",
+                                adminMissions,adminMissions+"/{missionId}/publish",adminMissions+"/{missionId}/financial-revisions").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/web/v1/client/accounts","/api/web/v1/client/accounts/{accountId}",
                                 "/api/web/v1/client/accounts/{accountId}/sites","/api/web/v1/client/accounts/{accountId}/sites/{siteId}",
                                 "/api/web/v1/client/accounts/{accountId}/equipment","/api/web/v1/client/accounts/{accountId}/equipment/{equipmentId}",

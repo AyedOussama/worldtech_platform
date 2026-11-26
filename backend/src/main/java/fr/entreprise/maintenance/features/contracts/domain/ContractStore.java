@@ -9,6 +9,7 @@ public interface ContractStore {
     ContractRevision current(UUID account, UUID contract);
     ContractRevision revise(UUID account, ContractRevision current, ContractDefinition definition, UUID actor, Instant now);
     ContractRevision revision(UUID account, UUID contract, UUID revision);
+    void requireRevision(UUID account, UUID revision);
     ContractRevision applicable(UUID account, UUID revision, UUID site, UUID equipment, Instant at);
     record Summary(UUID contractId, UUID revisionId, long version, String publicName, Instant validFrom, Instant validUntil) { }
     List<Summary> list(UUID account, int offset, int size);
